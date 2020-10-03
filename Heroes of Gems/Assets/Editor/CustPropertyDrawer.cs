@@ -21,7 +21,7 @@ public class CustPropertyDrawer : PropertyDrawer
             newposition.height = 18f;
             if (row.arraySize != 9)
                 row.arraySize = 9;
-            newposition.width = position.width / 9;
+            newposition.width = position.width / 8;
             for (int i = 0; i < 9; i++)
             {
                 EditorGUI.PropertyField(newposition, row.GetArrayElementAtIndex(i), GUIContent.none);
