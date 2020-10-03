@@ -53,13 +53,13 @@ public class Match3 : MonoBehaviour
                 int val = board[x, y].value;
                 if (val <= 0) continue;
                 GameObject p = Instantiate(nodePiece, gameBoard);
+                NodePiece node = p.GetComponent<NodePiece>();
                 RectTransform rect = p.GetComponent<RectTransform>();
                 rect.anchoredPosition = new Vector2(63 + (128 * x), -63 - (128 * y));
+                node.Initialize(val, new Point(x, y), pieces[val - 1]);
             }
         }
     }
-
-
 
     void VerifyBoard()
     {
@@ -90,13 +90,9 @@ public class Match3 : MonoBehaviour
     {
         List<int> available = new List<int>();
         for (int i = 0; i < pieces.Length; i++)
-        {
             available.Add(i + 1);
-        }
         foreach (int i in remove)
-        {
             available.Remove(i);
-        }
 
         if (available.Count <= 0) return 0;
 
@@ -200,7 +196,7 @@ public class Match3 : MonoBehaviour
     int fillPiece()
     {
         int val = 1;
-        val = (random.Next(0, 100) / (100 / pieces.Length)) + 1;
+        val = (random.Next(0, 240) / (240 / pieces.Length)) + 1;
         return val;
     }
 
@@ -226,6 +222,7 @@ public class Match3 : MonoBehaviour
 [System.Serializable]
 public class Node
 {
+    //0 = üres, 1 = amethyst, 2 = emerald, 3 = sapphire, 4 = ruby, 5 = topaz, 6-turmaline, -1 = hole
     public int value; //Az adott mezőn található Gem értéke
     public Point index;
 

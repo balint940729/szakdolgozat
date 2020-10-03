@@ -52,6 +52,11 @@ public class Point
         return new Point(point.x + point2.x, point.y + point2.y);
     }
 
+    public static Point clone(Point point)
+    {
+        return new Point(point.x, point.y);
+    }
+
     public static Point zero
     {
         get { return new Point(0, 0); }
