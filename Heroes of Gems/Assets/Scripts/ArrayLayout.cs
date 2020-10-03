@@ -2,13 +2,15 @@
 using System.Collections;
 
 [System.Serializable]
-public class ArrayLayout  {
+public class ArrayLayout
+{
 
-	[System.Serializable]
-	public struct rowData{
-		public bool[] row;
-	}
+    [System.Serializable]
+    public struct rowData
+    {
+        public bool[] row;
+    }
 
     public Grid grid;
-    public rowData[] rows = new rowData[14]; //Grid of 8x8
+    public rowData[] rows = new rowData[8]; //Grid of 8x8
 }

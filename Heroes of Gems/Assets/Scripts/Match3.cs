@@ -12,8 +12,8 @@ public class Match3 : MonoBehaviour
 
     [Header("Prefabs")]
     public GameObject nodePiece;
-    int width = 9;
-    int height = 14;
+    int width = 8;
+    int height = 8;
     Node[,] board;
 
     System.Random random;
@@ -54,7 +54,7 @@ public class Match3 : MonoBehaviour
                 if (val <= 0) continue;
                 GameObject p = Instantiate(nodePiece, gameBoard);
                 RectTransform rect = p.GetComponent<RectTransform>();
-                rect.anchoredPosition = new Vector2(32 + (64 * x), -32 - (64 * y));
+                rect.anchoredPosition = new Vector2(63 + (128 * x), -63 - (128 * y));
             }
         }
     }
