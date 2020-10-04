@@ -453,6 +453,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2022735788}
   - component: {fileID: 2022735787}
+  - component: {fileID: 2022735789}
   m_Layer: 0
   m_Name: Match3
   m_TagString: Untagged
@@ -490,6 +491,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: caab61327aa757c44a6bdfe48710f788, type: 3}
   - {fileID: 21300000, guid: 5832a8e3b1fbce24a8d865d631278271, type: 3}
   - {fileID: 21300000, guid: fe6959887a7b8554fae78cc53d4323f0, type: 3}
+  - {fileID: 21300000, guid: 42026a1faeabafe46b0e7a222fcd180d, type: 3}
   gameBoard: {fileID: 1657089938}
   nodePiece: {fileID: 4374619052471816090, guid: ce778a90f3fd83c498672e44b3a0f1e0,
     type: 3}
@@ -507,3 +509,15 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2022735789
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2022735786}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8440a4103fdb96d4fad8e70a5ee3b35f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
