@@ -196,7 +196,7 @@ public class Match3 : MonoBehaviour
     int fillPiece()
     {
         int val = 1;
-        val = (random.Next(0, 240) / (240 / pieces.Length)) + 1;
+        val = (random.Next(0, 350) / (350 / pieces.Length)) + 1;
         return val;
     }
 
