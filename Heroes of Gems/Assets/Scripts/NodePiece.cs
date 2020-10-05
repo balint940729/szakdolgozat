@@ -45,7 +45,7 @@ public class NodePiece : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     public bool updatePiece()
     {
-        if (Vector2.Distance(rect.anchoredPosition, pos) > 1)
+        if (Vector3.Distance(rect.anchoredPosition, pos) > 1)
         {
             MovePositionTo(pos);
             updating = true;

@@ -32,7 +32,7 @@ public class MovePieces : MonoBehaviour
 
             newIndex = Point.clone(moving.index);
             Point add = Point.zero;
-            if (dir.magnitude > 32) //Ha rákattintunk és 64pixellel arréb húzzuk az egerünket
+            if (dir.magnitude > 32) //Ha rákattintunk és 32pixellel arréb húzzuk az egerünket
             {
                 if (aDir.x > aDir.y)
                     add = (new Point((nDir.x > 0) ? 1 : -1, 0));
@@ -58,7 +58,7 @@ public class MovePieces : MonoBehaviour
     public void DropPiece()
     {
         if (moving == null) return;
-        Debug.Log("Dropped");
+
         if (!newIndex.Equals(moving.index))
         {
             game.FlipPieces(moving.index, newIndex, true);
