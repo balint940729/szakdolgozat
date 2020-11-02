@@ -95,7 +95,7 @@ Szakdolgozat - Köles Bálint
 	* [ ] -  Alap csapat kiválasztása (Harcnál ez a csapat lesz kiválasztva)
     
 
-31.  Világtérkép - harc
++  Világtérkép - harc
 
         * [ ] -  Ellenfélhez menve Match3 játék indítása
 
@@ -104,7 +104,7 @@ Szakdolgozat - Köles Bálint
         * [ ] -  Ellenfél egységeinek a megjelenítése
 		    
 
-35.  Városok létrehozása
++  Városok létrehozása
 
         * [ ] -  Városok ikonjának elhelyezése a világtérképen
 
