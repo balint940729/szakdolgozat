@@ -31,7 +31,6 @@ public class Match3 : MonoBehaviour
     void StartGame()
     {
         fills = new int[width];
-        //board = new Node[width, height];
         string seed = getRandomSeed();
         random = new System.Random(seed.GetHashCode());
         update = new List<NodePiece>();
