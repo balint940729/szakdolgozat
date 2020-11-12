@@ -25,20 +25,15 @@ public class GameController : MonoBehaviour
         if (scene.name == "Game" && playerDead == true)
         {
             inBattle = false;
-
-            Destroy(GameObject.Find("Chest"));
         }
     }
     void Awake()
     {
         if(controller = null)
         {
-            DontDestroyOnLoad(gameObject);
+            //DontDestroyOnLoad(gameObject);
             controller = this;
         }
-        else if (controller != this)
-        {
-            Destroy(gameObject);
-        }
+       
     }
 }
