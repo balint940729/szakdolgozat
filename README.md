@@ -37,19 +37,19 @@ Szakdolgozat - Köles Bálint
 
 +  Világtérkép létrehozása
     
-	* [ ] -  Pálya kialakítása
+	* [x] -  Pálya kialakítása
 	    
-	* [ ] -  Karakter létrehozása
+	* [x] -  Karakter létrehozása
 	    
-	* [ ] -  Karakter mozgatása
+	* [x] -  Karakter mozgatása
 	    
-	* [ ] -  Objecteknek collision pl.: szikla/fán nem lehet átmenni
+	* [x] -  Objecteknek collision pl.: szikla/fán nem lehet átmenni
 	    
-	* [ ] -  Tárgyak elhelyezése a pályán
+	* [x] -  Tárgyak elhelyezése a pályán
 	    
-	* [ ] -  Egyéb tárgyhoz érve azoknak a felvétele
+	* [x] -  Egyéb tárgyhoz érve azoknak a felvétele
 	    
-	* [ ] -  Karakter animációk
+	* [x] -  Karakter animációk
     
 
 +  Kártyák
@@ -72,15 +72,16 @@ Szakdolgozat - Köles Bálint
 
       * [ ] -  Bónuszok létrehozása (Több ugyanolyan fajhoz tartozóknak)
     
+
 +  Inventory
     
-	* [ ] -  Karakter inventory menüjének a létrehozása
+	* [x] -  Karakter inventory menüjének a létrehozása
 
 	* [ ] -  Tárgyak létrehozása
 
-	* [ ] -  Tárgyak megjelenítése a menüben
+	* [x] -  Tárgyak megjelenítése a menüben
 
-	* [ ] -  Tárgyak felvétele a karakterre
+	* [x] -  Tárgyak felvétele a karakterrel
 
 	* [ ] -  Egység kártyákhoz tartozó album létrehozása
 
@@ -97,12 +98,21 @@ Szakdolgozat - Köles Bálint
 
 +  Világtérkép - harc
 
-        * [ ] -  Ellenfélhez menve Match3 játék indítása
+        * [x] -  Ellenfélhez menve Match3 játék indítása
 
         * [ ] -  A saját csapatunk kiválasztása
 
         * [ ] -  Ellenfél egységeinek a megjelenítése
-		    
+
+
++  Dungeonok kialakítása
+
+        * [x] -  Teleportálás a dungeonhoz
+
+        * [ ] -  Csapat kiválasztása
+
+        * [ ] -  Kiválasztott csapat megtartása a dungeon végéig
+		
 
 +  Városok létrehozása
 
