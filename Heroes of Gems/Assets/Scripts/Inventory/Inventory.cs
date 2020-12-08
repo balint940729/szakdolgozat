@@ -8,6 +8,7 @@ public class Inventory : MonoBehaviour
     [SerializeField] Transform itemsParent;
     [SerializeField] ItemSlot[] itemSlots;
 
+
     private void OnValidate()
     {
         if(itemsParent != null)

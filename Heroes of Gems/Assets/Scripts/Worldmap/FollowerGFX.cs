@@ -30,5 +30,7 @@ public class FollowerGFX : MonoBehaviour
         {
             anim.SetBool("isMoving", false);
         }
+
+        
     }
 }
