@@ -14,6 +14,7 @@ public class ItemPickup : MonoBehaviour
     {
         if(InRange == true && Input.GetKeyDown(itemPickupKeyCode))
         {
+            Achievements.ach01Count += 1;
             inventory.AddItem(item);
             Destroy(gameObject);
         }
