@@ -47,6 +47,7 @@ public class TurnBase : MonoBehaviour
         GameObject playerGO = Instantiate(cardPrefab, player1Pos);
         UnitDisplay player1Unit = playerGO.GetComponent<UnitDisplay>();
         player1Unit.card = (Unit)player1;
+        
 
         GameObject player2GO = Instantiate(cardPrefab, player2Pos);
         UnitDisplay player2Unit = player2GO.GetComponent<UnitDisplay>();

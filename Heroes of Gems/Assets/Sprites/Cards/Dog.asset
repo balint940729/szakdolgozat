@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Dog
   m_EditorClassIdentifier: 
   unitName: Dog
-  unitHealth: 15
+  unitHealth: 80
   unitAttack: 25
   unitArmor: 5
   unitMaxMana: 8
