@@ -1,80 +1,87 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
 
-public enum BattleState { START, PLAYERTURN, ENEMYTURN, WON, LOST};
+public enum BattleState { START, PLAYERTURN, ENEMYTURN, WON, LOST };
 
-public class TurnBase : MonoBehaviour
-{
+public class TurnBase : MonoBehaviour {
+
     // Card Prefab - Border, Attack, Health, Armor icons
     public GameObject cardPrefab;
 
-    // Scriptable Object where variable values are
-    public ScriptableObject player1;
-    public ScriptableObject player2;
-    public ScriptableObject player3;
-    public ScriptableObject player4;
-    public ScriptableObject enemy1;
-    public ScriptableObject enemy2;
-    public ScriptableObject enemy3;
-    public ScriptableObject enemy4;
-
-    // CardPositions
-    public Transform player1Pos;
-    public Transform player2Pos;
-    public Transform player3Pos;
-    public Transform player4Pos;
-
-    public Transform enemy1Pos;
-    public Transform enemy2Pos;
-    public Transform enemy3Pos;
-    public Transform enemy4Pos;
+    public Transform parentScene;
 
     public BattleState state;
 
+    private List<UnitController> playerTeam = new List<UnitController>();
+    private List<UnitController> enemyTeam = new List<UnitController>();
+    private static TurnBase instance;
+
+    //public
+
+    public static TurnBase GetInstance() {
+        return instance;
+    }
+
+    private void Awake() {
+        instance = this;
+    }
+
     // Start is called before the first frame update
-    void Start()
-    {
+    private void Start() {
         state = BattleState.START;
-        SetUpBattle();
+        SetUpTeam(true);
+        SetUpTeam(false);
+    }
+
+    private void Update() {
+        if (Input.GetKeyDown(KeyCode.Space)) {
+            UnitController player = playerTeam[0];
+            UnitController enemy = enemyTeam[0];
+
+            player.Attack(enemy);
+        }
     }
 
     // Setup the Card to the Board
-    void SetUpBattle() 
-    {
-        GameObject playerGO = Instantiate(cardPrefab, player1Pos);
-        UnitDisplay player1Unit = playerGO.GetComponent<UnitDisplay>();
-        player1Unit.card = (Unit)player1;
-        
+    private void SetUpTeam(bool isPlayerTeam) {
+        float posX;
+        float posY;
 
-        GameObject player2GO = Instantiate(cardPrefab, player2Pos);
-        UnitDisplay player2Unit = player2GO.GetComponent<UnitDisplay>();
-        player2Unit.card = (Unit)player2;
+        parentScene = GameObject.Find("GameCanvas").transform;
 
-        GameObject player3GO = Instantiate(cardPrefab, player3Pos);
-        UnitDisplay player3Unit = player3GO.GetComponent<UnitDisplay>();
-        player3Unit.card = (Unit)player3;
+        for (int i = 0; i < 4; i++) {
+            if (isPlayerTeam) {
+                posX = 720;
+                posY = 405 - (i * 270);
+                GameObject cardUnitGO = Instantiate(cardPrefab);
+                cardUnitGO.name = "Ally" + i;
+                cardUnitGO.transform.position = new Vector3(posX, posY);
+                cardUnitGO.transform.SetParent(parentScene.transform, false);
 
-        GameObject player4GO = Instantiate(cardPrefab, player4Pos);
-        UnitDisplay player4Unit = player4GO.GetComponent<UnitDisplay>();
-        player4Unit.card = (Unit)player4;
+                UnitController cardUnitController = cardUnitGO.GetComponent<UnitController>();
 
-        GameObject enemyGO = Instantiate(cardPrefab, enemy1Pos);
-        UnitDisplay enemy1Unit = enemyGO.GetComponent<UnitDisplay>();
-        enemy1Unit.card = (Unit)enemy1;
+                cardUnitController.setUp(0);
+                playerTeam.Add(cardUnitController);
+            }
+            else {
+                posX = -720;
+                posY = 405 - (i * 270);
+                GameObject cardUnitGO = Instantiate(cardPrefab);
+                cardUnitGO.name = "Enemy" + i;
+                cardUnitGO.transform.position = new Vector3(posX, posY);
+                cardUnitGO.transform.SetParent(parentScene.transform, false);
 
-        GameObject enemy2GO = Instantiate(cardPrefab, enemy2Pos);
-        UnitDisplay enemy2Unit = enemy2GO.GetComponent<UnitDisplay>();
-        enemy2Unit.card = (Unit)enemy2;
+                UnitController cardUnitController = cardUnitGO.GetComponent<UnitController>();
 
-        GameObject enemy3GO = Instantiate(cardPrefab, enemy3Pos);
-        UnitDisplay enemy3Unit = enemy3GO.GetComponent<UnitDisplay>();
-        enemy3Unit.card = (Unit)enemy3;
+                if (i == 1) {
+                    cardUnitController.setUp(1);
+                }
+                else {
+                    cardUnitController.setUp(2);
+                }
 
-        GameObject enemy4GO = Instantiate(cardPrefab, enemy4Pos);
-        UnitDisplay enemy4Unit = enemy4GO.GetComponent<UnitDisplay>();
-        enemy4Unit.card = (Unit)enemy4;
+                enemyTeam.Add(cardUnitController);
+            }
+        }
     }
 }

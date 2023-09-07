@@ -1,39 +1,30 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class GameController : MonoBehaviour
-{
+public class GameController : MonoBehaviour {
     public static GameController controller;
 
     public bool playerDead;
     public bool inBattle;
 
-    private void OnEnable()
-    {
+    private void OnEnable() {
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
-    private void OnDisable()
-    {
+    private void OnDisable() {
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        if (scene.name == "Game" && playerDead == true)
-        {
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
+        if (scene.name == "Game" && playerDead == true) {
             inBattle = false;
         }
     }
-    void Awake()
-    {
-        if(controller = null)
-        {
+
+    private void Awake() {
+        if (controller = null) {
             //DontDestroyOnLoad(gameObject);
             controller = this;
         }
-       
     }
 }

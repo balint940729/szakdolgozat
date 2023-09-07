@@ -2,8 +2,7 @@
 
 [CreateAssetMenu(fileName = "New Card", menuName = "Card")]
 [System.Serializable]
-public class Unit : ScriptableObject
-{
+public class Unit : ScriptableObject {
     public string unitName;
 
     public int unitHealth;
@@ -18,6 +17,4 @@ public class Unit : ScriptableObject
     public int unitSpellDamage;
 
     public Sprite unitImage;
-
-    
 }

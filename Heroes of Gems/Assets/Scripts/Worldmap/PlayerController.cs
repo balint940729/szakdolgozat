@@ -1,38 +1,29 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class PlayerController : MonoBehaviour
-{
+public class PlayerController : MonoBehaviour {
     public float moveSpeed;
-    Animator anim;
-    SpriteRenderer renderer;
-    Rigidbody2D rigidbody2D;
+    private Animator anim;
+    private SpriteRenderer renderer;
+    private Rigidbody2D rigidbody2D;
     public bool controls = true;
 
-
     // Start is called before the first frame update
-    void Start()
-    {
+    private void Start() {
         anim = GetComponent<Animator>();
         renderer = GetComponent<SpriteRenderer>();
         rigidbody2D = GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetAxisRaw("Horizontal") > 0.5f || Input.GetAxisRaw("Horizontal") < -0.5f)
-        {
+    private void Update() {
+        if (Input.GetAxisRaw("Horizontal") > 0.5f || Input.GetAxisRaw("Horizontal") < -0.5f) {
             transform.Translate(new Vector3(Input.GetAxisRaw("Horizontal") * moveSpeed * Time.deltaTime, 0f, 0f));
         }
-        if (Input.GetAxisRaw("Vertical") > 0.5f || Input.GetAxisRaw("Vertical") < -0.5f)
-        {
+        if (Input.GetAxisRaw("Vertical") > 0.5f || Input.GetAxisRaw("Vertical") < -0.5f) {
             transform.Translate(new Vector3(0f, Input.GetAxisRaw("Vertical") * moveSpeed * Time.deltaTime, 0f));
         }
         // Right
-        if (Input.GetAxisRaw("Horizontal") > 0)
-        {
+        if (Input.GetAxisRaw("Horizontal") > 0) {
             anim.SetBool("MoveRight", true);
             anim.SetBool("MoveLeft", false);
             anim.SetBool("MoveUp", false);
@@ -40,8 +31,7 @@ public class PlayerController : MonoBehaviour
             anim.speed = 0.5f;
         }
         // Left
-        else if (Input.GetAxisRaw("Horizontal") < 0)
-        {
+        else if (Input.GetAxisRaw("Horizontal") < 0) {
             anim.SetBool("MoveRight", false);
             anim.SetBool("MoveLeft", true);
             anim.SetBool("MoveUp", false);
@@ -49,8 +39,7 @@ public class PlayerController : MonoBehaviour
             anim.speed = 0.5f;
         }
         // Up
-        else if (Input.GetAxisRaw("Vertical") > 0)
-        {
+        else if (Input.GetAxisRaw("Vertical") > 0) {
             anim.SetBool("MoveRight", false);
             anim.SetBool("MoveLeft", false);
             anim.SetBool("MoveUp", true);
@@ -58,8 +47,7 @@ public class PlayerController : MonoBehaviour
             anim.speed = 0.5f;
         }
         // Down
-        else if (Input.GetAxisRaw("Vertical") < 0)
-        {
+        else if (Input.GetAxisRaw("Vertical") < 0) {
             anim.SetBool("MoveRight", false);
             anim.SetBool("MoveLeft", false);
             anim.SetBool("MoveUp", false);
@@ -68,5 +56,4 @@ public class PlayerController : MonoBehaviour
         }
         else anim.speed = 0;
     }
-
 }

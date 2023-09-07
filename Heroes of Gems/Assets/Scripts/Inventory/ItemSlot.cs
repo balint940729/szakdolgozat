@@ -1,34 +1,27 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class ItemSlot : MonoBehaviour
-{
-    [SerializeField] Image image;
+public class ItemSlot : MonoBehaviour {
+    [SerializeField] private Image image;
 
     private Item item;
-    public Item Item
-    {
+
+    public Item Item {
         get { return item; }
-        set
-        {
+        set {
             item = value;
-            if (item == null)
-            {
+            if (item == null) {
                 image.enabled = false;
             }
-            else
-            {
+            else {
                 image.sprite = item.Icon;
                 image.enabled = true;
             }
         }
     }
-    private void OnValidate()
-    {
-        if (image == null)
-        {
+
+    private void OnValidate() {
+        if (image == null) {
             image = GetComponent<Image>();
         }
     }

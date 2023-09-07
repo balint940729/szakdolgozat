@@ -1,13 +1,10 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 [System.Serializable]
-public class ArrayLayout
-{
+public class ArrayLayout {
 
     [System.Serializable]
-    public struct rowData
-    {
+    public struct rowData {
         public bool[] row;
     }
 

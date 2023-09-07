@@ -87,8 +87,9 @@ GameObject:
   - component: {fileID: 4815057449383010394}
   - component: {fileID: 4815057449383010395}
   - component: {fileID: 4815057449383010392}
+  - component: {fileID: -3936640264917712483}
   m_Layer: 5
-  m_Name: Enemy1Card
+  m_Name: CardPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -168,6 +169,18 @@ MonoBehaviour:
   attack: {fileID: 4815057450389854014}
   armor: {fileID: 4815057449627539443}
   image: {fileID: 4815057449756120001}
+--- !u!114 &-3936640264917712483
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4815057449383010390}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 218a2d26dfb14dc4997852bf5a135cb4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4815057449627539441
 GameObject:
   m_ObjectHideFlags: 0
@@ -180,7 +193,7 @@ GameObject:
   - component: {fileID: 4815057449627539442}
   - component: {fileID: 4815057449627539443}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: ArmorText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -462,7 +475,7 @@ GameObject:
   - component: {fileID: 4815057450389853985}
   - component: {fileID: 4815057450389854014}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: AttackText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -750,7 +763,7 @@ GameObject:
   - component: {fileID: 4815057450696934225}
   - component: {fileID: 4815057450696934254}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: HealthText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

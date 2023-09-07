@@ -3,7 +3,11 @@ guid: 0568c501ae8c4f449b94387addf17344
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - cardPrefab: {fileID: 4815057449383010390, guid: a74bd9138ed085843a8e06f3036e624f,
+      type: 3}
+  - parentScene: {fileID: 1364205012504620585, guid: d06587c01f590c245ac4a81fcf331838,
+      type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
