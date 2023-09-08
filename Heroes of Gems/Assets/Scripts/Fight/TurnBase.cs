@@ -12,8 +12,8 @@ public class TurnBase : MonoBehaviour {
 
     public BattleState state;
 
-    private List<UnitController> playerTeam = new List<UnitController>();
-    private List<UnitController> enemyTeam = new List<UnitController>();
+    private List<GameObject> playerTeam = new List<GameObject>();
+    private List<GameObject> enemyTeam = new List<GameObject>();
     private static TurnBase instance;
 
     //public
@@ -29,16 +29,25 @@ public class TurnBase : MonoBehaviour {
     // Start is called before the first frame update
     private void Start() {
         state = BattleState.START;
+
         SetUpTeam(true);
         SetUpTeam(false);
     }
 
     private void Update() {
         if (Input.GetKeyDown(KeyCode.Space)) {
-            UnitController player = playerTeam[0];
-            UnitController enemy = enemyTeam[0];
+            GameObject playerGO = playerTeam[0];
+            UnitController player = playerGO.GetComponent<UnitController>();
+            GameObject enemyGO = enemyTeam[0];
+            UnitController enemy = enemyGO.GetComponent<UnitController>();
 
             player.Attack(enemy);
+
+            int enemyHealth = enemy.GetHealth();
+            if (enemyHealth <= 0) {
+                enemyTeam.Remove(enemyGO);
+                Destroy(enemyGO);
+            }
         }
     }
 
@@ -50,10 +59,12 @@ public class TurnBase : MonoBehaviour {
         parentScene = GameObject.Find("GameCanvas").transform;
 
         for (int i = 0; i < 4; i++) {
+            GameObject cardUnitGO = Instantiate(cardPrefab);
+
             if (isPlayerTeam) {
-                posX = 720;
+                posX = -720;
                 posY = 405 - (i * 270);
-                GameObject cardUnitGO = Instantiate(cardPrefab);
+
                 cardUnitGO.name = "Ally" + i;
                 cardUnitGO.transform.position = new Vector3(posX, posY);
                 cardUnitGO.transform.SetParent(parentScene.transform, false);
@@ -61,12 +72,11 @@ public class TurnBase : MonoBehaviour {
                 UnitController cardUnitController = cardUnitGO.GetComponent<UnitController>();
 
                 cardUnitController.setUp(0);
-                playerTeam.Add(cardUnitController);
+                playerTeam.Add(cardUnitGO);
             }
             else {
-                posX = -720;
+                posX = 720;
                 posY = 405 - (i * 270);
-                GameObject cardUnitGO = Instantiate(cardPrefab);
                 cardUnitGO.name = "Enemy" + i;
                 cardUnitGO.transform.position = new Vector3(posX, posY);
                 cardUnitGO.transform.SetParent(parentScene.transform, false);
@@ -80,7 +90,7 @@ public class TurnBase : MonoBehaviour {
                     cardUnitController.setUp(2);
                 }
 
-                enemyTeam.Add(cardUnitController);
+                enemyTeam.Add(cardUnitGO);
             }
         }
     }

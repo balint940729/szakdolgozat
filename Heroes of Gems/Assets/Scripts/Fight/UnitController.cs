@@ -3,38 +3,45 @@ using UnityEngine;
 
 public class UnitController : MonoBehaviour {
     private UnitDisplay unitCard;
+    private string folderPath = "Assets/Sprites/Cards";
+    private string[] assetGuids;
+    private int health;
+    private int armor;
 
     // Start is called before the first frame update
     private void Awake() {
         unitCard = GetComponent<UnitDisplay>();
+        assetGuids = AssetDatabase.FindAssets("t:Unit", new string[] { folderPath });
     }
 
     public void setUp(int cardID) {
-        string folderPath = "Assets/Sprites/Cards";
-        string[] assetGuids = AssetDatabase.FindAssets("t:Unit", new string[] { folderPath });
-
         string assetPath = AssetDatabase.GUIDToAssetPath(assetGuids[cardID]);
         unitCard.card = AssetDatabase.LoadAssetAtPath<Unit>(assetPath);
+
+        health = unitCard.card.unitHealth;
+        armor = unitCard.card.unitArmor;
     }
 
-    public void Attack(UnitController targetController) {
-        int tempHealth;
-        int tempArmor;
+    public int GetHealth() {
+        return health;
+    }
 
-        tempArmor = targetController.unitCard.card.unitHealth;
-        tempHealth = targetController.unitCard.card.unitHealth;
+    public int GetArmor() {
+        return armor;
+    }
 
-        tempArmor -= unitCard.card.unitAttack;
+    public void Attack(UnitController target) {
+        target.armor -= unitCard.card.unitAttack;
 
-        if (tempArmor < 0) {
-            tempHealth += tempArmor;
-            tempArmor = 0;
+        if (target.armor < 0) {
+            target.health += target.armor;
+            target.armor = 0;
         }
 
-        if (tempHealth < 0) {
-            tempHealth = 0;
+        if (target.health < 0) {
+            target.health = 0;
         }
 
-        targetController.unitCard.showDamage(tempHealth, tempArmor);
+        target.unitCard.setHealth(target.health, target.armor);
     }
 }

@@ -20,7 +20,7 @@ public class UnitDisplay : MonoBehaviour {
         image.sprite = card.unitImage;
     }
 
-    public void showDamage(int newHealth, int newArmor) {
+    public void setHealth(int newHealth, int newArmor) {
         health.text = newHealth.ToString();
         armor.text = newArmor.ToString();
     }
