@@ -28,25 +28,26 @@ public class TurnBase : MonoBehaviour {
 
     // Start is called before the first frame update
     private void Start() {
-        state = BattleState.START;
-
         SetUpTeam(true);
         SetUpTeam(false);
+
+        state = BattleState.PLAYERTURN;
     }
 
     private void Update() {
-        if (Input.GetKeyDown(KeyCode.Space)) {
-            GameObject playerGO = playerTeam[0];
-            UnitController player = playerGO.GetComponent<UnitController>();
-            GameObject enemyGO = enemyTeam[0];
-            UnitController enemy = enemyGO.GetComponent<UnitController>();
+        if (state != BattleState.WON && state != BattleState.LOST) {
+            if (Input.GetKeyDown(KeyCode.Space)) {
+                UnitController player = playerTeam[0].GetComponent<UnitController>();
+                UnitController enemy = enemyTeam[0].GetComponent<UnitController>();
 
-            player.Attack(enemy);
-
-            int enemyHealth = enemy.GetHealth();
-            if (enemyHealth <= 0) {
-                enemyTeam.Remove(enemyGO);
-                Destroy(enemyGO);
+                if (state == BattleState.PLAYERTURN) {
+                    player.Attack(enemy);
+                    removeOnZero(enemy);
+                }
+                else if (state == BattleState.ENEMYTURN) {
+                    enemy.Attack(player);
+                    removeOnZero(player);
+                }
             }
         }
     }
@@ -92,6 +93,40 @@ public class TurnBase : MonoBehaviour {
 
                 enemyTeam.Add(cardUnitGO);
             }
+        }
+    }
+
+    private void removeOnZero(UnitController unit) {
+        int tempHealth = unit.GetHealth();
+
+        if (state == BattleState.PLAYERTURN) {
+            if (tempHealth <= 0) {
+                Destroy(enemyTeam[0]);
+                enemyTeam.Remove(enemyTeam[0]);
+            }
+
+            state = BattleState.ENEMYTURN;
+        }
+        else if (state == BattleState.ENEMYTURN) {
+            tempHealth = unit.GetHealth();
+
+            if (tempHealth <= 0) {
+                Destroy(playerTeam[0]);
+                playerTeam.Remove(playerTeam[0]);
+            }
+
+            state = BattleState.PLAYERTURN;
+        }
+
+        checkGameResult();
+    }
+
+    private void checkGameResult() {
+        if (enemyTeam.Count == 0) {
+            state = BattleState.WON;
+        }
+        else if (playerTeam.Count == 0) {
+            state = BattleState.LOST;
         }
     }
 }
