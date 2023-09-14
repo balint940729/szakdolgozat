@@ -21,6 +21,8 @@ public class Match3 : MonoBehaviour {
     private List<FlippedPieces> flipped;
     private List<NodePiece> dead;
 
+    public event System.Action attackTriggered;
+
     private System.Random random;
 
     private void Start() {
@@ -34,6 +36,7 @@ public class Match3 : MonoBehaviour {
         update = new List<NodePiece>();
         dead = new List<NodePiece>();
         flipped = new List<FlippedPieces>();
+        BattleStateHandler.setState(BattleState.START);
 
         InitializeBoard();
         VerifyBoard();
@@ -58,11 +61,13 @@ public class Match3 : MonoBehaviour {
                 GameObject p = Instantiate(nodePiece, gameBoard);
                 NodePiece piece = p.GetComponent<NodePiece>();
                 RectTransform rect = p.GetComponent<RectTransform>();
-                rect.anchoredPosition = new Vector2(64 + (128 * x), -64 - (128 * y));
+                rect.anchoredPosition = new Vector2(64 + (130 * x), -64 - (136 * y));
                 piece.Initialize(val, new Point(x, y), pieces[val - 1]);
                 node.SetPiece(piece);
             }
         }
+
+        BattleStateHandler.setState(BattleState.PLAYERTURN);
     }
 
     private void VerifyBoard() {
@@ -231,6 +236,7 @@ public class Match3 : MonoBehaviour {
                 AddPoints(ref connected, line);
             }
         }
+
         if (main) //Megnézi hogy van e több match is az adott pontban
         {
             for (int i = 0; i < connected.Count; i++) {
@@ -298,10 +304,13 @@ public class Match3 : MonoBehaviour {
             }
             else    // Ha match van
             {
+                matchAction(connected[0]);
+
                 foreach (Point pnt in connected) //Összekapcsoltakat kivesszük
                 {
                     Node node = getNodeAtPoint(pnt);
                     NodePiece nodePiece = node.getPiece();
+
                     if (piece != null) {
                         nodePiece.gameObject.SetActive(false);
                         dead.Add(nodePiece);
@@ -313,6 +322,16 @@ public class Match3 : MonoBehaviour {
 
             flipped.Remove(flip);
             update.Remove(piece);
+        }
+    }
+
+    private void matchAction(Point point) {
+        Node node = getNodeAtPoint(point);
+        NodePiece nodePiece = node.getPiece();
+        int pieceValue = nodePiece.GetValue();
+
+        if (pieceValue == 1) {
+            attackTriggered?.Invoke();
         }
     }
 
@@ -347,6 +366,7 @@ public class Match3 : MonoBehaviour {
 public class Node {
 
     //0 = üres, 1 = amethyst, 2 = emerald, 3 = sapphire, 4 = ruby, 5 = topaz, 6-turmaline, -1 = hole
+    //0 = üres, 1 = skull, 2 = amethyst, 3 = emerald, 4 = sapphire, 5 = ruby, 6 = topaz, 7 = turmaline, -1 = hole
     public int value; //Az adott mezőn található Gem értéke
 
     public Point index;

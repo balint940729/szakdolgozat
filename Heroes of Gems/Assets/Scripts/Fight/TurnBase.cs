@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public enum BattleState { START, PLAYERTURN, ENEMYTURN, WON, LOST };
-
 public class TurnBase : MonoBehaviour {
 
     // Card Prefab - Border, Attack, Health, Armor icons
@@ -10,13 +8,11 @@ public class TurnBase : MonoBehaviour {
 
     public Transform parentScene;
 
-    public BattleState state;
-
     private List<GameObject> playerTeam = new List<GameObject>();
     private List<GameObject> enemyTeam = new List<GameObject>();
     private static TurnBase instance;
 
-    //public
+    private BattleState state;
 
     public static TurnBase GetInstance() {
         return instance;
@@ -28,26 +24,43 @@ public class TurnBase : MonoBehaviour {
 
     // Start is called before the first frame update
     private void Start() {
+        FindObjectOfType<Match3>().attackTriggered += Combat;
+
         SetUpTeam(true);
         SetUpTeam(false);
-
-        state = BattleState.PLAYERTURN;
     }
 
     private void Update() {
-        if (state != BattleState.WON && state != BattleState.LOST) {
-            if (Input.GetKeyDown(KeyCode.Space)) {
-                UnitController player = playerTeam[0].GetComponent<UnitController>();
-                UnitController enemy = enemyTeam[0].GetComponent<UnitController>();
+        //if (state != BattleState.WON && state != BattleState.LOST) {
+        //    if (Input.GetKeyDown(KeyCode.Space)) {
+        //        UnitController player = playerTeam[0].GetComponent<UnitController>();
+        //        UnitController enemy = enemyTeam[0].GetComponent<UnitController>();
 
-                if (state == BattleState.PLAYERTURN) {
-                    player.Attack(enemy);
-                    removeOnZero(enemy);
-                }
-                else if (state == BattleState.ENEMYTURN) {
-                    enemy.Attack(player);
-                    removeOnZero(player);
-                }
+        //        if (state == BattleState.PLAYERTURN) {
+        //            player.Attack(enemy);
+        //            removeOnZero(enemy);
+        //        }
+        //        else if (state == BattleState.ENEMYTURN) {
+        //            enemy.Attack(player);
+        //            removeOnZero(player);
+        //        }
+        //    }
+        //}
+    }
+
+    private void Combat() {
+        state = BattleStateHandler.GetState();
+        if (state != BattleState.WON && state != BattleState.LOST) {
+            UnitController player = playerTeam[0].GetComponent<UnitController>();
+            UnitController enemy = enemyTeam[0].GetComponent<UnitController>();
+
+            if (state == BattleState.PLAYERTURN) {
+                player.Attack(enemy);
+                removeOnZero(enemy);
+            }
+            else if (state == BattleState.ENEMYTURN) {
+                enemy.Attack(player);
+                removeOnZero(player);
             }
         }
     }
@@ -98,6 +111,7 @@ public class TurnBase : MonoBehaviour {
 
     private void removeOnZero(UnitController unit) {
         int tempHealth = unit.GetHealth();
+        state = BattleStateHandler.GetState();
 
         if (state == BattleState.PLAYERTURN) {
             if (tempHealth <= 0) {
@@ -105,7 +119,9 @@ public class TurnBase : MonoBehaviour {
                 enemyTeam.Remove(enemyTeam[0]);
             }
 
-            state = BattleState.ENEMYTURN;
+            BattleStateHandler.setState(BattleState.ENEMYTURN);
+
+            //state = BattleState.ENEMYTURN;
         }
         else if (state == BattleState.ENEMYTURN) {
             tempHealth = unit.GetHealth();
@@ -115,7 +131,8 @@ public class TurnBase : MonoBehaviour {
                 playerTeam.Remove(playerTeam[0]);
             }
 
-            state = BattleState.PLAYERTURN;
+            BattleStateHandler.setState(BattleState.PLAYERTURN);
+            //state = BattleState.PLAYERTURN;
         }
 
         checkGameResult();
@@ -123,10 +140,20 @@ public class TurnBase : MonoBehaviour {
 
     private void checkGameResult() {
         if (enemyTeam.Count == 0) {
-            state = BattleState.WON;
+            BattleStateHandler.setState(BattleState.WON);
+            //state = BattleState.WON;
         }
         else if (playerTeam.Count == 0) {
-            state = BattleState.LOST;
+            BattleStateHandler.setState(BattleState.LOST);
+            //state = BattleState.LOST;
         }
+    }
+
+    public List<GameObject> getPlayerTeam() {
+        return playerTeam;
+    }
+
+    public List<GameObject> getEnemyTeam() {
+        return enemyTeam;
     }
 }

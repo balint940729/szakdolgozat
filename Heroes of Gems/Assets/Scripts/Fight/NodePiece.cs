@@ -72,4 +72,8 @@ public class NodePiece : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
         rect.SetSiblingIndex(originalOrder);
         MovePieces.instance.DropPiece();
     }
+
+    public int GetValue() {
+        return value;
+    }
 }
