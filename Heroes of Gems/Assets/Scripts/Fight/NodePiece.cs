@@ -14,10 +14,12 @@ public class NodePiece : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
     public RectTransform rect;
 
     private Image image;
+    private int originalOrder;
 
     public void Initialize(int v, Point point, Sprite piece) {
         image = GetComponent<Image>();
         rect = GetComponent<RectTransform>();
+        originalOrder = rect.GetSiblingIndex();
 
         value = v;
         SetIndex(point);
@@ -44,7 +46,7 @@ public class NodePiece : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
             updating = true;
             return true;
         }
-        else // return false ha nem mozdítjuk
+        else // return false if we didn't moved
         {
             rect.anchoredPosition = pos;
             updating = false;
@@ -53,19 +55,21 @@ public class NodePiece : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
     }
 
     public void MovePositionTo(Vector2 move) {
-        rect.anchoredPosition = Vector2.Lerp(rect.anchoredPosition, move, Time.deltaTime * 32f);
+        rect.anchoredPosition = Vector2.Lerp(rect.anchoredPosition, move, Time.deltaTime * 25f);
     }
 
     public void MovePosition(Vector2 move) {
-        rect.anchoredPosition += move * Time.deltaTime * 32f;
+        rect.anchoredPosition += move * Time.deltaTime * 25f;
     }
 
     public void OnPointerDown(PointerEventData eventData) {
         if (updating) return;
+        rect.SetAsLastSibling();
         MovePieces.instance.MovePiece(this);
     }
 
     public void OnPointerUp(PointerEventData eventData) {
+        rect.SetSiblingIndex(originalOrder);
         MovePieces.instance.DropPiece();
     }
 }
