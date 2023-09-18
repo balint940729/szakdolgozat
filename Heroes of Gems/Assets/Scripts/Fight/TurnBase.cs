@@ -32,33 +32,35 @@ public class TurnBase : MonoBehaviour {
 
     private void Update() {
         //if (state != BattleState.WON && state != BattleState.LOST) {
-        //    if (Input.GetKeyDown(KeyCode.Space)) {
-        //        UnitController player = playerTeam[0].GetComponent<UnitController>();
-        //        UnitController enemy = enemyTeam[0].GetComponent<UnitController>();
+        if (Input.GetKeyDown(KeyCode.Space)) {
+            //Get
 
-        //        if (state == BattleState.PLAYERTURN) {
-        //            player.Attack(enemy);
-        //            removeOnZero(enemy);
-        //        }
-        //        else if (state == BattleState.ENEMYTURN) {
-        //            enemy.Attack(player);
-        //            removeOnZero(player);
-        //        }
-        //    }
+            //        UnitController player = playerTeam[0].GetComponent<UnitController>();
+            //        UnitController enemy = enemyTeam[0].GetComponent<UnitController>();
+
+            //        if (state == BattleState.PLAYERTURN) {
+            //            player.Attack(enemy);
+            //            removeOnZero(enemy);
+            //        }
+            //        else if (state == BattleState.ENEMYTURN) {
+            //            enemy.Attack(player);
+            //            removeOnZero(player);
+            //        }
+        }
         //}
     }
 
     private void Combat() {
         state = BattleStateHandler.GetState();
-        if (state != BattleState.WON && state != BattleState.LOST) {
+        if (state != BattleState.Won && state != BattleState.Lost) {
             UnitController player = playerTeam[0].GetComponent<UnitController>();
             UnitController enemy = enemyTeam[0].GetComponent<UnitController>();
 
-            if (state == BattleState.PLAYERTURN) {
+            if (state == BattleState.PlayerTurn) {
                 player.Attack(enemy);
                 removeOnZero(enemy);
             }
-            else if (state == BattleState.ENEMYTURN) {
+            else if (state == BattleState.EnemyTurn) {
                 enemy.Attack(player);
                 removeOnZero(player);
             }
@@ -113,26 +115,15 @@ public class TurnBase : MonoBehaviour {
         int tempHealth = unit.GetHealth();
         state = BattleStateHandler.GetState();
 
-        if (state == BattleState.PLAYERTURN) {
-            if (tempHealth <= 0) {
+        if (tempHealth <= 0) {
+            if (state == BattleState.PlayerTurn) {
                 Destroy(enemyTeam[0]);
                 enemyTeam.Remove(enemyTeam[0]);
             }
-
-            BattleStateHandler.setState(BattleState.ENEMYTURN);
-
-            //state = BattleState.ENEMYTURN;
-        }
-        else if (state == BattleState.ENEMYTURN) {
-            tempHealth = unit.GetHealth();
-
-            if (tempHealth <= 0) {
+            else if (state == BattleState.EnemyTurn) {
                 Destroy(playerTeam[0]);
                 playerTeam.Remove(playerTeam[0]);
             }
-
-            BattleStateHandler.setState(BattleState.PLAYERTURN);
-            //state = BattleState.PLAYERTURN;
         }
 
         checkGameResult();
@@ -140,11 +131,11 @@ public class TurnBase : MonoBehaviour {
 
     private void checkGameResult() {
         if (enemyTeam.Count == 0) {
-            BattleStateHandler.setState(BattleState.WON);
+            BattleStateHandler.setState(BattleState.Won);
             //state = BattleState.WON;
         }
         else if (playerTeam.Count == 0) {
-            BattleStateHandler.setState(BattleState.LOST);
+            BattleStateHandler.setState(BattleState.Lost);
             //state = BattleState.LOST;
         }
     }

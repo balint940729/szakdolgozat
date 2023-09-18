@@ -33,7 +33,7 @@ public class NodePiece : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
     }
 
     public void ResetPosition() {
-        pos = new Vector2(64 + (128 * index.x), -64 - (128 * index.y));
+        pos = new Vector2(64 + (130 * index.x), -64 - (136 * index.y));
     }
 
     private void UpdateName() {

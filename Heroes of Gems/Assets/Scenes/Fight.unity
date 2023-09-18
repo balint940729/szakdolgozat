@@ -1115,8 +1115,8 @@ MonoBehaviour:
     - row: 0000000000000000
     - row: 0000000000000000
   pieces:
-  - {fileID: 21300000, guid: 63194139a775c1a4c9c2069400426134, type: 3}
   - {fileID: 21300000, guid: 4263b10519a112b449ee8f5723fe0d31, type: 3}
+  - {fileID: 21300000, guid: 63194139a775c1a4c9c2069400426134, type: 3}
   - {fileID: 21300000, guid: 245492c759569eb479c1ba34a6f60f41, type: 3}
   - {fileID: 21300000, guid: caab61327aa757c44a6bdfe48710f788, type: 3}
   - {fileID: 21300000, guid: de45b69bbf9f34d4288bcd45391349f6, type: 3}
@@ -1183,7 +1183,6 @@ MonoBehaviour:
   cardPrefab: {fileID: 4815057449383010390, guid: a74bd9138ed085843a8e06f3036e624f,
     type: 3}
   parentScene: {fileID: 0}
-  state: 0
 --- !u!4 &1377176822
 Transform:
   m_ObjectHideFlags: 0

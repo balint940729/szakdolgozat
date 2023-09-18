@@ -1,4 +1,4 @@
-﻿public enum BattleState { START, PLAYERTURN, ENEMYTURN, WON, LOST };
+﻿public enum BattleState { Start, WaitingForPlayer, PlayerTurn, WaitingForEnemy, EnemyTurn, Won, Lost };
 
 public static class BattleStateHandler {
     private static BattleState state;

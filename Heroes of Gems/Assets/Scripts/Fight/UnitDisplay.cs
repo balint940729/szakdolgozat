@@ -8,6 +8,7 @@ public class UnitDisplay : MonoBehaviour {
     public TMP_Text health;
     public TMP_Text attack;
     public TMP_Text armor;
+    public TMP_Text mana;
 
     public Image image;
 
@@ -16,6 +17,7 @@ public class UnitDisplay : MonoBehaviour {
         health.text = card.unitHealth.ToString();
         attack.text = card.unitAttack.ToString();
         armor.text = card.unitArmor.ToString();
+        mana.text = card.unitCurrentMana.ToString();
 
         image.sprite = card.unitImage;
     }

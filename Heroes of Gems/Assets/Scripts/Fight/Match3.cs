@@ -23,6 +23,10 @@ public class Match3 : MonoBehaviour {
 
     public event System.Action attackTriggered;
 
+    private bool extraTurn = false;
+    private bool isMatch = false;
+    private bool isUpdate = false;
+
     private System.Random random;
 
     private void Start() {
@@ -36,7 +40,7 @@ public class Match3 : MonoBehaviour {
         update = new List<NodePiece>();
         dead = new List<NodePiece>();
         flipped = new List<FlippedPieces>();
-        BattleStateHandler.setState(BattleState.START);
+        BattleStateHandler.setState(BattleState.Start);
 
         InitializeBoard();
         VerifyBoard();
@@ -67,11 +71,11 @@ public class Match3 : MonoBehaviour {
             }
         }
 
-        BattleStateHandler.setState(BattleState.PLAYERTURN);
+        BattleStateHandler.setState(BattleState.WaitingForPlayer);
     }
 
     private void VerifyBoard() {
-        List<int> remove;
+        List<int> remove = new List<int>();
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 Point point = new Point(x, y);
@@ -96,6 +100,7 @@ public class Match3 : MonoBehaviour {
                 Point p = new Point(x, y);
                 Node node = getNodeAtPoint(p);
                 int val = getValueAtPoint(p);
+
                 if (val != 0) continue;
                 for (int ny = (y - 1); ny >= -1; ny--) {
                     Point next = new Point(x, ny);
@@ -199,20 +204,28 @@ public class Match3 : MonoBehaviour {
             Point.left
         };
 
-        foreach (Point dir in directions) //Checking id there is 2 more same in the directions
+        foreach (Point dir in directions) //Checking if there is 2 more same in the directions
         {
             List<Point> line = new List<Point>();
 
             int same = 0;
-            for (int i = 1; i < 3; i++) {
+            for (int i = 1; i < 4; i++) {
                 Point check = Point.add(point, Point.mul(dir, i));
                 if (getValueAtPoint(check) == val) {
                     line.Add(check);
                     same++;
                 }
             }
-            if (same > 1)
+            if (same > 1) {
                 AddPoints(ref connected, line);
+            }
+
+            if (BattleStateHandler.GetState() != BattleState.Start) {
+                if (same > 2) {
+                    //Debug.Log("extra turn");
+                    extraTurn = true;
+                }
+            }
         }
 
         for (int i = 0; i < 2; i++) //Checking if we are in the middle
@@ -276,54 +289,107 @@ public class Match3 : MonoBehaviour {
 
     private void Update() {
         List<NodePiece> finishedUpdating = new List<NodePiece>();
-        for (int i = 0; i < update.Count; i++) {
-            NodePiece piece = update[i];
-            if (!piece.updatePiece())
-                finishedUpdating.Add(piece);
-        }
-        for (int i = 0; i < finishedUpdating.Count; i++) {
-            NodePiece piece = finishedUpdating[i];
-            FlippedPieces flip = getFlipped(piece);
-            NodePiece flippedPiece = null;
-
-            int x = (int)piece.index.x;
-            fills[x] = Mathf.Clamp(fills[x] - 1, 0, width);
-
-            List<Point> connected = isConnected(piece.index, true);
-            bool wasFlipped = (flip != null);
-
-            if (wasFlipped) // ha felcseréltük akkor hyvjuk meg az update-t
-            {
-                flippedPiece = flip.getOtherPiece(piece);
-                AddPoints(ref connected, isConnected(flippedPiece.index, true));
+        List<Point> connected = new List<Point>();
+        if (BattleStateHandler.GetState() == BattleState.WaitingForPlayer || BattleStateHandler.GetState() == BattleState.WaitingForEnemy) {
+            for (int i = 0; i < update.Count; i++) {
+                NodePiece piece = update[i];
+                if (!piece.updatePiece())
+                    finishedUpdating.Add(piece);
             }
-            if (connected.Count == 0) // Ha nincs matchünk
-            {
-                if (wasFlipped) // Ha felcseréltük
-                    FlipPieces(piece.index, flippedPiece.index, false); //Visszacserélés
-            }
-            else    // Ha match van
-            {
-                matchAction(connected[0]);
 
-                foreach (Point pnt in connected) //Összekapcsoltakat kivesszük
+            for (int i = 0; i < finishedUpdating.Count; i++) {
+                NodePiece piece = finishedUpdating[i];
+                FlippedPieces flip = getFlipped(piece);
+                NodePiece flippedPiece = null;
+
+                int x = (int)piece.index.x;
+                fills[x] = Mathf.Clamp(fills[x] - 1, 0, width);
+
+                connected = isConnected(piece.index, true);
+                bool wasFlipped = (flip != null);
+
+                if (wasFlipped) // ha felcseréltük akkor hívjuk meg az update-t
                 {
-                    Node node = getNodeAtPoint(pnt);
-                    NodePiece nodePiece = node.getPiece();
-
-                    if (piece != null) {
-                        nodePiece.gameObject.SetActive(false);
-                        dead.Add(nodePiece);
-                    }
-                    node.SetPiece(null);
+                    flippedPiece = flip.getOtherPiece(piece);
+                    AddPoints(ref connected, isConnected(flippedPiece.index, true));
                 }
-                ApplyGravityToBoard();
-            }
 
-            flipped.Remove(flip);
-            update.Remove(piece);
+                if (connected.Count == 0) // Ha nincs matchünk
+                {
+                    if (wasFlipped) // Ha felcseréltük
+                        FlipPieces(piece.index, flippedPiece.index, false); //Visszacserélés
+                }
+                else    // Ha match van
+                {
+                    isMatch = true;
+                    if (BattleStateHandler.GetState() == BattleState.WaitingForPlayer) {
+                        BattleStateHandler.setState(BattleState.PlayerTurn);
+                    }
+                    else if (BattleStateHandler.GetState() == BattleState.WaitingForEnemy) {
+                        BattleStateHandler.setState(BattleState.EnemyTurn);
+                    }
+                    //Debug.Log(BattleStateHandler.GetState() + " was");
+
+                    matchAction(connected[0]);
+
+                    foreach (Point pnt in connected) //Összekapcsoltakat kivesszük
+                    {
+                        Node node = getNodeAtPoint(pnt);
+                        NodePiece nodePiece = node.getPiece();
+
+                        if (piece != null) {
+                            nodePiece.gameObject.SetActive(false);
+                            dead.Add(nodePiece);
+                        }
+                        node.SetPiece(null);
+                    }
+                    ApplyGravityToBoard();
+                }
+
+                flipped.Remove(flip);
+                update.Remove(piece);
+            }
         }
     }
+
+    private void LateUpdate() {
+        if (isMatch) {
+            if (BattleStateHandler.GetState() == BattleState.PlayerTurn) {
+                BattleStateHandler.setState((extraTurn) ? BattleState.WaitingForPlayer : BattleState.WaitingForEnemy);
+                Debug.Log(BattleStateHandler.GetState() + " changed to");
+            }
+            else if (BattleStateHandler.GetState() == BattleState.EnemyTurn) {
+                BattleStateHandler.setState((extraTurn) ? BattleState.WaitingForEnemy : BattleState.WaitingForPlayer);
+                Debug.Log(BattleStateHandler.GetState() + " changed to");
+            }
+            extraTurn = false;
+            isMatch = false;
+        }
+    }
+
+    //private bool isStillUpdating() {
+    //    List<int> remove = new List<int>();
+    //    for (int x = 0; x < width; x++) {
+    //        for (int y = 0; y < height; y++) {
+    //            Point point = new Point(x, y);
+    //            int val = getValueAtPoint(point);
+    //            if (val <= 0) continue;
+
+    //            while (isConnected(point, true).Count > 0) {
+    //                val = getValueAtPoint(point);
+    //                if (!remove.Contains(val)) {
+    //                    remove.Add(val);
+    //                }
+    //                //setValueAtPoint(point, newValue(ref remove));
+    //            }
+    //        }
+    //    }
+    //    if (remove.Count > 0) {
+    //        return true;
+    //    }
+    //    else
+    //        return false;
+    //}
 
     private void matchAction(Point point) {
         Node node = getNodeAtPoint(point);
@@ -331,6 +397,12 @@ public class Match3 : MonoBehaviour {
         int pieceValue = nodePiece.GetValue();
 
         if (pieceValue == 1) {
+            if (BattleStateHandler.GetState() == BattleState.WaitingForPlayer) {
+                BattleStateHandler.setState(BattleState.PlayerTurn);
+            }
+            else if (BattleStateHandler.GetState() == BattleState.WaitingForEnemy) {
+                BattleStateHandler.setState(BattleState.EnemyTurn);
+            }
             attackTriggered?.Invoke();
         }
     }
@@ -358,7 +430,7 @@ public class Match3 : MonoBehaviour {
     }
 
     public Vector2 getPositionFromPoint(Point point) {
-        return new Vector2(64 + (128 * point.x), -64 - (128 * point.y));
+        return new Vector2(64 + (130 * point.x), -64 - (136 * point.y));
     }
 }
 
