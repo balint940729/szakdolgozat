@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public enum BattleState { START, PLAYERTURN, ENEMYTURN, WON, LOST };
-
 public class TurnBase : MonoBehaviour {
 
     // Card Prefab - Border, Attack, Health, Armor icons
@@ -10,13 +8,11 @@ public class TurnBase : MonoBehaviour {
 
     public Transform parentScene;
 
-    public BattleState state;
-
-    private List<UnitController> playerTeam = new List<UnitController>();
-    private List<UnitController> enemyTeam = new List<UnitController>();
+    private List<GameObject> playerTeam = new List<GameObject>();
+    private List<GameObject> enemyTeam = new List<GameObject>();
     private static TurnBase instance;
 
-    //public
+    private BattleState state;
 
     public static TurnBase GetInstance() {
         return instance;
@@ -28,17 +24,46 @@ public class TurnBase : MonoBehaviour {
 
     // Start is called before the first frame update
     private void Start() {
-        state = BattleState.START;
+        FindObjectOfType<Match3>().attackTriggered += Combat;
+
         SetUpTeam(true);
         SetUpTeam(false);
     }
 
     private void Update() {
+        //if (state != BattleState.WON && state != BattleState.LOST) {
         if (Input.GetKeyDown(KeyCode.Space)) {
-            UnitController player = playerTeam[0];
-            UnitController enemy = enemyTeam[0];
+            //Get
 
-            player.Attack(enemy);
+            //        UnitController player = playerTeam[0].GetComponent<UnitController>();
+            //        UnitController enemy = enemyTeam[0].GetComponent<UnitController>();
+
+            //        if (state == BattleState.PLAYERTURN) {
+            //            player.Attack(enemy);
+            //            removeOnZero(enemy);
+            //        }
+            //        else if (state == BattleState.ENEMYTURN) {
+            //            enemy.Attack(player);
+            //            removeOnZero(player);
+            //        }
+        }
+        //}
+    }
+
+    private void Combat() {
+        state = BattleStateHandler.GetState();
+        if (state != BattleState.Won && state != BattleState.Lost) {
+            UnitController player = playerTeam[0].GetComponent<UnitController>();
+            UnitController enemy = enemyTeam[0].GetComponent<UnitController>();
+
+            if (state == BattleState.PlayerTurn) {
+                player.Attack(enemy);
+                removeOnZero(enemy);
+            }
+            else if (state == BattleState.EnemyTurn) {
+                enemy.Attack(player);
+                removeOnZero(player);
+            }
         }
     }
 
@@ -50,10 +75,12 @@ public class TurnBase : MonoBehaviour {
         parentScene = GameObject.Find("GameCanvas").transform;
 
         for (int i = 0; i < 4; i++) {
+            GameObject cardUnitGO = Instantiate(cardPrefab);
+
             if (isPlayerTeam) {
-                posX = 720;
+                posX = -720;
                 posY = 405 - (i * 270);
-                GameObject cardUnitGO = Instantiate(cardPrefab);
+
                 cardUnitGO.name = "Ally" + i;
                 cardUnitGO.transform.position = new Vector3(posX, posY);
                 cardUnitGO.transform.SetParent(parentScene.transform, false);
@@ -61,12 +88,11 @@ public class TurnBase : MonoBehaviour {
                 UnitController cardUnitController = cardUnitGO.GetComponent<UnitController>();
 
                 cardUnitController.setUp(0);
-                playerTeam.Add(cardUnitController);
+                playerTeam.Add(cardUnitGO);
             }
             else {
-                posX = -720;
+                posX = 720;
                 posY = 405 - (i * 270);
-                GameObject cardUnitGO = Instantiate(cardPrefab);
                 cardUnitGO.name = "Enemy" + i;
                 cardUnitGO.transform.position = new Vector3(posX, posY);
                 cardUnitGO.transform.SetParent(parentScene.transform, false);
@@ -80,8 +106,45 @@ public class TurnBase : MonoBehaviour {
                     cardUnitController.setUp(2);
                 }
 
-                enemyTeam.Add(cardUnitController);
+                enemyTeam.Add(cardUnitGO);
             }
         }
+    }
+
+    private void removeOnZero(UnitController unit) {
+        int tempHealth = unit.GetHealth();
+        state = BattleStateHandler.GetState();
+
+        if (tempHealth <= 0) {
+            if (state == BattleState.PlayerTurn) {
+                Destroy(enemyTeam[0]);
+                enemyTeam.Remove(enemyTeam[0]);
+            }
+            else if (state == BattleState.EnemyTurn) {
+                Destroy(playerTeam[0]);
+                playerTeam.Remove(playerTeam[0]);
+            }
+        }
+
+        checkGameResult();
+    }
+
+    private void checkGameResult() {
+        if (enemyTeam.Count == 0) {
+            BattleStateHandler.setState(BattleState.Won);
+            //state = BattleState.WON;
+        }
+        else if (playerTeam.Count == 0) {
+            BattleStateHandler.setState(BattleState.Lost);
+            //state = BattleState.LOST;
+        }
+    }
+
+    public List<GameObject> getPlayerTeam() {
+        return playerTeam;
+    }
+
+    public List<GameObject> getEnemyTeam() {
+        return enemyTeam;
     }
 }
