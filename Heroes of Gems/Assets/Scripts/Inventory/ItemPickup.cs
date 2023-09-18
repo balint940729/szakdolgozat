@@ -1,37 +1,28 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class ItemPickup : MonoBehaviour
-{
-    [SerializeField] Item item;
-    [SerializeField] Inventory inventory;
-    [SerializeField] KeyCode itemPickupKeyCode = KeyCode.E;
-    [SerializeField] GameObject PlayerGameObject;
-    [SerializeField] bool InRange;
+public class ItemPickup : MonoBehaviour {
+    [SerializeField] private Item item;
+    [SerializeField] private Inventory inventory;
+    [SerializeField] private KeyCode itemPickupKeyCode = KeyCode.E;
+    [SerializeField] private GameObject PlayerGameObject;
+    [SerializeField] private bool InRange;
 
-    private void Update()
-    {
-        if(InRange == true && Input.GetKeyDown(itemPickupKeyCode))
-        {
+    private void Update() {
+        if (InRange == true && Input.GetKeyDown(itemPickupKeyCode)) {
             Achievements.ach01Count += 1;
             inventory.AddItem(item);
             Destroy(gameObject);
         }
     }
 
-    public void OnTriggerEnter2D(Collider2D collision)
-    {
-        if(collision.gameObject == PlayerGameObject)
-        {
+    public void OnTriggerEnter2D(Collider2D collision) {
+        if (collision.gameObject == PlayerGameObject) {
             InRange = true;
         }
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.gameObject == PlayerGameObject)
-        {
+    private void OnTriggerExit2D(Collider2D collision) {
+        if (collision.gameObject == PlayerGameObject) {
             InRange = false;
         }
     }

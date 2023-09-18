@@ -1,16 +1,20 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class Unit : MonoBehaviour
-{
-
+[CreateAssetMenu(fileName = "New Card", menuName = "Card")]
+[System.Serializable]
+public class Unit : ScriptableObject {
     public string unitName;
 
-    public int maxHp;
-    public int currentHp;
+    public int unitHealth;
 
     public int unitAttack;
 
+    public int unitArmor;
 
+    public int unitMaxMana;
+    public int unitCurrentMana;
+
+    public int unitSpellDamage;
+
+    public Sprite unitImage;
 }

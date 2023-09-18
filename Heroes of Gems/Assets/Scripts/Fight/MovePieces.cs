@@ -1,31 +1,23 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class MovePieces : MonoBehaviour
-{
-
-    Match3 game;
-    NodePiece moving;
-    Point newIndex;
-    Vector2 mouseStart;
+public class MovePieces : MonoBehaviour {
+    private Match3 game;
+    private NodePiece moving;
+    private Point newIndex;
+    private Vector2 mouseStart;
     public static MovePieces instance;
 
-    private void Awake()
-    {
+    private void Awake() {
         instance = this;
     }
 
-    void Start()
-    {
+    private void Start() {
         game = GetComponent<Match3>();
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        if (moving != null)
-        {
+    private void Update() {
+        if (moving != null) {
             Vector2 dir = ((Vector2)Input.mousePosition - mouseStart);
             Vector2 nDir = dir.normalized;
             Vector2 aDir = new Vector2(Mathf.Abs(dir.x), Mathf.Abs(dir.y));
@@ -48,19 +40,16 @@ public class MovePieces : MonoBehaviour
         }
     }
 
-    public void MovePiece(NodePiece piece)
-    {
+    public void MovePiece(NodePiece piece) {
         if (moving != null) return;
         moving = piece;
         mouseStart = Input.mousePosition;
     }
 
-    public void DropPiece()
-    {
+    public void DropPiece() {
         if (moving == null) return;
 
-        if (!newIndex.Equals(moving.index))
-        {
+        if (!newIndex.Equals(moving.index)) {
             game.FlipPieces(moving.index, newIndex, true);
         }
         else

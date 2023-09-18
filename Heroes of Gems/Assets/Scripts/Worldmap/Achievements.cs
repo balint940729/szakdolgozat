@@ -1,10 +1,8 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Achievements : MonoBehaviour
-{
+public class Achievements : MonoBehaviour {
     public GameObject achNote;
     public bool achActive = false;
 
@@ -16,23 +14,19 @@ public class Achievements : MonoBehaviour
     public int ach01Trigger = 1;
     public int ach01Code = 0;
 
-    private void Awake()
-    {
+    private void Awake() {
         PlayerPrefs.SetInt("Ach01", 0);
     }
 
     // Update is called once per frame
-    void Update()
-    {
+    private void Update() {
         ach01Code = PlayerPrefs.GetInt("Ach01");
-        if (ach01Count == ach01Trigger && ach01Code != 12345)
-        {
+        if (ach01Count == ach01Trigger && ach01Code != 12345) {
             StartCoroutine(Trigger01Ach());
         }
     }
 
-    IEnumerator Trigger01Ach()
-    {
+    private IEnumerator Trigger01Ach() {
         achActive = true;
         ach01Code = 12345;
         PlayerPrefs.SetInt("Ach01", ach01Code);
@@ -49,5 +43,4 @@ public class Achievements : MonoBehaviour
         achDesc.GetComponent<Text>().text = "";
         achActive = false;
     }
-
 }

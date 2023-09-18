@@ -1,35 +1,33 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class Match3 : MonoBehaviour
-{
+public class Match3 : MonoBehaviour {
     public ArrayLayout boardLayout;
 
     [Header("UI Elements")]
     public Sprite[] pieces;
+
     public RectTransform gameBoard;
 
     [Header("Prefabs")]
     public GameObject nodePiece;
 
-    int width = 8;
-    int height = 8;
-    int[] fills;
-    Node[,] board;
+    private int width = 8;
+    private int height = 8;
+    private int[] fills;
+    private Node[,] board;
 
-    List<NodePiece> update;
-    List<FlippedPieces> flipped;
-    List<NodePiece> dead;
+    private List<NodePiece> update;
+    private List<FlippedPieces> flipped;
+    private List<NodePiece> dead;
 
-    System.Random random;
-    void Start()
-    {
+    private System.Random random;
+
+    private void Start() {
         StartGame();
     }
 
-    void StartGame()
-    {
+    private void StartGame() {
         fills = new int[width];
         string seed = getRandomSeed();
         random = new System.Random(seed.GetHashCode());
@@ -42,23 +40,18 @@ public class Match3 : MonoBehaviour
         InstantiateBoard();
     }
 
-    void InitializeBoard()
-    {
+    private void InitializeBoard() {
         board = new Node[width, height];
-        for (int y = 0; y < height; y++)
-        {
-            for (int x = 0; x < width; x++)
-            {
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
                 board[x, y] = new Node((boardLayout.rows[y].row[x]) ? -1 : fillPiece(), new Point(x, y));
             }
         }
     }
-    void InstantiateBoard()
-    {
-        for (int x = 0; x < width; x++)
-        {
-            for (int y = 0; y < height; y++)
-            {
+
+    private void InstantiateBoard() {
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
                 Node node = getNodeAtPoint(new Point(x, y));
                 int val = node.value;
                 if (val <= 0) continue;
@@ -72,23 +65,18 @@ public class Match3 : MonoBehaviour
         }
     }
 
-    void VerifyBoard()
-    {
+    private void VerifyBoard() {
         List<int> remove;
-        for (int x = 0; x < width; x++)
-        {
-            for (int y = 0; y < height; y++)
-            {
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
                 Point point = new Point(x, y);
                 int val = getValueAtPoint(point);
                 if (val <= 0) continue;
 
                 remove = new List<int>();
-                while (isConnected(point, true).Count > 0)
-                {
+                while (isConnected(point, true).Count > 0) {
                     val = getValueAtPoint(point);
-                    if (!remove.Contains(val))
-                    {
+                    if (!remove.Contains(val)) {
                         remove.Add(val);
                     }
                     setValueAtPoint(point, newValue(ref remove));
@@ -97,18 +85,14 @@ public class Match3 : MonoBehaviour
         }
     }
 
-    public void ApplyGravityToBoard()
-    {
-        for (int x = 0; x < width; x++)
-        {
-            for (int y = (height - 1); y >= 0; y--)
-            {
+    public void ApplyGravityToBoard() {
+        for (int x = 0; x < width; x++) {
+            for (int y = (height - 1); y >= 0; y--) {
                 Point p = new Point(x, y);
                 Node node = getNodeAtPoint(p);
                 int val = getValueAtPoint(p);
                 if (val != 0) continue;
-                for (int ny = (y - 1); ny >= -1; ny--)
-                {
+                for (int ny = (y - 1); ny >= -1; ny--) {
                     Point next = new Point(x, ny);
                     int nextVal = getValueAtPoint(next);
                     if (nextVal == 0) continue;
@@ -122,25 +106,21 @@ public class Match3 : MonoBehaviour
 
                         got.SetPiece(null);
                     }
-                    else
-                    {
+                    else {
                         int newVal = fillPiece();
                         NodePiece piece;
                         Point fallPoint = new Point(x, -1 - fills[x]);
-                        if (dead.Count > 0)
-                        {
+                        if (dead.Count > 0) {
                             NodePiece revived = dead[0];
                             revived.gameObject.SetActive(true);
                             piece = revived;
 
                             dead.RemoveAt(0);
                         }
-                        else
-                        {
+                        else {
                             GameObject obj = Instantiate(nodePiece, gameBoard);
                             NodePiece n = obj.GetComponent<NodePiece>();
                             piece = n;
-
                         }
                         piece.Initialize(newVal, p, pieces[newVal - 1]);
                         piece.rect.anchoredPosition = getPositionFromPoint(fallPoint);
@@ -157,21 +137,18 @@ public class Match3 : MonoBehaviour
         }
     }
 
-    public void ResetPiece(NodePiece piece)
-    {
+    public void ResetPiece(NodePiece piece) {
         piece.ResetPosition();
         update.Add(piece);
     }
 
-    public void FlipPieces(Point one, Point two, bool main)
-    {
+    public void FlipPieces(Point one, Point two, bool main) {
         if (getValueAtPoint(one) < 0) return;
 
         Node nodeOne = getNodeAtPoint(one);
         NodePiece pieceOne = nodeOne.getPiece();
 
-        if (getValueAtPoint(two) > 0)
-        {
+        if (getValueAtPoint(two) > 0) {
             Node nodeTwo = getNodeAtPoint(two);
             NodePiece pieceTwo = nodeTwo.getPiece();
             nodeOne.SetPiece(pieceTwo);
@@ -186,11 +163,11 @@ public class Match3 : MonoBehaviour
         else ResetPiece(pieceOne);
     }
 
-    Node getNodeAtPoint(Point point)
-    {
+    private Node getNodeAtPoint(Point point) {
         return board[point.x, point.y];
     }
-    int newValue(ref List<int> remove) // Kivesszük az értéket és helyette teszünk bele egy másikat, úgy hogy az ne legyen ütközés az ellőzővel
+
+    private int newValue(ref List<int> remove) // Kivesszük az értéket és helyette teszünk bele egy másikat, úgy hogy az ne legyen ütközés az ellőzővel
     {
         List<int> available = new List<int>();
         for (int i = 0; i < pieces.Length; i++)
@@ -203,13 +180,11 @@ public class Match3 : MonoBehaviour
         return available[random.Next(0, available.Count)];
     }
 
-    int setValueAtPoint(Point p, int v)
-    {
+    private int setValueAtPoint(Point p, int v) {
         return board[p.x, p.y].value = v;
     }
 
-    List<Point> isConnected(Point point, bool main)
-    {
+    private List<Point> isConnected(Point point, bool main) {
         List<Point> connected = new List<Point>();
         int val = getValueAtPoint(point);
         Point[] directions = {
@@ -224,11 +199,9 @@ public class Match3 : MonoBehaviour
             List<Point> line = new List<Point>();
 
             int same = 0;
-            for (int i = 1; i < 3; i++)
-            {
+            for (int i = 1; i < 3; i++) {
                 Point check = Point.add(point, Point.mul(dir, i));
-                if (getValueAtPoint(check) == val)
-                {
+                if (getValueAtPoint(check) == val) {
                     line.Add(check);
                     same++;
                 }
@@ -248,22 +221,19 @@ public class Match3 : MonoBehaviour
                 };
             foreach (Point next in check) // Check both sides of the piece
             {
-                if (getValueAtPoint(next) == val)
-                {
+                if (getValueAtPoint(next) == val) {
                     line.Add(next);
                     same++;
                 }
             }
 
-            if (same > 1)
-            {
+            if (same > 1) {
                 AddPoints(ref connected, line);
             }
         }
         if (main) //Megnézi hogy van e több match is az adott pontban
         {
-            for (int i = 0; i < connected.Count; i++)
-            {
+            for (int i = 0; i < connected.Count; i++) {
                 AddPoints(ref connected, isConnected(connected[i], false));
             }
         }
@@ -274,15 +244,11 @@ public class Match3 : MonoBehaviour
         return connected;
     }
 
-    void AddPoints(ref List<Point> points, List<Point> add)
-    {
-        foreach (Point p in add)
-        {
+    private void AddPoints(ref List<Point> points, List<Point> add) {
+        foreach (Point p in add) {
             bool doAdd = true;
-            for (int i = 0; i < points.Count; i++)
-            {
-                if (points[i].Equals(p))
-                {
+            for (int i = 0; i < points.Count; i++) {
+                if (points[i].Equals(p)) {
                     doAdd = false;
                     break;
                 }
@@ -291,30 +257,25 @@ public class Match3 : MonoBehaviour
         }
     }
 
-    int getValueAtPoint(Point point)
-    {
+    private int getValueAtPoint(Point point) {
         if (point.x < 0 || point.x >= width || point.y < 0 || point.y >= height) return -1;
         return board[point.x, point.y].value;
     }
 
-    int fillPiece()
-    {
+    private int fillPiece() {
         int val = 1;
         val = (random.Next(0, 350) / (350 / pieces.Length)) + 1;
         return val;
     }
 
-    void Update()
-    {
+    private void Update() {
         List<NodePiece> finishedUpdating = new List<NodePiece>();
-        for (int i = 0; i < update.Count; i++)
-        {
+        for (int i = 0; i < update.Count; i++) {
             NodePiece piece = update[i];
             if (!piece.updatePiece())
                 finishedUpdating.Add(piece);
         }
-        for (int i = 0; i < finishedUpdating.Count; i++)
-        {
+        for (int i = 0; i < finishedUpdating.Count; i++) {
             NodePiece piece = finishedUpdating[i];
             FlippedPieces flip = getFlipped(piece);
             NodePiece flippedPiece = null;
@@ -341,8 +302,7 @@ public class Match3 : MonoBehaviour
                 {
                     Node node = getNodeAtPoint(pnt);
                     NodePiece nodePiece = node.getPiece();
-                    if (piece != null)
-                    {
+                    if (piece != null) {
                         nodePiece.gameObject.SetActive(false);
                         dead.Add(nodePiece);
                     }
@@ -356,13 +316,10 @@ public class Match3 : MonoBehaviour
         }
     }
 
-    FlippedPieces getFlipped(NodePiece p)
-    {
+    private FlippedPieces getFlipped(NodePiece p) {
         FlippedPieces flip = null;
-        for (int i = 0; i < flipped.Count; i++)
-        {
-            if (flipped[i].getOtherPiece(p) != null)
-            {
+        for (int i = 0; i < flipped.Count; i++) {
+            if (flipped[i].getOtherPiece(p) != null) {
                 flip = flipped[i];
                 break;
             }
@@ -370,72 +327,64 @@ public class Match3 : MonoBehaviour
         return flip;
     }
 
-    string getRandomSeed()
-    {
+    private string getRandomSeed() {
         string seed = "";
         string acceptableChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890!@#$%^&*()";
 
-        for (int i = 0; i < 20; i++)
-        {
+        for (int i = 0; i < 20; i++) {
             seed += acceptableChars[Random.Range(0, acceptableChars.Length)];
         }
 
         return seed;
     }
 
-    public Vector2 getPositionFromPoint(Point point)
-    {
+    public Vector2 getPositionFromPoint(Point point) {
         return new Vector2(64 + (128 * point.x), -64 - (128 * point.y));
     }
 }
 
 [System.Serializable]
-public class Node
-{
+public class Node {
+
     //0 = üres, 1 = amethyst, 2 = emerald, 3 = sapphire, 4 = ruby, 5 = topaz, 6-turmaline, -1 = hole
     public int value; //Az adott mezőn található Gem értéke
-    public Point index;
-    NodePiece piece;
 
-    public Node(int v, Point i)
-    {
+    public Point index;
+    private NodePiece piece;
+
+    public Node(int v, Point i) {
         value = v;
         index = i;
     }
 
-    public void SetPiece(NodePiece nodePiece)
-    {
+    public void SetPiece(NodePiece nodePiece) {
         piece = nodePiece;
         value = (piece == null) ? 0 : piece.value;
         if (piece == null) return;
         piece.SetIndex(index);
     }
-    public NodePiece getPiece()
-    {
+
+    public NodePiece getPiece() {
         return piece;
     }
 }
 
 [System.Serializable]
-public class FlippedPieces
-{
+public class FlippedPieces {
     public NodePiece one;
     public NodePiece two;
 
-    public FlippedPieces(NodePiece o, NodePiece t)
-    {
+    public FlippedPieces(NodePiece o, NodePiece t) {
         one = o;
         two = t;
     }
 
-    public NodePiece getOtherPiece(NodePiece piece)
-    {
+    public NodePiece getOtherPiece(NodePiece piece) {
         if (piece == one)
             return two;
         else if (piece == two)
             return one;
         else
             return null;
-
     }
 }
