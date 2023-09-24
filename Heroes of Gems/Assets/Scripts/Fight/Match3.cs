@@ -23,7 +23,7 @@ public class Match3 : MonoBehaviour {
 
     public event System.Action attackTriggered;
 
-    public event System.Action manaTriggered;
+    public event System.Action gainManaTriggered;
 
     public event System.Action turnChangeTriggered;
 
@@ -436,6 +436,10 @@ public class Match3 : MonoBehaviour {
             }
             attackTriggered?.Invoke();
         }
+
+        if (pieceValue > 1) {
+            gainManaTriggered?.Invoke();
+        }
     }
 
     private FlippedPieces getFlipped(NodePiece p) {
@@ -468,7 +472,6 @@ public class Match3 : MonoBehaviour {
 [System.Serializable]
 public class Node {
 
-    //0 = üres, 1 = amethyst, 2 = emerald, 3 = sapphire, 4 = ruby, 5 = topaz, 6-turmaline, -1 = hole
     //0 = üres, 1 = skull, 2 = amethyst, 3 = emerald, 4 = sapphire, 5 = ruby, 6 = topaz, 7 = turmaline, -1 = hole
     public int value; //Az adott mezőn található Gem értéke
 

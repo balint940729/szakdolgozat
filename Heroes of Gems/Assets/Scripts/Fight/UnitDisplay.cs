@@ -14,16 +14,20 @@ public class UnitDisplay : MonoBehaviour {
 
     // Start is called before the first frame update
     private void Start() {
-        health.text = card.unitHealth.ToString();
-        attack.text = card.unitAttack.ToString();
-        armor.text = card.unitArmor.ToString();
-        mana.text = card.unitCurrentMana.ToString();
+        health.text = card.baseHealth.ToString();
+        attack.text = card.baseAttack.ToString();
+        armor.text = card.baseArmor.ToString();
+        mana.text = card.currentMana.ToString() + "/" + card.maxMana.ToString();
 
-        image.sprite = card.unitImage;
+        image.sprite = card.image;
     }
 
     public void setHealth(int newHealth, int newArmor) {
         health.text = newHealth.ToString();
         armor.text = newArmor.ToString();
+    }
+
+    public void setMana(int newCurrentMana) {
+        mana.text = newCurrentMana.ToString() + "/" + card.maxMana.ToString();
     }
 }

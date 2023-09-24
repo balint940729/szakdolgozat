@@ -1,20 +1,23 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 
 [CreateAssetMenu(fileName = "New Card", menuName = "Card")]
 [System.Serializable]
 public class Unit : ScriptableObject {
-    public string unitName;
+    public string baseName;
 
-    public int unitHealth;
+    public int baseHealth;
 
-    public int unitAttack;
+    public int baseAttack;
 
-    public int unitArmor;
+    public int baseArmor;
 
-    public int unitMaxMana;
-    public int unitCurrentMana;
+    public int maxMana;
+    public int currentMana;
 
-    public int unitSpellDamage;
+    public int baseSpellDamage;
 
-    public Sprite unitImage;
+    public Sprite image;
+
+    public List<Colors> colors;
 }

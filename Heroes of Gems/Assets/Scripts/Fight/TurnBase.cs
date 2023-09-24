@@ -28,7 +28,7 @@ public class TurnBase : MonoBehaviour {
     // Start is called before the first frame update
     private void Start() {
         FindObjectOfType<Match3>().attackTriggered += Combat;
-        //FindObjectOfType<Match3>().manaTriggered += Combat;
+        FindObjectOfType<Match3>().gainManaTriggered += gainMana;
         FindObjectOfType<Match3>().turnChangeTriggered += turnChange;
 
         SetUpTeam(true);
@@ -45,6 +45,40 @@ public class TurnBase : MonoBehaviour {
             }
             else if (state == BattleState.WaitingForEnemy) {
                 turnArrowGO.transform.position = new Vector3(1075, 680);
+            }
+        }
+    }
+
+    private void gainMana() {
+        state = BattleStateHandler.GetState();
+        int manaAmount = 3;
+
+        if (state != BattleState.Won && state != BattleState.Lost) {
+            List<GameObject> team = playerTeam;
+            int extraMana = 0;
+            int manaGained = manaAmount;
+
+            if (state == BattleState.PlayerTurn) {
+                team = playerTeam;
+            }
+            else if (state == BattleState.EnemyTurn) {
+                team = enemyTeam;
+            }
+
+            foreach (GameObject unit in team) {
+                UnitController unitCntr = unit.GetComponent<UnitController>();
+
+                if (unitCntr.isOnFullMana()) {
+                    continue;
+                }
+
+                extraMana += unitCntr.gainMana(manaGained);
+
+                if (extraMana == 0) {
+                    break;
+                }
+
+                manaGained = extraMana;
             }
         }
     }
