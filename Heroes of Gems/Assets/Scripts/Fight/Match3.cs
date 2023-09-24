@@ -23,9 +23,12 @@ public class Match3 : MonoBehaviour {
 
     public event System.Action attackTriggered;
 
+    public event System.Action manaTriggered;
+
+    public event System.Action turnChangeTriggered;
+
     private bool extraTurn = false;
-    private bool isMatch = false;
-    private bool isUpdate = false;
+    private bool isTurnEnd = false;
 
     private System.Random random;
 
@@ -204,36 +207,30 @@ public class Match3 : MonoBehaviour {
             Point.left
         };
 
-        foreach (Point dir in directions) //Checking if there is 2 more same in the directions
+        foreach (Point dir in directions) //Checking if there is 2 same in the directions -> X X Y OR Y X X
         {
             List<Point> line = new List<Point>();
 
             int same = 0;
-            for (int i = 1; i < 4; i++) {
+            for (int i = 1; i < 3; i++) {
                 Point check = Point.add(point, Point.mul(dir, i));
                 if (getValueAtPoint(check) == val) {
                     line.Add(check);
                     same++;
                 }
             }
+
             if (same > 1) {
                 AddPoints(ref connected, line);
             }
-
-            if (BattleStateHandler.GetState() != BattleState.Start) {
-                if (same > 2) {
-                    //Debug.Log("extra turn");
-                    extraTurn = true;
-                }
-            }
         }
 
-        for (int i = 0; i < 2; i++) //Checking if we are in the middle
+        for (int i = 0; i < 2; i++) //Checking if we are in the middle  X Y X
         {
             List<Point> line = new List<Point>();
 
             int same = 0;
-            Point[] check = { //Megnézi az egyik illetve a másik irányban is, hogy van-e match
+            Point[] check = {
                     Point.add(point, directions[i]),
                     Point.add(point, directions[i+2])
                 };
@@ -248,17 +245,72 @@ public class Match3 : MonoBehaviour {
             if (same > 1) {
                 AddPoints(ref connected, line);
             }
+
+            if (BattleStateHandler.GetState() != BattleState.Start) {
+                if (same == 2) { // When we are middle, check if can be an extra turn
+                    Point[] check2 = {
+                    Point.add(point, Point.mul(directions[i], 2)),
+                    Point.add(point, Point.mul(directions[i+2], 2))
+                };
+                    foreach (Point next in check2) // Check both sides of the piece
+                    {
+                        if (getValueAtPoint(next) == val) {
+                            same++;
+                        }
+                    }
+                }
+
+                if (same > 2) {
+                    //Debug.Log("extra turn");
+                    extraTurn = true;
+                }
+            }
         }
 
-        if (main) //Megnézi hogy van e több match is az adott pontban
+        for (int i = 0; i < 3; i += 2) //Checking if we are in the edge
         {
+            if (BattleStateHandler.GetState() != BattleState.Start) {
+                int same = 0;
+                int same2 = 0;
+                Point[] checkEdge = {
+                    Point.add(point, directions[i]),
+                    Point.add(point, Point.mul(directions[i], 2)),
+                    Point.add(point, directions[1]),
+                    Point.add(point, Point.mul(directions[1], 2))
+                };
+
+                Point[] checkEdge2 = {
+                    Point.add(point, directions[i]),
+                    Point.add(point, Point.mul(directions[i], 2)),
+                    Point.add(point, directions[3]),
+                    Point.add(point, Point.mul(directions[3], 2))
+                };
+
+                foreach (Point next in checkEdge) {
+                    if (getValueAtPoint(next) == val) {
+                        same++;
+                    }
+                }
+
+                foreach (Point next in checkEdge2) {
+                    if (getValueAtPoint(next) == val) {
+                        same2++;
+                    }
+                }
+
+                if (same == 4 || same2 == 4) {
+                    //Debug.Log("extra turn");
+                    extraTurn = true;
+                }
+            }
+        }
+
+        if (main) // Check if there is more match can be
+    {
             for (int i = 0; i < connected.Count; i++) {
                 AddPoints(ref connected, isConnected(connected[i], false));
             }
         }
-
-        /*if (connected.Count > 0)
-            connected.Add(point);*/
 
         return connected;
     }
@@ -290,106 +342,85 @@ public class Match3 : MonoBehaviour {
     private void Update() {
         List<NodePiece> finishedUpdating = new List<NodePiece>();
         List<Point> connected = new List<Point>();
-        if (BattleStateHandler.GetState() == BattleState.WaitingForPlayer || BattleStateHandler.GetState() == BattleState.WaitingForEnemy) {
-            for (int i = 0; i < update.Count; i++) {
-                NodePiece piece = update[i];
-                if (!piece.updatePiece())
-                    finishedUpdating.Add(piece);
+        //if (BattleStateHandler.GetState() == BattleState.WaitingForPlayer || BattleStateHandler.GetState() == BattleState.WaitingForEnemy) {
+        for (int i = 0; i < update.Count; i++) {
+            NodePiece piece = update[i];
+            if (!piece.updatePiece())
+                finishedUpdating.Add(piece);
+        }
+
+        for (int i = 0; i < finishedUpdating.Count; i++) {
+            NodePiece piece = finishedUpdating[i];
+            FlippedPieces flip = getFlipped(piece);
+            NodePiece flippedPiece = null;
+
+            int x = (int)piece.index.x;
+            fills[x] = Mathf.Clamp(fills[x] - 1, 0, width);
+
+            connected = isConnected(piece.index, true);
+            bool wasFlipped = (flip != null);
+
+            if (wasFlipped) // ha felcseréltük akkor hívjuk meg az update-t
+            {
+                flippedPiece = flip.getOtherPiece(piece);
+                AddPoints(ref connected, isConnected(flippedPiece.index, true));
             }
 
-            for (int i = 0; i < finishedUpdating.Count; i++) {
-                NodePiece piece = finishedUpdating[i];
-                FlippedPieces flip = getFlipped(piece);
-                NodePiece flippedPiece = null;
+            if (connected.Count == 0) {
+                if (wasFlipped)
+                    FlipPieces(piece.index, flippedPiece.index, false); // If we flipped the piece, but no match - reverse
 
-                int x = (int)piece.index.x;
-                fills[x] = Mathf.Clamp(fills[x] - 1, 0, width);
-
-                connected = isConnected(piece.index, true);
-                bool wasFlipped = (flip != null);
-
-                if (wasFlipped) // ha felcseréltük akkor hívjuk meg az update-t
-                {
-                    flippedPiece = flip.getOtherPiece(piece);
-                    AddPoints(ref connected, isConnected(flippedPiece.index, true));
-                }
-
-                if (connected.Count == 0) // Ha nincs matchünk
-                {
-                    if (wasFlipped) // Ha felcseréltük
-                        FlipPieces(piece.index, flippedPiece.index, false); //Visszacserélés
-                }
-                else    // Ha match van
-                {
-                    isMatch = true;
+                if (!wasFlipped && update.Count == 1)
+                    isTurnEnd = true;
+            }
+            else    // If there is a match
+            {
+                if (wasFlipped) { // If we flipped the piece and match
                     if (BattleStateHandler.GetState() == BattleState.WaitingForPlayer) {
                         BattleStateHandler.setState(BattleState.PlayerTurn);
                     }
                     else if (BattleStateHandler.GetState() == BattleState.WaitingForEnemy) {
                         BattleStateHandler.setState(BattleState.EnemyTurn);
                     }
-                    //Debug.Log(BattleStateHandler.GetState() + " was");
-
-                    matchAction(connected[0]);
-
-                    foreach (Point pnt in connected) //Összekapcsoltakat kivesszük
-                    {
-                        Node node = getNodeAtPoint(pnt);
-                        NodePiece nodePiece = node.getPiece();
-
-                        if (piece != null) {
-                            nodePiece.gameObject.SetActive(false);
-                            dead.Add(nodePiece);
-                        }
-                        node.SetPiece(null);
-                    }
-                    ApplyGravityToBoard();
                 }
 
-                flipped.Remove(flip);
-                update.Remove(piece);
+                matchAction(connected[0]);
+
+                foreach (Point pnt in connected) //Összekapcsoltakat kivesszük
+                {
+                    Node node = getNodeAtPoint(pnt);
+                    NodePiece nodePiece = node.getPiece();
+
+                    if (piece != null) {
+                        nodePiece.gameObject.SetActive(false);
+                        dead.Add(nodePiece);
+                    }
+                    node.SetPiece(null);
+                }
+                ApplyGravityToBoard();
             }
+
+            flipped.Remove(flip);
+            update.Remove(piece);
         }
+        //}
     }
 
     private void LateUpdate() {
-        if (isMatch) {
+        if (isTurnEnd) {
             if (BattleStateHandler.GetState() == BattleState.PlayerTurn) {
                 BattleStateHandler.setState((extraTurn) ? BattleState.WaitingForPlayer : BattleState.WaitingForEnemy);
-                Debug.Log(BattleStateHandler.GetState() + " changed to");
+                //Debug.Log(BattleStateHandler.GetState());
             }
             else if (BattleStateHandler.GetState() == BattleState.EnemyTurn) {
                 BattleStateHandler.setState((extraTurn) ? BattleState.WaitingForEnemy : BattleState.WaitingForPlayer);
-                Debug.Log(BattleStateHandler.GetState() + " changed to");
+                //Debug.Log(BattleStateHandler.GetState());
             }
+            turnChangeTriggered?.Invoke();
             extraTurn = false;
-            isMatch = false;
+            isTurnEnd = false;
         }
     }
-
-    //private bool isStillUpdating() {
-    //    List<int> remove = new List<int>();
-    //    for (int x = 0; x < width; x++) {
-    //        for (int y = 0; y < height; y++) {
-    //            Point point = new Point(x, y);
-    //            int val = getValueAtPoint(point);
-    //            if (val <= 0) continue;
-
-    //            while (isConnected(point, true).Count > 0) {
-    //                val = getValueAtPoint(point);
-    //                if (!remove.Contains(val)) {
-    //                    remove.Add(val);
-    //                }
-    //                //setValueAtPoint(point, newValue(ref remove));
-    //            }
-    //        }
-    //    }
-    //    if (remove.Count > 0) {
-    //        return true;
-    //    }
-    //    else
-    //        return false;
-    //}
 
     private void matchAction(Point point) {
         Node node = getNodeAtPoint(point);

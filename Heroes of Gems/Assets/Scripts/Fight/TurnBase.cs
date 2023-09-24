@@ -6,7 +6,10 @@ public class TurnBase : MonoBehaviour {
     // Card Prefab - Border, Attack, Health, Armor icons
     public GameObject cardPrefab;
 
+    public GameObject turnPrefab;
+
     public Transform parentScene;
+    private GameObject turnArrowGO;
 
     private List<GameObject> playerTeam = new List<GameObject>();
     private List<GameObject> enemyTeam = new List<GameObject>();
@@ -25,29 +28,25 @@ public class TurnBase : MonoBehaviour {
     // Start is called before the first frame update
     private void Start() {
         FindObjectOfType<Match3>().attackTriggered += Combat;
+        //FindObjectOfType<Match3>().manaTriggered += Combat;
+        FindObjectOfType<Match3>().turnChangeTriggered += turnChange;
 
         SetUpTeam(true);
         SetUpTeam(false);
+
+        SetUpBoard();
     }
 
-    private void Update() {
-        //if (state != BattleState.WON && state != BattleState.LOST) {
-        if (Input.GetKeyDown(KeyCode.Space)) {
-            //Get
-
-            //        UnitController player = playerTeam[0].GetComponent<UnitController>();
-            //        UnitController enemy = enemyTeam[0].GetComponent<UnitController>();
-
-            //        if (state == BattleState.PLAYERTURN) {
-            //            player.Attack(enemy);
-            //            removeOnZero(enemy);
-            //        }
-            //        else if (state == BattleState.ENEMYTURN) {
-            //            enemy.Attack(player);
-            //            removeOnZero(player);
-            //        }
+    private void turnChange() {
+        state = BattleStateHandler.GetState();
+        if (state != BattleState.Won && state != BattleState.Lost) {
+            if (state == BattleState.WaitingForPlayer) {
+                turnArrowGO.transform.position = new Vector3(155, 680);
+            }
+            else if (state == BattleState.WaitingForEnemy) {
+                turnArrowGO.transform.position = new Vector3(1075, 680);
+            }
         }
-        //}
     }
 
     private void Combat() {
@@ -65,6 +64,17 @@ public class TurnBase : MonoBehaviour {
                 removeOnZero(player);
             }
         }
+    }
+
+    private void SetUpBoard() {
+        parentScene = GameObject.Find("GameCanvas").transform;
+
+        turnArrowGO = Instantiate(turnPrefab);
+
+        turnArrowGO.name = "TurnArrow";
+        turnArrowGO.transform.SetParent(parentScene.transform, false);
+        turnArrowGO.transform.position = new Vector3(155, 680);
+        turnArrowGO.transform.SetAsLastSibling();
     }
 
     // Setup the Card to the Board
