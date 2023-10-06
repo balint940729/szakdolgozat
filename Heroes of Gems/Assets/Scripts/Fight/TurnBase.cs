@@ -41,10 +41,10 @@ public class TurnBase : MonoBehaviour {
         state = BattleStateHandler.GetState();
         if (state != BattleState.Won && state != BattleState.Lost) {
             if (state == BattleState.WaitingForPlayer) {
-                turnArrowGO.transform.position = new Vector3(155, 680);
+                turnArrowGO.transform.position = new Vector3(155, 675);
             }
             else if (state == BattleState.WaitingForEnemy) {
-                turnArrowGO.transform.position = new Vector3(1075, 680);
+                turnArrowGO.transform.position = new Vector3(1075, 675);
             }
         }
     }
@@ -79,6 +79,7 @@ public class TurnBase : MonoBehaviour {
                 }
 
                 manaGained = extraMana;
+                extraMana = 0;
             }
         }
     }
@@ -107,7 +108,7 @@ public class TurnBase : MonoBehaviour {
 
         turnArrowGO.name = "TurnArrow";
         turnArrowGO.transform.SetParent(parentScene.transform, false);
-        turnArrowGO.transform.position = new Vector3(155, 680);
+        turnArrowGO.transform.position = new Vector3(155, 675);
         turnArrowGO.transform.SetAsLastSibling();
     }
 
@@ -132,6 +133,8 @@ public class TurnBase : MonoBehaviour {
                 UnitController cardUnitController = cardUnitGO.GetComponent<UnitController>();
 
                 cardUnitController.setUp(0);
+
+                SetUpUnitColor(isPlayerTeam, cardUnitController, i);
                 playerTeam.Add(cardUnitGO);
             }
             else {
@@ -150,9 +153,55 @@ public class TurnBase : MonoBehaviour {
                     cardUnitController.setUp(2);
                 }
 
+                SetUpUnitColor(isPlayerTeam, cardUnitController, i);
+
                 enemyTeam.Add(cardUnitGO);
             }
         }
+    }
+
+    private void SetUpUnitColor(bool isPlayerTeam, UnitController cardUnitController, int index) {
+        GameObject manaBGOriginal = GameObject.Find("ManaBG");
+        GameObject bgAll = GameObject.Find("BGImage");
+        string unitTeamName;
+
+        if (isPlayerTeam) {
+            unitTeamName = "Ally";
+        }
+        else {
+            unitTeamName = "Enemy";
+        }
+
+        bgAll.name = unitTeamName + "BGImage" + index;
+
+        int tempPrev = manaBGOriginal.transform.GetSiblingIndex();
+
+        for (int j = 0; j < cardUnitController.getColorsCount(); j++) {
+            GameObject manaBG = Instantiate(manaBGOriginal);
+            manaBGOriginal.name = unitTeamName + index + "WhiteBG";
+
+            tempPrev++;
+
+            manaBG.name = unitTeamName + index + "ManaBG" + j;
+            manaBG.transform.position = new Vector3(-74.0f, 70.0f);
+            manaBG.transform.SetParent(bgAll.transform, false);
+            manaBG.transform.SetSiblingIndex(tempPrev);
+
+            int temp = cardUnitController.getColorsCount() - (j + 1);
+
+            cardUnitController.setUpColors(manaBG, temp);
+
+            foreach (Transform child in manaBG.transform) {
+                Destroy(child.gameObject);
+            }
+
+            if (j == cardUnitController.getColorsCount() - 1) {
+                foreach (Transform child in manaBGOriginal.transform) {
+                    child.transform.SetParent(manaBG.transform, false);
+                }
+            }
+        }
+        Destroy(manaBGOriginal.gameObject);
     }
 
     private void removeOnZero(UnitController unit) {

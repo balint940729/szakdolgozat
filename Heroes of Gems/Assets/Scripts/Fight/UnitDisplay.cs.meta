@@ -3,7 +3,15 @@ guid: d264c873b996f784699b97b77f704e92
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - manaBGPrefab: {fileID: 6888263709856173929, guid: 7743f4ac798118b4f8ce48004ffa40c4,
+      type: 3}
+  - card: {instanceID: 0}
+  - health: {instanceID: 0}
+  - attack: {instanceID: 0}
+  - armor: {instanceID: 0}
+  - mana: {instanceID: 0}
+  - image: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class UnitController : MonoBehaviour {
@@ -9,6 +10,7 @@ public class UnitController : MonoBehaviour {
     private int armor;
     private int mana;
     private int maxMana;
+    private List<Colors> colors;
 
     // Start is called before the first frame update
     private void Awake() {
@@ -24,6 +26,17 @@ public class UnitController : MonoBehaviour {
         armor = unitCard.card.baseArmor;
         mana = unitCard.card.currentMana;
         maxMana = unitCard.card.maxMana;
+
+        colors = unitCard.card.colors;
+        //unitCard.setColors(colorGo);
+    }
+
+    public void setUpColors(GameObject colorBG, int index) {
+        unitCard.setColors(colorBG, index);
+    }
+
+    public int getColorsCount() {
+        return colors.Count;
     }
 
     public int GetHealth() {
