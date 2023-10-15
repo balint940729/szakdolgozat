@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class TurnBase : MonoBehaviour {
@@ -16,6 +17,9 @@ public class TurnBase : MonoBehaviour {
     private static TurnBase instance;
 
     private BattleState state;
+
+    private const string ally = "Ally";
+    private const string enemy = "Enemy";
 
     public static TurnBase GetInstance() {
         return instance;
@@ -37,6 +41,38 @@ public class TurnBase : MonoBehaviour {
         SetUpBoard();
     }
 
+    private void Update() {
+        if (Input.GetKeyDown(KeyCode.Space)) {
+            if (BattleStateHandler.GetState() != BattleState.Won && BattleStateHandler.GetState() != BattleState.Lost) {
+                UnitController player = playerTeam[0].GetComponent<UnitController>();
+                List<UnitController> targets = new List<UnitController>();
+                List<UnitController> allyTargets = new List<UnitController>();
+
+                if (player.name.Contains(ally)) {
+                    foreach (GameObject gameObject in playerTeam) {
+                        allyTargets.Add(gameObject.GetComponent<UnitController>());
+                    }
+
+                    foreach (GameObject gameObject in enemyTeam) {
+                        targets.Add(gameObject.GetComponent<UnitController>());
+                    }
+                }
+                else if (player.name.Contains(enemy)) {
+                    foreach (GameObject gameObject in enemyTeam) {
+                        allyTargets.Add(gameObject.GetComponent<UnitController>());
+                    }
+
+                    foreach (GameObject gameObject in playerTeam) {
+                        targets.Add(gameObject.GetComponent<UnitController>());
+                    }
+                }
+
+                player.castSpell(allyTargets, targets);
+                removeOnZero();
+            }
+        }
+    }
+
     private void turnChange() {
         state = BattleStateHandler.GetState();
         if (state != BattleState.Won && state != BattleState.Lost) {
@@ -49,11 +85,10 @@ public class TurnBase : MonoBehaviour {
         }
     }
 
-    private void gainMana() {
+    private void gainMana(int manaAmount, string color) {
         state = BattleStateHandler.GetState();
-        int manaAmount = 3;
 
-        if (state != BattleState.Won && state != BattleState.Lost) {
+        if ((state != BattleState.Won && state != BattleState.Lost) && color != null) {
             List<GameObject> team = playerTeam;
             int extraMana = 0;
             int manaGained = manaAmount;
@@ -72,14 +107,18 @@ public class TurnBase : MonoBehaviour {
                     continue;
                 }
 
-                extraMana += unitCntr.gainMana(manaGained);
+                List<Colors> unitColors = unitCntr.getColors();
 
-                if (extraMana == 0) {
-                    break;
+                if (unitColors.Find(Colors => Colors.colorName == color) != null) {
+                    extraMana += unitCntr.gainMana(manaGained);
+
+                    if (extraMana == 0) {
+                        break;
+                    }
+
+                    manaGained = extraMana;
+                    extraMana = 0;
                 }
-
-                manaGained = extraMana;
-                extraMana = 0;
             }
         }
     }
@@ -91,13 +130,12 @@ public class TurnBase : MonoBehaviour {
             UnitController enemy = enemyTeam[0].GetComponent<UnitController>();
 
             if (state == BattleState.PlayerTurn) {
-                player.Attack(enemy);
-                removeOnZero(enemy);
+                player.normalDamage(player.GetAttack(), enemy);
             }
             else if (state == BattleState.EnemyTurn) {
-                enemy.Attack(player);
-                removeOnZero(player);
+                enemy.normalDamage(enemy.GetAttack(), player);
             }
+            removeOnZero();
         }
     }
 
@@ -126,7 +164,7 @@ public class TurnBase : MonoBehaviour {
                 posX = -720;
                 posY = 405 - (i * 270);
 
-                cardUnitGO.name = "Ally" + i;
+                cardUnitGO.name = ally + i;
                 cardUnitGO.transform.position = new Vector3(posX, posY);
                 cardUnitGO.transform.SetParent(parentScene.transform, false);
 
@@ -140,7 +178,7 @@ public class TurnBase : MonoBehaviour {
             else {
                 posX = 720;
                 posY = 405 - (i * 270);
-                cardUnitGO.name = "Enemy" + i;
+                cardUnitGO.name = enemy + i;
                 cardUnitGO.transform.position = new Vector3(posX, posY);
                 cardUnitGO.transform.SetParent(parentScene.transform, false);
 
@@ -166,10 +204,10 @@ public class TurnBase : MonoBehaviour {
         string unitTeamName;
 
         if (isPlayerTeam) {
-            unitTeamName = "Ally";
+            unitTeamName = ally;
         }
         else {
-            unitTeamName = "Enemy";
+            unitTeamName = enemy;
         }
 
         bgAll.name = unitTeamName + "BGImage" + index;
@@ -204,18 +242,27 @@ public class TurnBase : MonoBehaviour {
         Destroy(manaBGOriginal.gameObject);
     }
 
-    private void removeOnZero(UnitController unit) {
-        int tempHealth = unit.GetHealth();
-        state = BattleStateHandler.GetState();
+    private void removeOnZero() {
+        List<GameObject> allUnits = new List<GameObject>();
 
-        if (tempHealth <= 0) {
-            if (state == BattleState.PlayerTurn) {
-                Destroy(enemyTeam[0]);
-                enemyTeam.Remove(enemyTeam[0]);
-            }
-            else if (state == BattleState.EnemyTurn) {
-                Destroy(playerTeam[0]);
-                playerTeam.Remove(playerTeam[0]);
+        allUnits = playerTeam.Concat(enemyTeam).ToList();
+
+        foreach (GameObject unitGO in allUnits) {
+            UnitController unit = unitGO.GetComponent<UnitController>();
+
+            int tempHealth = unit.GetHealth();
+            state = BattleStateHandler.GetState();
+
+            if (tempHealth <= 0) {
+                if (state != BattleState.Won && state != BattleState.Lost) {
+                    if (unitGO.name.Contains(ally)) {
+                        playerTeam.Remove(unitGO);
+                    }
+                    else if (unitGO.name.Contains(enemy)) {
+                        enemyTeam.Remove(unitGO);
+                    }
+                    Destroy(unitGO);
+                }
             }
         }
 
@@ -225,11 +272,9 @@ public class TurnBase : MonoBehaviour {
     private void checkGameResult() {
         if (enemyTeam.Count == 0) {
             BattleStateHandler.setState(BattleState.Won);
-            //state = BattleState.WON;
         }
         else if (playerTeam.Count == 0) {
             BattleStateHandler.setState(BattleState.Lost);
-            //state = BattleState.LOST;
         }
     }
 

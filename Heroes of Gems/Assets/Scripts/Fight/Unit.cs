@@ -20,4 +20,6 @@ public class Unit : ScriptableObject {
     public Sprite image;
 
     public List<Colors> colors;
+
+    public SpellBase spell;
 }

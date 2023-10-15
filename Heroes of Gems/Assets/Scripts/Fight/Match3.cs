@@ -23,7 +23,7 @@ public class Match3 : MonoBehaviour {
 
     public event System.Action attackTriggered;
 
-    public event System.Action gainManaTriggered;
+    public event System.Action<int, string> gainManaTriggered;
 
     public event System.Action turnChangeTriggered;
 
@@ -267,9 +267,9 @@ public class Match3 : MonoBehaviour {
             }
         }
 
-        for (int i = 0; i < 3; i += 2) //Checking if we are in the edge
-        {
-            if (BattleStateHandler.GetState() != BattleState.Start) {
+        if (BattleStateHandler.GetState() != BattleState.Start && !extraTurn) {
+            for (int i = 0; i < 3; i += 2) //Checking if we are in the edge
+            {
                 int same = 0;
                 int same2 = 0;
                 Point[] checkEdge = {
@@ -287,20 +287,59 @@ public class Match3 : MonoBehaviour {
                 };
 
                 foreach (Point next in checkEdge) {
-                    if (getValueAtPoint(next) == val) {
+                    if (getValueAtPoint(next) == val)
                         same++;
-                    }
                 }
 
                 foreach (Point next in checkEdge2) {
-                    if (getValueAtPoint(next) == val) {
+                    if (getValueAtPoint(next) == val)
                         same2++;
-                    }
                 }
 
                 if (same == 4 || same2 == 4) {
-                    //Debug.Log("extra turn");
                     extraTurn = true;
+                }
+            }
+
+            if (!extraTurn) {
+                for (int i = 0; i < 2; i++) //Checking if we are in T shape
+                {
+                    int same = 0;
+                    int same2 = 0;
+
+                    //Only 4 directions are in the array
+                    int tempDir = 3;
+                    if (i + 3 > 3) {
+                        tempDir = 0;
+                    }
+
+                    Point[] checkTShape = {
+                        Point.add(point, directions[i]),
+                        Point.add(point, Point.mul(directions[i], 2)),
+                        Point.add(point, directions[i+1]),
+                        Point.add(point, directions[tempDir]),
+                    };
+
+                    Point[] checkTShape2 = {
+                        Point.add(point, directions[i+2]),
+                        Point.add(point, Point.mul(directions[i+2], 2)),
+                        Point.add(point, directions[i+1]),
+                        Point.add(point, directions[tempDir]),
+                    };
+
+                    foreach (Point next in checkTShape) {
+                        if (getValueAtPoint(next) == val)
+                            same++;
+                    }
+
+                    foreach (Point next in checkTShape2) {
+                        if (getValueAtPoint(next) == val)
+                            same2++;
+                    }
+
+                    if (same == 4 || same2 == 4) {
+                        extraTurn = true;
+                    }
                 }
             }
         }
@@ -342,7 +381,7 @@ public class Match3 : MonoBehaviour {
     private void Update() {
         List<NodePiece> finishedUpdating = new List<NodePiece>();
         List<Point> connected = new List<Point>();
-        //if (BattleStateHandler.GetState() == BattleState.WaitingForPlayer || BattleStateHandler.GetState() == BattleState.WaitingForEnemy) {
+
         for (int i = 0; i < update.Count; i++) {
             NodePiece piece = update[i];
             if (!piece.updatePiece())
@@ -384,9 +423,9 @@ public class Match3 : MonoBehaviour {
                     }
                 }
 
-                matchAction(connected[0]);
+                matchAction(connected);
 
-                foreach (Point pnt in connected) //Összekapcsoltakat kivesszük
+                foreach (Point pnt in connected) // Remove the connected ones
                 {
                     Node node = getNodeAtPoint(pnt);
                     NodePiece nodePiece = node.getPiece();
@@ -403,7 +442,6 @@ public class Match3 : MonoBehaviour {
             flipped.Remove(flip);
             update.Remove(piece);
         }
-        //}
     }
 
     private void LateUpdate() {
@@ -422,23 +460,82 @@ public class Match3 : MonoBehaviour {
         }
     }
 
-    private void matchAction(Point point) {
-        Node node = getNodeAtPoint(point);
-        NodePiece nodePiece = node.getPiece();
-        int pieceValue = nodePiece.GetValue();
+    private void matchAction(List<Point> points) {
+        List<MatchedGem> matchGems = new List<MatchedGem>();
+        MatchedGem gem;
 
-        if (pieceValue == 1) {
-            if (BattleStateHandler.GetState() == BattleState.WaitingForPlayer) {
-                BattleStateHandler.setState(BattleState.PlayerTurn);
+        foreach (Point point in points) {
+            Node node = getNodeAtPoint(point);
+            NodePiece nodePiece = node.getPiece();
+            int pieceValue = nodePiece.GetValue();
+
+            if (matchGems.Find(MatchGems => MatchGems.colorCode == pieceValue) == null) {
+                gem = new MatchedGem(1, pieceValue);
+                matchGems.Add(gem);
             }
-            else if (BattleStateHandler.GetState() == BattleState.WaitingForEnemy) {
-                BattleStateHandler.setState(BattleState.EnemyTurn);
+            else {
+                gem = matchGems.Find(MatchGems => MatchGems.colorCode == pieceValue);
+                gem.increaseCount();
             }
-            attackTriggered?.Invoke();
         }
 
-        if (pieceValue > 1) {
-            gainManaTriggered?.Invoke();
+        foreach (MatchedGem matchedGem in matchGems) {
+            if (matchedGem.colorCode == 1) {
+                if (BattleStateHandler.GetState() == BattleState.WaitingForPlayer) {
+                    BattleStateHandler.setState(BattleState.PlayerTurn);
+                }
+                else if (BattleStateHandler.GetState() == BattleState.WaitingForEnemy) {
+                    BattleStateHandler.setState(BattleState.EnemyTurn);
+                }
+                attackTriggered?.Invoke();
+            }
+
+            if (matchedGem.colorCode > 1) {
+                string color = null;
+                int manaGain = 0;
+
+                switch (matchedGem.colorCode) {
+                    case 2:
+                        color = "Purple";
+                        break;
+
+                    case 3:
+                        color = "Green";
+                        break;
+
+                    case 4:
+                        color = "Red";
+                        break;
+
+                    case 5:
+                        color = "Blue";
+                        break;
+
+                    case 6:
+                        color = "Yellow";
+                        break;
+
+                    case 7:
+                        color = "Brown";
+                        break;
+
+                    default:
+                        color = null;
+                        break;
+                }
+
+                if (matchedGem.count >= 5) {
+                    manaGain = 5;
+                }
+                else if (matchedGem.count == 4) {
+                    manaGain = 4;
+                }
+                else {
+                    manaGain = 3;
+                }
+
+                gainManaTriggered?.Invoke(manaGain, color);
+            }
         }
     }
 
@@ -467,12 +564,26 @@ public class Match3 : MonoBehaviour {
     public Vector2 getPositionFromPoint(Point point) {
         return new Vector2(64 + (130 * point.x), -64 - (136 * point.y));
     }
+
+    private class MatchedGem {
+        public int count { get; set; }
+        public int colorCode { get; set; }
+
+        public MatchedGem(int count, int colorCode) {
+            this.count = count;
+            this.colorCode = colorCode;
+        }
+
+        public void increaseCount() {
+            count++;
+        }
+    }
 }
 
 [System.Serializable]
 public class Node {
 
-    //0 = üres, 1 = skull, 2 = amethyst, 3 = emerald, 4 = sapphire, 5 = ruby, 6 = topaz, 7 = turmaline, -1 = hole
+    //0 = üres, 1 = skull, 2 = amethyst, 3 = emerald, 4 = ruby, 5 = sapphire, 6 = topaz, 7 = turmaline, -1 = hole
     public int value; //Az adott mezőn található Gem értéke
 
     public Point index;
