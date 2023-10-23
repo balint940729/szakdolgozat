@@ -16,10 +16,11 @@ MonoBehaviour:
   baseHealth: 20
   baseAttack: 6
   baseArmor: 10
-  maxMana: 12
+  maxMana: 4
   currentMana: 0
   baseSpellDamage: 5
   image: {fileID: 21300000, guid: 4bc86a46290b95e46a4069755b8ad52f, type: 3}
   colors:
   - {fileID: 11400000, guid: 02914e36603c40b488f99963102723bc, type: 2}
   - {fileID: 11400000, guid: 211a02be994cd0c42911b2d973046802, type: 2}
+  spell: {fileID: 11400000, guid: bbb48b2143c229f428b78ddcffb98f8d, type: 2}

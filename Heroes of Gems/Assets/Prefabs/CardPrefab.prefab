@@ -239,8 +239,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d264c873b996f784699b97b77f704e92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  manaBGPrefab: {fileID: 6888263709856173929, guid: 7743f4ac798118b4f8ce48004ffa40c4,
-    type: 3}
   card: {fileID: 0}
   health: {fileID: 4815057450696934254}
   attack: {fileID: 4815057450389854014}
@@ -715,7 +713,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -2.4, y: 1.63}
+  m_AnchoredPosition: {x: -0.0000061989, y: -0.0000048876}
   m_SizeDelta: {x: 240, y: 237.57486}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4815057450446091551

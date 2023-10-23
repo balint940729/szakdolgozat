@@ -1,25 +1,36 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.UI;
+using TMPro;
 
 public class TurnBase : MonoBehaviour {
 
     // Card Prefab - Border, Attack, Health, Armor icons
     public GameObject cardPrefab;
 
+    public GameObject spellPrefab;
+    public GameObject buttonPrefab;
     public GameObject turnPrefab;
 
-    public Transform parentScene;
+    private Transform parentScene;
     private GameObject turnArrowGO;
 
     private List<GameObject> playerTeam = new List<GameObject>();
+    private List<GameObject> playerTeamSpells = new List<GameObject>();
     private List<GameObject> enemyTeam = new List<GameObject>();
+    private List<GameObject> enemyTeamSpells = new List<GameObject>();
+    private List<GameObject> castButtons = new List<GameObject>();
     private static TurnBase instance;
 
     private BattleState state;
 
     private const string ally = "Ally";
     private const string enemy = "Enemy";
+
+    private float arrowX;
+    private float arrowY;
 
     public static TurnBase GetInstance() {
         return instance;
@@ -33,7 +44,12 @@ public class TurnBase : MonoBehaviour {
     private void Start() {
         FindObjectOfType<Match3>().attackTriggered += Combat;
         FindObjectOfType<Match3>().gainManaTriggered += gainMana;
-        FindObjectOfType<Match3>().turnChangeTriggered += turnChange;
+        FindObjectOfType<Match3>().turnChangeTriggered += TurnChange;
+
+        arrowX = (Screen.width * 11.5f / 100);
+        arrowY = (Screen.height * 98 / 100);
+
+        parentScene = GameObject.Find("GameCanvas").transform;
 
         SetUpTeam(true);
         SetUpTeam(false);
@@ -41,46 +57,89 @@ public class TurnBase : MonoBehaviour {
         SetUpBoard();
     }
 
-    private void Update() {
-        if (Input.GetKeyDown(KeyCode.Space)) {
-            if (BattleStateHandler.GetState() != BattleState.Won && BattleStateHandler.GetState() != BattleState.Lost) {
-                UnitController player = playerTeam[0].GetComponent<UnitController>();
-                List<UnitController> targets = new List<UnitController>();
-                List<UnitController> allyTargets = new List<UnitController>();
+    //private void Update() {
+    //    if (Input.GetKeyDown(KeyCode.Space)) {
+    //    }
+    //}
 
-                if (player.name.Contains(ally)) {
-                    foreach (GameObject gameObject in playerTeam) {
-                        allyTargets.Add(gameObject.GetComponent<UnitController>());
-                    }
+    private void SpellDisplay(string spellName) {
+        GameObject displayedSpell = playerTeamSpells.Where(obj => obj.name == spellName).SingleOrDefault();
+        if (displayedSpell == null) {
+            displayedSpell = enemyTeamSpells.Where(obj => obj.name == spellName).SingleOrDefault();
+        }
 
-                    foreach (GameObject gameObject in enemyTeam) {
-                        targets.Add(gameObject.GetComponent<UnitController>());
-                    }
-                }
-                else if (player.name.Contains(enemy)) {
-                    foreach (GameObject gameObject in enemyTeam) {
-                        allyTargets.Add(gameObject.GetComponent<UnitController>());
-                    }
+        string unitName = spellName.Replace("Spell", "");
 
-                    foreach (GameObject gameObject in playerTeam) {
-                        targets.Add(gameObject.GetComponent<UnitController>());
-                    }
-                }
+        GameObject displayedUnit = playerTeam.Where(obj => obj.name == unitName).SingleOrDefault();
+        if (displayedUnit == null) {
+            displayedUnit = enemyTeam.Where(obj => obj.name == unitName).SingleOrDefault();
+        }
 
-                player.castSpell(allyTargets, targets);
-                removeOnZero();
+        if (displayedSpell != null && displayedUnit != null) {
+            GameObject castButton = castButtons.Where(obj => obj.name.Contains(unitName)).SingleOrDefault();
+            UnitController unit = displayedUnit.GetComponent<UnitController>();
+
+            BattleState state = (unitName.Contains(ally)) ? BattleState.WaitingForPlayer : BattleState.WaitingForEnemy;
+
+            if (unit.isOnFullMana() && BattleStateHandler.GetState() == state) {
+                castButton.GetComponent<Button>().interactable = true;
             }
+            else {
+                castButton.GetComponent<Button>().interactable = false;
+            }
+
+            SpellController.ShowSpell(displayedSpell, displayedUnit);
         }
     }
 
-    private void turnChange() {
+    public void CastSpell(UnitController player) {
+        if (BattleStateHandler.GetState() != BattleState.Won && BattleStateHandler.GetState() != BattleState.Lost) {
+            List<UnitController> targets = new List<UnitController>();
+            List<UnitController> allyTargets = new List<UnitController>();
+
+            if (player.name.Contains(ally)) {
+                foreach (GameObject gameObject in playerTeam) {
+                    allyTargets.Add(gameObject.GetComponent<UnitController>());
+                }
+
+                foreach (GameObject gameObject in enemyTeam) {
+                    targets.Add(gameObject.GetComponent<UnitController>());
+                }
+            }
+            else if (player.name.Contains(enemy)) {
+                foreach (GameObject gameObject in enemyTeam) {
+                    allyTargets.Add(gameObject.GetComponent<UnitController>());
+                }
+
+                foreach (GameObject gameObject in playerTeam) {
+                    targets.Add(gameObject.GetComponent<UnitController>());
+                }
+            }
+
+            bool isSpellCasted = player.castSpell(allyTargets, targets);
+            if (isSpellCasted) {
+                if (BattleStateHandler.GetState() == BattleState.PlayerTurn) {
+                    BattleStateHandler.setState(BattleState.WaitingForEnemy);
+                }
+                else if (BattleStateHandler.GetState() == BattleState.EnemyTurn) {
+                    BattleStateHandler.setState(BattleState.WaitingForPlayer);
+                }
+                TurnChange();
+            }
+            removeOnZero();
+        }
+    }
+
+    private void TurnChange() {
         state = BattleStateHandler.GetState();
         if (state != BattleState.Won && state != BattleState.Lost) {
             if (state == BattleState.WaitingForPlayer) {
-                turnArrowGO.transform.position = new Vector3(155, 675);
+                arrowX = (Screen.width * 11.5f / 100);
+                turnArrowGO.transform.position = new Vector3(arrowX, arrowY);
             }
             else if (state == BattleState.WaitingForEnemy) {
-                turnArrowGO.transform.position = new Vector3(1075, 675);
+                arrowX = (Screen.width * 88.5f / 100);
+                turnArrowGO.transform.position = new Vector3(arrowX, arrowY);
             }
         }
     }
@@ -140,62 +199,84 @@ public class TurnBase : MonoBehaviour {
     }
 
     private void SetUpBoard() {
-        parentScene = GameObject.Find("GameCanvas").transform;
-
         turnArrowGO = Instantiate(turnPrefab);
 
         turnArrowGO.name = "TurnArrow";
         turnArrowGO.transform.SetParent(parentScene.transform, false);
-        turnArrowGO.transform.position = new Vector3(155, 675);
+
+        turnArrowGO.transform.position = new Vector3(arrowX, arrowY);
         turnArrowGO.transform.SetAsLastSibling();
     }
 
     // Setup the Card to the Board
     private void SetUpTeam(bool isPlayerTeam) {
-        float posX;
-        float posY;
-
-        parentScene = GameObject.Find("GameCanvas").transform;
-
-        for (int i = 0; i < 4; i++) {
-            GameObject cardUnitGO = Instantiate(cardPrefab);
-
-            if (isPlayerTeam) {
-                posX = -720;
-                posY = 405 - (i * 270);
-
-                cardUnitGO.name = ally + i;
-                cardUnitGO.transform.position = new Vector3(posX, posY);
-                cardUnitGO.transform.SetParent(parentScene.transform, false);
-
-                UnitController cardUnitController = cardUnitGO.GetComponent<UnitController>();
-
-                cardUnitController.setUp(0);
-
-                SetUpUnitColor(isPlayerTeam, cardUnitController, i);
-                playerTeam.Add(cardUnitGO);
-            }
-            else {
-                posX = 720;
-                posY = 405 - (i * 270);
-                cardUnitGO.name = enemy + i;
-                cardUnitGO.transform.position = new Vector3(posX, posY);
-                cardUnitGO.transform.SetParent(parentScene.transform, false);
-
-                UnitController cardUnitController = cardUnitGO.GetComponent<UnitController>();
-
-                if (i == 1) {
-                    cardUnitController.setUp(1);
-                }
-                else {
-                    cardUnitController.setUp(2);
-                }
-
-                SetUpUnitColor(isPlayerTeam, cardUnitController, i);
-
-                enemyTeam.Add(cardUnitGO);
-            }
+        int[] tempTeamList;
+        if (isPlayerTeam) {
+            tempTeamList = new int[] { 0, 0, 1, 2 };
         }
+        else {
+            tempTeamList = new int[] { 1, 2, 1, 1 };
+        }
+        for (int i = 0; i < 4; i++) {
+            SetUpUnit(isPlayerTeam, i, tempTeamList[i]);
+        }
+    }
+
+    private void SetUpUnit(bool isPlayerTeam, int index, int cardID) {
+        GameObject cardUnitGO = Instantiate(cardPrefab);
+        GameObject spellGO = Instantiate(spellPrefab);
+
+        float cardPos = (isPlayerTeam) ? 11.5f : 88.5f;
+        string teamName = (isPlayerTeam) ? ally : enemy;
+
+        float cardX = (Screen.width * cardPos / 100);
+        float cardY = (Screen.height * (87.5f - index * 25) / 100);
+
+        cardUnitGO.name = teamName + index;
+        cardUnitGO.transform.SetParent(parentScene.transform, false);
+        cardUnitGO.transform.position = new Vector3(cardX, cardY);
+
+        spellGO.name = teamName + index + "Spell";
+        spellGO.transform.SetParent(parentScene.transform, false);
+        spellGO.transform.position = new Vector3(Screen.width / 2, Screen.height / 2);
+        spellGO.transform.localScale = new Vector3(3.0f, 3.0f, 0);
+
+        Vector3 castButtonPosition = new Vector3(spellGO.transform.position.x + 135, spellGO.transform.position.y - 190);
+        Vector3 cancelButtonPosition = new Vector3(spellGO.transform.position.x - 135, spellGO.transform.position.y - 190);
+
+        GameObject castButton = CreateButton(teamName + index + "CastButton", "Cast", spellGO, castButtonPosition);
+        castButton.GetComponent<Button>().onClick.AddListener(castButton.GetComponent<SpellController>().CastSpell);
+        castButtons.Add(castButton);
+
+        GameObject cancelButton = CreateButton(teamName + index + "CancelButton", "Cancel", spellGO, cancelButtonPosition);
+        cancelButton.GetComponent<Button>().onClick.AddListener(SpellController.CloseSpell);
+
+        UnitController cardUnitController = cardUnitGO.GetComponent<UnitController>();
+
+        cardUnitController.setUp(cardID, spellGO);
+
+        SetUpUnitColor(isPlayerTeam, cardUnitController, index);
+
+        if (isPlayerTeam) {
+            playerTeam.Add(cardUnitGO);
+            playerTeamSpells.Add(spellGO);
+        }
+        else {
+            enemyTeam.Add(cardUnitGO);
+            enemyTeamSpells.Add(spellGO);
+        }
+
+        spellGO.SetActive(false);
+        FindObjectOfType<UnitController>().onSpellDisplay += SpellDisplay;
+    }
+
+    private GameObject CreateButton(string buttonName, string buttonText, GameObject parent, Vector3 position) {
+        GameObject buttonGO = Instantiate(buttonPrefab);
+        buttonGO.name = buttonName;
+        buttonGO.transform.SetParent(parent.transform.GetChild(0), false);
+        buttonGO.transform.position = position;
+        buttonGO.GetComponentInChildren<TMP_Text>().text = buttonText;
+        return buttonGO;
     }
 
     private void SetUpUnitColor(bool isPlayerTeam, UnitController cardUnitController, int index) {
@@ -243,9 +324,7 @@ public class TurnBase : MonoBehaviour {
     }
 
     private void removeOnZero() {
-        List<GameObject> allUnits = new List<GameObject>();
-
-        allUnits = playerTeam.Concat(enemyTeam).ToList();
+        List<GameObject> allUnits = playerTeam.Concat(enemyTeam).ToList();
 
         foreach (GameObject unitGO in allUnits) {
             UnitController unit = unitGO.GetComponent<UnitController>();

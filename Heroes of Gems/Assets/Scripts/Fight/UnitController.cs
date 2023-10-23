@@ -1,11 +1,19 @@
 ﻿using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class UnitController : MonoBehaviour {
+public class UnitController : MonoBehaviour, IPointerClickHandler {
     private UnitDisplay unitCard;
+    private SpellDisplay spellCard;
     private string folderPath = "Assets/Sprites/Cards";
+
+    public event System.Action<string> onSpellDisplay;
+
+    private string spellFolderPath = "Assets/Sprites/Spells";
     private string[] assetGuids;
+    private string[] spellAssetGuids;
+
     private int health;
     private int armor;
     private int attack;
@@ -15,15 +23,22 @@ public class UnitController : MonoBehaviour {
     private List<Colors> colors;
     private SpellBase spell;
 
-    // Start is called before the first frame update
     private void Awake() {
         unitCard = GetComponent<UnitDisplay>();
+        spellCard = GetComponent<SpellDisplay>();
         assetGuids = AssetDatabase.FindAssets("t:Unit", new string[] { folderPath });
     }
 
-    public void setUp(int cardID) {
+    public void setUp(int cardID, GameObject spellGO) {
         string assetPath = AssetDatabase.GUIDToAssetPath(assetGuids[cardID]);
         unitCard.card = AssetDatabase.LoadAssetAtPath<Unit>(assetPath);
+
+        string typeSpell = "t:" + unitCard.card.name + "Spell";
+        spellAssetGuids = AssetDatabase.FindAssets(typeSpell, new string[] { spellFolderPath });
+
+        string spellAssetPath = AssetDatabase.GUIDToAssetPath(spellAssetGuids[0]);
+        spellCard = spellGO.GetComponent<SpellDisplay>();
+        spellCard.spell = AssetDatabase.LoadAssetAtPath<SpellBase>(spellAssetPath);
 
         health = unitCard.card.baseHealth;
         armor = unitCard.card.baseArmor;
@@ -34,14 +49,33 @@ public class UnitController : MonoBehaviour {
 
         colors = unitCard.card.colors;
         spell = unitCard.card.spell;
-        //unitCard.setColors(colorGo);
+        spell.ChangeSpellDescription(spellDamage);
     }
 
-    public void castSpell(List<UnitController> allyTargets, List<UnitController> targets) {
-        spell.setCaster(this);
-        spell.setEnemyTargets(targets);
-        spell.setPlayerTargets(allyTargets);
-        spell.InitializeSpell();
+    public void OnPointerClick(PointerEventData eventData) {
+        onSpellDisplay?.Invoke(spellCard.name);
+    }
+
+    public bool castSpell(List<UnitController> allyTargets, List<UnitController> targets) {
+        if (mana == maxMana) {
+            if (BattleStateHandler.GetState() == BattleState.WaitingForPlayer) {
+                BattleStateHandler.setState(BattleState.PlayerTurn);
+            }
+            else if (BattleStateHandler.GetState() == BattleState.WaitingForEnemy) {
+                BattleStateHandler.setState(BattleState.EnemyTurn);
+            }
+            spell.setCaster(this);
+            spell.setEnemyTargets(targets);
+            spell.setPlayerTargets(allyTargets);
+            spell.InitializeSpell();
+
+            mana = 0;
+            unitCard.setMana(mana);
+            SpellController.CloseSpell();
+            return true;
+        }
+
+        return false;
     }
 
     public void setUpColors(GameObject colorBG, int index) {

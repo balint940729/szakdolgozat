@@ -180,7 +180,7 @@ public class Match3 : MonoBehaviour {
         return board[point.x, point.y];
     }
 
-    private int newValue(ref List<int> remove) // Kivesszük az értéket és helyette teszünk bele egy másikat, úgy hogy az ne legyen ütközés az ellőzővel
+    private int newValue(ref List<int> remove) // Remove the value and change to different one
     {
         List<int> available = new List<int>();
         for (int i = 0; i < pieces.Length; i++)
