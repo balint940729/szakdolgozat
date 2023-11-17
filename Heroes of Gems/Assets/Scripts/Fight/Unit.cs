@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
+public enum Race { Human, Dwarf, Beast };
+
 [CreateAssetMenu(fileName = "New Card", menuName = "Card")]
 [System.Serializable]
 public class Unit : ScriptableObject {
@@ -22,4 +24,6 @@ public class Unit : ScriptableObject {
     public List<Colors> colors;
 
     public SpellBase spell;
+
+    public Race race;
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
@@ -22,6 +23,7 @@ public class TurnBase : MonoBehaviour {
     private List<GameObject> enemyTeam = new List<GameObject>();
     private List<GameObject> enemyTeamSpells = new List<GameObject>();
     private List<GameObject> castButtons = new List<GameObject>();
+    private List<UnitController> spellTargets = new List<UnitController>();
     private static TurnBase instance;
 
     private BattleState state;
@@ -54,6 +56,9 @@ public class TurnBase : MonoBehaviour {
         SetUpTeam(true);
         SetUpTeam(false);
 
+        CheckStatBonuses(playerTeam);
+        CheckStatBonuses(enemyTeam);
+
         SetUpBoard();
     }
 
@@ -61,6 +66,54 @@ public class TurnBase : MonoBehaviour {
     //    if (Input.GetKeyDown(KeyCode.Space)) {
     //    }
     //}
+
+    private void CheckStatBonuses(List<GameObject> team) {
+        int humans = 0;
+        int dwarfs = 0;
+        int beasts = 0;
+        foreach (GameObject unitGO in team) {
+            UnitController unit = unitGO.GetComponent<UnitController>();
+
+            switch (unit.GetRace()) {
+                case Race.Human:
+                    humans++;
+                    break;
+
+                case Race.Dwarf:
+                    dwarfs++;
+                    break;
+
+                case Race.Beast:
+                    beasts++;
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
+        foreach (GameObject unitGO in team) {
+            UnitController unit = unitGO.GetComponent<UnitController>();
+
+            switch (unit.GetRace()) {
+                case Race.Human:
+                    unit.GainStats(humans <= 1 ? 0 : humans * 5, humans <= 1 ? 0 : humans * 5);
+                    break;
+
+                case Race.Dwarf:
+                    unit.GainArmor(dwarfs <= 1 ? 0 : dwarfs * 8);
+                    break;
+
+                case Race.Beast:
+                    unit.GainAttack(beasts <= 1 ? 0 : beasts * 10);
+                    unit.GainSpellDamage(beasts <= 1 ? 0 : beasts * 10);
+                    break;
+
+                default:
+                    break;
+            }
+        }
+    }
 
     private void SpellDisplay(string spellName) {
         GameObject displayedSpell = playerTeamSpells.Where(obj => obj.name == spellName).SingleOrDefault();
@@ -94,29 +147,28 @@ public class TurnBase : MonoBehaviour {
 
     public void CastSpell(UnitController player) {
         if (BattleStateHandler.GetState() != BattleState.Won && BattleStateHandler.GetState() != BattleState.Lost) {
-            List<UnitController> targets = new List<UnitController>();
-            List<UnitController> allyTargets = new List<UnitController>();
+            //List<UnitController> targets = SelectTarget(player.name);
+            //List<UnitController> allyTargets = SelectTarget(player.name);
+            //if (player.name.Contains(ally)) {
+            //    foreach (GameObject gameObject in playerTeam) {
+            //        allyTargets.Add(gameObject.GetComponent<UnitController>());
+            //    }
 
-            if (player.name.Contains(ally)) {
-                foreach (GameObject gameObject in playerTeam) {
-                    allyTargets.Add(gameObject.GetComponent<UnitController>());
-                }
+            //    foreach (GameObject gameObject in enemyTeam) {
+            //        targets.Add(gameObject.GetComponent<UnitController>());
+            //    }
+            //}
+            //else if (player.name.Contains(enemy)) {
+            //    foreach (GameObject gameObject in enemyTeam) {
+            //        allyTargets.Add(gameObject.GetComponent<UnitController>());
+            //    }
 
-                foreach (GameObject gameObject in enemyTeam) {
-                    targets.Add(gameObject.GetComponent<UnitController>());
-                }
-            }
-            else if (player.name.Contains(enemy)) {
-                foreach (GameObject gameObject in enemyTeam) {
-                    allyTargets.Add(gameObject.GetComponent<UnitController>());
-                }
+            //    foreach (GameObject gameObject in playerTeam) {
+            //        targets.Add(gameObject.GetComponent<UnitController>());
+            //    }
+            //}
 
-                foreach (GameObject gameObject in playerTeam) {
-                    targets.Add(gameObject.GetComponent<UnitController>());
-                }
-            }
-
-            bool isSpellCasted = player.castSpell(allyTargets, targets);
+            bool isSpellCasted = player.castSpell(spellTargets);
             if (isSpellCasted) {
                 if (BattleStateHandler.GetState() == BattleState.PlayerTurn) {
                     BattleStateHandler.setState(BattleState.WaitingForEnemy);
@@ -128,6 +180,12 @@ public class TurnBase : MonoBehaviour {
             }
             removeOnZero();
         }
+    }
+
+    public void SelectTarget() {
+        Debug.Log("Select Target");
+        //spellTargets.Add(selectedUnit);
+        //yield return new WaitUntil(spellTargets.Add(selectedUnit));
     }
 
     private void TurnChange() {
@@ -237,9 +295,14 @@ public class TurnBase : MonoBehaviour {
         cardUnitGO.transform.position = new Vector3(cardX, cardY);
 
         spellGO.name = teamName + index + "Spell";
-        spellGO.transform.SetParent(parentScene.transform, false);
+        spellGO.transform.SetParent(cardUnitGO.transform, false);
         spellGO.transform.position = new Vector3(Screen.width / 2, Screen.height / 2);
-        spellGO.transform.localScale = new Vector3(3.0f, 3.0f, 0);
+        spellGO.transform.localScale = new Vector3(3.0f, 3.0f, 3.0f);
+
+        //RectTransform tr = (RectTransform)spellGO.transform;
+        //Vector3 asd = spellGO.transform.;
+        //float spellGOWidth = spellGO.transform.localScale.x * spellGO.transform.lossyScale.x * 3.0f;
+        //float spellGOHeight = spellGO.transform.localScale.x * spellGO.transform.lossyScale.y * 3.0f;
 
         Vector3 castButtonPosition = new Vector3(spellGO.transform.position.x + 135, spellGO.transform.position.y - 190);
         Vector3 cancelButtonPosition = new Vector3(spellGO.transform.position.x - 135, spellGO.transform.position.y - 190);
@@ -268,6 +331,7 @@ public class TurnBase : MonoBehaviour {
 
         spellGO.SetActive(false);
         FindObjectOfType<UnitController>().onSpellDisplay += SpellDisplay;
+        //FindObjectOfType<UnitController>().onTargetSelection += SelectTarget;
     }
 
     private GameObject CreateButton(string buttonName, string buttonText, GameObject parent, Vector3 position) {

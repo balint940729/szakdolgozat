@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: DogSpell
   m_EditorClassIdentifier: Assembly-CSharp::DogSpell
   spellName: Bite
-  spellDescription: Deal &X damage to the last enemy.
+  spellDescription: Deal 5 damage to the first enemy
   spellImage: {fileID: 21300000, guid: 63b30c77b2de31d4398b65d935f4713c, type: 3}

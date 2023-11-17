@@ -12,23 +12,16 @@ public class UnitDisplay : MonoBehaviour {
 
     public Image image;
 
+    private bool isTextChanged = false;
+
     // Start is called before the first frame update
     private void Start() {
-        health.text = card.baseHealth.ToString();
-        attack.text = card.baseAttack.ToString();
-        armor.text = card.baseArmor.ToString();
-        mana.text = card.currentMana.ToString() + "/" + card.maxMana.ToString();
+        //health.text = card.baseHealth.ToString();
+        //attack.text = card.baseAttack.ToString();
+        //armor.text = card.baseArmor.ToString();
+        //mana.text = card.currentMana.ToString() + "/" + card.maxMana.ToString();
 
         image.sprite = card.image;
-    }
-
-    public void setHealth(int newHealth, int newArmor) {
-        health.text = newHealth.ToString();
-        armor.text = newArmor.ToString();
-    }
-
-    public void setMana(int newCurrentMana) {
-        mana.text = newCurrentMana.ToString() + "/" + card.maxMana.ToString();
     }
 
     public void setColors(GameObject manaGO, int index) {
@@ -40,5 +33,40 @@ public class UnitDisplay : MonoBehaviour {
         manaImage.fillClockwise = true;
         manaImage.fillOrigin = (int)Image.Origin360.Top;
         manaImage.color = card.colors[index].color;
+    }
+
+    public void SetStats(int newHealth, int newArmor, int newAttack, int newMana) {
+        health.text = newHealth.ToString();
+        attack.text = newAttack.ToString();
+        armor.text = newArmor.ToString();
+        mana.text = newMana.ToString() + "/" + card.maxMana.ToString();
+    }
+
+    public void SetStats(int newHealth, int newArmor, int newAttack) {
+        health.text = newHealth.ToString();
+        armor.text = newArmor.ToString();
+        attack.text = newAttack.ToString();
+    }
+
+    public void SetStats(int newHealth, int newArmor) {
+        health.text = newHealth.ToString();
+        armor.text = newArmor.ToString();
+    }
+
+    public void SetHealth(int newHealth) {
+        health.text = newHealth.ToString();
+    }
+
+    public void SetArmor(int newArmor) {
+        armor.text = newArmor.ToString();
+    }
+
+    public void SetAttack(int newAttack) {
+        attack.text = newAttack.ToString();
+        isTextChanged = true;
+    }
+
+    public void SetMana(int newCurrentMana) {
+        mana.text = newCurrentMana.ToString() + "/" + card.maxMana.ToString();
     }
 }

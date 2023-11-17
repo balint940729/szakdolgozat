@@ -10,6 +10,8 @@ public class UnitController : MonoBehaviour, IPointerClickHandler {
 
     public event System.Action<string> onSpellDisplay;
 
+    public event System.Action onTargetSelection;
+
     private string spellFolderPath = "Assets/Sprites/Spells";
     private string[] assetGuids;
     private string[] spellAssetGuids;
@@ -22,6 +24,7 @@ public class UnitController : MonoBehaviour, IPointerClickHandler {
     private int maxMana;
     private List<Colors> colors;
     private SpellBase spell;
+    private Race race;
 
     private void Awake() {
         unitCard = GetComponent<UnitDisplay>();
@@ -44,8 +47,12 @@ public class UnitController : MonoBehaviour, IPointerClickHandler {
         armor = unitCard.card.baseArmor;
         attack = unitCard.card.baseAttack;
         spellDamage = unitCard.card.baseSpellDamage;
+        //mana = unitCard.card.maxMana;
         mana = unitCard.card.currentMana;
         maxMana = unitCard.card.maxMana;
+        race = unitCard.card.race;
+
+        unitCard.SetStats(health, armor, attack, mana);
 
         colors = unitCard.card.colors;
         spell = unitCard.card.spell;
@@ -53,10 +60,16 @@ public class UnitController : MonoBehaviour, IPointerClickHandler {
     }
 
     public void OnPointerClick(PointerEventData eventData) {
-        onSpellDisplay?.Invoke(spellCard.name);
+        if (BattleStateHandler.GetState() == BattleState.WaitingForPlayer || BattleStateHandler.GetState() == BattleState.WaitingForEnemy) {
+            onSpellDisplay?.Invoke(spellCard.name);
+        }
+        //else if (BattleStateHandler.GetState() == BattleState.PlayerTurn || BattleStateHandler.GetState() == BattleState.EnemyTurn) {
+        //    onTargetSelection?.Invoke();
+        //}
     }
 
-    public bool castSpell(List<UnitController> allyTargets, List<UnitController> targets) {
+    //public bool castSpell(List<UnitController> allyTargets, List<UnitController> targets) {
+    public bool castSpell(List<UnitController> targets) {
         if (mana == maxMana) {
             if (BattleStateHandler.GetState() == BattleState.WaitingForPlayer) {
                 BattleStateHandler.setState(BattleState.PlayerTurn);
@@ -65,13 +78,18 @@ public class UnitController : MonoBehaviour, IPointerClickHandler {
                 BattleStateHandler.setState(BattleState.EnemyTurn);
             }
             spell.setCaster(this);
-            spell.setEnemyTargets(targets);
-            spell.setPlayerTargets(allyTargets);
+            spell.setTargets(targets);
+            //spell.setEnemyTargets(targets);
+            //spell.setPlayerTargets(allyTargets);
+            mana = 0;
+            unitCard.SetMana(mana);
+            SpellController.CloseSpell();
+
+            if (spell.isSpellTargets()) {
+                onTargetSelection?.Invoke();
+            }
             spell.InitializeSpell();
 
-            mana = 0;
-            unitCard.setMana(mana);
-            SpellController.CloseSpell();
             return true;
         }
 
@@ -90,6 +108,68 @@ public class UnitController : MonoBehaviour, IPointerClickHandler {
         return colors.Count;
     }
 
+    public void normalDamage(int damage, UnitController target) {
+        target.armor -= damage;
+
+        if (target.armor < 0) {
+            target.health += target.armor;
+            target.armor = 0;
+        }
+
+        if (target.health < 0) {
+            target.health = 0;
+        }
+
+        target.unitCard.SetStats(target.health, target.armor);
+    }
+
+    public void TrueDamage(int damage, UnitController target) {
+        target.health -= damage;
+
+        if (target.health < 0) {
+            target.health = 0;
+        }
+
+        target.unitCard.SetStats(target.health, target.armor);
+    }
+
+    public void spellAttack(int spellDamage, UnitController target) {
+        target.armor -= spellDamage;
+
+        if (target.armor < 0) {
+            target.health += target.armor;
+            target.armor = 0;
+        }
+
+        if (target.health < 0) {
+            target.health = 0;
+        }
+
+        target.unitCard.SetStats(target.health, target.armor);
+    }
+
+    public int gainMana(int manaAmount) {
+        int remainedMana = 0;
+        mana += manaAmount;
+
+        if (mana > maxMana) {
+            remainedMana = mana - maxMana;
+            mana = maxMana;
+        }
+
+        unitCard.SetMana(mana);
+
+        return remainedMana;
+    }
+
+    public bool isOnFullMana() {
+        if (mana == maxMana) {
+            return true;
+        }
+
+        return false;
+    }
+
     public int GetHealth() {
         return health;
     }
@@ -106,65 +186,51 @@ public class UnitController : MonoBehaviour, IPointerClickHandler {
         return spellDamage;
     }
 
-    public void normalDamage(int damage, UnitController target) {
-        target.armor -= damage;
-
-        if (target.armor < 0) {
-            target.health += target.armor;
-            target.armor = 0;
-        }
-
-        if (target.health < 0) {
-            target.health = 0;
-        }
-
-        target.unitCard.setHealth(target.health, target.armor);
+    public Race GetRace() {
+        return race;
     }
 
-    public void TrueDamage(int damage, UnitController target) {
-        target.health -= damage;
-
-        if (target.health < 0) {
-            target.health = 0;
-        }
-
-        target.unitCard.setHealth(target.health, target.armor);
+    public void GainSpellDamage(int amount) {
+        spellDamage += amount;
+        spell.ChangeSpellDescription(spellDamage);
     }
 
-    public void spellAttack(int spellDamage, UnitController target) {
-        target.armor -= spellDamage;
-
-        if (target.armor < 0) {
-            target.health += target.armor;
-            target.armor = 0;
-        }
-
-        if (target.health < 0) {
-            target.health = 0;
-        }
-
-        target.unitCard.setHealth(target.health, target.armor);
+    public void GainAttack(int amount) {
+        attack += amount;
+        unitCard.SetAttack(attack);
     }
 
-    public int gainMana(int manaAmount) {
-        int remainedMana = 0;
+    public void GainArmor(int amount) {
+        armor += amount;
+        unitCard.SetArmor(armor);
+    }
+
+    public void GainHealth(int amount) {
+        health += amount;
+        unitCard.SetHealth(health);
+    }
+
+    public void GainStats(int healthAmount, int armorAmount, int attackAmount, int manaAmount) {
+        health += healthAmount;
+        armor += armorAmount;
+        attack += attackAmount;
         mana += manaAmount;
 
-        if (mana > maxMana) {
-            remainedMana = mana - maxMana;
-            mana = maxMana;
-        }
-
-        unitCard.setMana(mana);
-
-        return remainedMana;
+        unitCard.SetStats(health, armor, attack, mana);
     }
 
-    public bool isOnFullMana() {
-        if (mana == maxMana) {
-            return true;
-        }
+    public void GainStats(int healthAmount, int armorAmount, int attackAmount) {
+        health += healthAmount;
+        armor += armorAmount;
+        attack += attackAmount;
 
-        return false;
+        unitCard.SetStats(health, armor, attack);
+    }
+
+    public void GainStats(int healthAmount, int armorAmount) {
+        health += healthAmount;
+        armor += armorAmount;
+
+        unitCard.SetStats(health, armor);
     }
 }

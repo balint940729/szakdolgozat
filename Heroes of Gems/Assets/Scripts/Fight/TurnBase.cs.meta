@@ -6,9 +6,12 @@ MonoImporter:
   defaultReferences:
   - cardPrefab: {fileID: 4815057449383010390, guid: a74bd9138ed085843a8e06f3036e624f,
       type: 3}
+  - spellPrefab: {fileID: 631441205120170080, guid: b489e832a57090e438b4092b8b1433b2,
+      type: 3}
+  - buttonPrefab: {fileID: 3639255606650294794, guid: 85eaf508c69070844a4abdeac4adf255,
+      type: 3}
   - turnPrefab: {fileID: 4196951729806470333, guid: 07f375a77babc144e9480291209b042f,
       type: 3}
-  - parentScene: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
