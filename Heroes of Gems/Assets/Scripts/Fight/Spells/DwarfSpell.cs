@@ -1,6 +1,6 @@
-﻿using System.Collections;
+﻿using UnityEngine;
+using System.Linq;
 using System.Collections.Generic;
-using UnityEngine;
 
 [CreateAssetMenu(fileName = "Spell", menuName = "Spells/Dwarf")]
 public class DwarfSpell : SpellBase {
@@ -9,5 +9,23 @@ public class DwarfSpell : SpellBase {
     }
 
     public override void InitializeSpell() {
+        int iterator = 0;
+        List<GameObject> targetsGO = new List<GameObject>();
+        if (BattleStateHandler.GetState() == BattleState.PlayerTurn) {
+            targetsGO = TurnBase.GetInstance().getEnemyTeam();
+        }
+        else if (BattleStateHandler.GetState() == BattleState.EnemyTurn) {
+            targetsGO = TurnBase.GetInstance().getPlayerTeam();
+        }
+        IEnumerable<GameObject> targets = targetsGO;
+        //Get the last two element of the list
+        for (int i = targetsGO.Count - 1; i >= 0; i--) {
+            if (iterator >= 2) {
+                break;
+            }
+            UnitController target = targetsGO.ElementAt(i).GetComponent<UnitController>();
+            caster.spellAttack(caster.GetSpellDamage(), target);
+            iterator++;
+        }
     }
 }

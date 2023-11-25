@@ -12,7 +12,7 @@ public class UnitDisplay : MonoBehaviour {
 
     public Image image;
 
-    private bool isTextChanged = false;
+    //private bool isTextChanged = false;
 
     // Start is called before the first frame update
     private void Start() {
@@ -63,7 +63,7 @@ public class UnitDisplay : MonoBehaviour {
 
     public void SetAttack(int newAttack) {
         attack.text = newAttack.ToString();
-        isTextChanged = true;
+        //isTextChanged = true;
     }
 
     public void SetMana(int newCurrentMana) {

@@ -27,13 +27,16 @@ public class Match3 : MonoBehaviour {
 
     public event System.Action turnChangeTriggered;
 
-    private bool extraTurn = false;
     private bool isTurnEnd = false;
 
     private System.Random random;
 
     private void Start() {
         StartGame();
+    }
+
+    public Node[,] GetBoard() {
+        return board;
     }
 
     private void StartGame() {
@@ -82,12 +85,12 @@ public class Match3 : MonoBehaviour {
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 Point point = new Point(x, y);
-                int val = getValueAtPoint(point);
+                int val = GetValueAtPoint(point);
                 if (val <= 0) continue;
 
                 remove = new List<int>();
                 while (isConnected(point, true).Count > 0) {
-                    val = getValueAtPoint(point);
+                    val = GetValueAtPoint(point);
                     if (!remove.Contains(val)) {
                         remove.Add(val);
                     }
@@ -102,12 +105,12 @@ public class Match3 : MonoBehaviour {
             for (int y = (height - 1); y >= 0; y--) {
                 Point p = new Point(x, y);
                 Node node = getNodeAtPoint(p);
-                int val = getValueAtPoint(p);
+                int val = GetValueAtPoint(p);
 
                 if (val != 0) continue;
                 for (int ny = (y - 1); ny >= -1; ny--) {
                     Point next = new Point(x, ny);
-                    int nextVal = getValueAtPoint(next);
+                    int nextVal = GetValueAtPoint(next);
                     if (nextVal == 0) continue;
                     if (nextVal != -1) // fill the current hole
                     {
@@ -150,18 +153,26 @@ public class Match3 : MonoBehaviour {
         }
     }
 
+    public int GetBoardWidth() {
+        return width;
+    }
+
+    public int GetBoardHeight() {
+        return height;
+    }
+
     public void ResetPiece(NodePiece piece) {
         piece.ResetPosition();
         update.Add(piece);
     }
 
     public void FlipPieces(Point one, Point two, bool main) {
-        if (getValueAtPoint(one) < 0) return;
+        if (GetValueAtPoint(one) < 0) return;
 
         Node nodeOne = getNodeAtPoint(one);
         NodePiece pieceOne = nodeOne.getPiece();
 
-        if (getValueAtPoint(two) > 0) {
+        if (GetValueAtPoint(two) > 0) {
             Node nodeTwo = getNodeAtPoint(two);
             NodePiece pieceTwo = nodeTwo.getPiece();
             nodeOne.SetPiece(pieceTwo);
@@ -199,7 +210,7 @@ public class Match3 : MonoBehaviour {
 
     private List<Point> isConnected(Point point, bool main) {
         List<Point> connected = new List<Point>();
-        int val = getValueAtPoint(point);
+        int val = GetValueAtPoint(point);
         Point[] directions = {
             Point.up,
             Point.right,
@@ -214,7 +225,7 @@ public class Match3 : MonoBehaviour {
             int same = 0;
             for (int i = 1; i < 3; i++) {
                 Point check = Point.add(point, Point.mul(dir, i));
-                if (getValueAtPoint(check) == val) {
+                if (GetValueAtPoint(check) == val) {
                     line.Add(check);
                     same++;
                 }
@@ -236,7 +247,7 @@ public class Match3 : MonoBehaviour {
                 };
             foreach (Point next in check) // Check both sides of the piece
             {
-                if (getValueAtPoint(next) == val) {
+                if (GetValueAtPoint(next) == val) {
                     line.Add(next);
                     same++;
                 }
@@ -254,7 +265,7 @@ public class Match3 : MonoBehaviour {
                 };
                     foreach (Point next in check2) // Check both sides of the piece
                     {
-                        if (getValueAtPoint(next) == val) {
+                        if (GetValueAtPoint(next) == val) {
                             same++;
                         }
                     }
@@ -262,12 +273,12 @@ public class Match3 : MonoBehaviour {
 
                 if (same > 2) {
                     //Debug.Log("extra turn");
-                    extraTurn = true;
+                    ExtraTurnHandler.SetExtraTurn();
                 }
             }
         }
 
-        if (BattleStateHandler.GetState() != BattleState.Start && !extraTurn) {
+        if (BattleStateHandler.GetState() != BattleState.Start && !ExtraTurnHandler.IsExtraTurn()) {
             for (int i = 0; i < 3; i += 2) //Checking if we are in the edge
             {
                 int same = 0;
@@ -287,21 +298,21 @@ public class Match3 : MonoBehaviour {
                 };
 
                 foreach (Point next in checkEdge) {
-                    if (getValueAtPoint(next) == val)
+                    if (GetValueAtPoint(next) == val)
                         same++;
                 }
 
                 foreach (Point next in checkEdge2) {
-                    if (getValueAtPoint(next) == val)
+                    if (GetValueAtPoint(next) == val)
                         same2++;
                 }
 
                 if (same == 4 || same2 == 4) {
-                    extraTurn = true;
+                    ExtraTurnHandler.SetExtraTurn();
                 }
             }
 
-            if (!extraTurn) {
+            if (!ExtraTurnHandler.IsExtraTurn()) {
                 for (int i = 0; i < 2; i++) //Checking if we are in T shape
                 {
                     int same = 0;
@@ -328,17 +339,17 @@ public class Match3 : MonoBehaviour {
                     };
 
                     foreach (Point next in checkTShape) {
-                        if (getValueAtPoint(next) == val)
+                        if (GetValueAtPoint(next) == val)
                             same++;
                     }
 
                     foreach (Point next in checkTShape2) {
-                        if (getValueAtPoint(next) == val)
+                        if (GetValueAtPoint(next) == val)
                             same2++;
                     }
 
                     if (same == 4 || same2 == 4) {
-                        extraTurn = true;
+                        ExtraTurnHandler.SetExtraTurn();
                     }
                 }
             }
@@ -367,7 +378,7 @@ public class Match3 : MonoBehaviour {
         }
     }
 
-    private int getValueAtPoint(Point point) {
+    public int GetValueAtPoint(Point point) {
         if (point.x < 0 || point.x >= width || point.y < 0 || point.y >= height) return -1;
         return board[point.x, point.y].value;
     }
@@ -447,15 +458,15 @@ public class Match3 : MonoBehaviour {
     private void LateUpdate() {
         if (isTurnEnd) {
             if (BattleStateHandler.GetState() == BattleState.PlayerTurn) {
-                BattleStateHandler.setState((extraTurn) ? BattleState.WaitingForPlayer : BattleState.WaitingForEnemy);
+                BattleStateHandler.setState(ExtraTurnHandler.IsExtraTurn() ? BattleState.WaitingForPlayer : BattleState.WaitingForEnemy);
                 //Debug.Log(BattleStateHandler.GetState());
             }
             else if (BattleStateHandler.GetState() == BattleState.EnemyTurn) {
-                BattleStateHandler.setState((extraTurn) ? BattleState.WaitingForEnemy : BattleState.WaitingForPlayer);
+                BattleStateHandler.setState(ExtraTurnHandler.IsExtraTurn() ? BattleState.WaitingForEnemy : BattleState.WaitingForPlayer);
                 //Debug.Log(BattleStateHandler.GetState());
             }
             turnChangeTriggered?.Invoke();
-            extraTurn = false;
+            ExtraTurnHandler.ResetExtraTurn();
             isTurnEnd = false;
         }
     }

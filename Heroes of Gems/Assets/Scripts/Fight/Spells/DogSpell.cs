@@ -20,7 +20,7 @@ public class DogSpell : SpellBase {
         caster.spellAttack(caster.GetSpellDamage(), target);
     }
 
-    public override bool isSpellTargets() {
-        return true;
-    }
+    //public override bool isSpellTargets() {
+    //    return true;
+    //}
 }

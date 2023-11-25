@@ -1,10 +1,8 @@
 ﻿using System.Collections.Generic;
-using System.Collections;
 using System.Linq;
-using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.UI;
 using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
 
 public class TurnBase : MonoBehaviour {
 
