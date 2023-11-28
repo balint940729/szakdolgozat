@@ -4,10 +4,10 @@
 public class ArrayLayout {
 
     [System.Serializable]
-    public struct rowData {
+    public struct RowData {
         public bool[] row;
     }
 
     public Grid grid;
-    public rowData[] rows = new rowData[8]; //Grid of 8x8
+    public RowData[] rows = new RowData[8]; //Grid of 8x8
 }

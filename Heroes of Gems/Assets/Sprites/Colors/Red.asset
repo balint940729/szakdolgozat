@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   colorName: Red
   color: {r: 0.69803923, g: 0.13333334, b: 0.13333334, a: 1}
+  colorCode: 4

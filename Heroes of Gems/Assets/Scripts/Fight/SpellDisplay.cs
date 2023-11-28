@@ -18,7 +18,7 @@ public class SpellDisplay : MonoBehaviour {
         image.sprite = spell.spellImage;
     }
 
-    public void setSpellDescription() {
+    public void SetSpellDescription() {
         spellDescription.text = spell.spellDescription.ToString();
     }
 }

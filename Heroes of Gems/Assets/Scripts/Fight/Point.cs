@@ -18,57 +18,57 @@ public class Point {
         return (x == point.x && y == point.y);
     }
 
-    public void mul(int szorzo) {
+    public void Mul(int szorzo) {
         x *= szorzo;
         y *= szorzo;
     }
 
-    public void add(Point point) {
+    public void Add(Point point) {
         x += point.x;
         y += point.y;
     }
 
-    public static Point fromVector(Vector2 v) {
+    public static Point FromVector(Vector2 v) {
         return new Point((int)v.x, (int)v.y);
     }
 
-    public static Point fromVector(Vector3 v) {
+    public static Point FromVector(Vector3 v) {
         return new Point((int)v.x, (int)v.y);
     }
 
-    public static Point mul(Point point, int szorzo) {
+    public static Point Mul(Point point, int szorzo) {
         return new Point(point.x * szorzo, point.y * szorzo);
     }
 
-    public static Point add(Point point, Point point2) {
+    public static Point Add(Point point, Point point2) {
         return new Point(point.x + point2.x, point.y + point2.y);
     }
 
-    public static Point clone(Point point) {
+    public static Point Clone(Point point) {
         return new Point(point.x, point.y);
     }
 
-    public static Point zero {
+    public static Point Zero {
         get { return new Point(0, 0); }
     }
 
-    public static Point one {
+    public static Point One {
         get { return new Point(1, 1); }
     }
 
-    public static Point up {
+    public static Point Up {
         get { return new Point(0, 1); }
     }
 
-    public static Point down {
+    public static Point Down {
         get { return new Point(0, -1); }
     }
 
-    public static Point left {
+    public static Point Left {
         get { return new Point(-1, 0); }
     }
 
-    public static Point right {
+    public static Point Right {
         get { return new Point(1, 0); }
     }
 }

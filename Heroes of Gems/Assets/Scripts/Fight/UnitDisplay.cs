@@ -12,19 +12,11 @@ public class UnitDisplay : MonoBehaviour {
 
     public Image image;
 
-    //private bool isTextChanged = false;
-
-    // Start is called before the first frame update
     private void Start() {
-        //health.text = card.baseHealth.ToString();
-        //attack.text = card.baseAttack.ToString();
-        //armor.text = card.baseArmor.ToString();
-        //mana.text = card.currentMana.ToString() + "/" + card.maxMana.ToString();
-
         image.sprite = card.image;
     }
 
-    public void setColors(GameObject manaGO, int index) {
+    public void SetColors(GameObject manaGO, int index) {
         Image manaImage = manaGO.GetComponent<Image>();
 
         manaImage.type = Image.Type.Filled;
@@ -63,7 +55,6 @@ public class UnitDisplay : MonoBehaviour {
 
     public void SetAttack(int newAttack) {
         attack.text = newAttack.ToString();
-        //isTextChanged = true;
     }
 
     public void SetMana(int newCurrentMana) {

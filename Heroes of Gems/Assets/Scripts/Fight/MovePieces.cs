@@ -17,13 +17,22 @@ public class MovePieces : MonoBehaviour {
 
     // Update is called once per frame
     private void Update() {
+        if (BattleStateHandler.GetState() == BattleState.WaitingForPlayer) {
+            PlayerMove();
+        }
+        //else if (BattleStateHandler.GetState() == BattleState.WaitingForEnemy) {
+        //    EnemyMove();
+        //}
+    }
+
+    private void PlayerMove() {
         if (moving != null) {
             Vector2 dir = ((Vector2)Input.mousePosition - mouseStart);
             Vector2 nDir = dir.normalized;
             Vector2 aDir = new Vector2(Mathf.Abs(dir.x), Mathf.Abs(dir.y));
 
-            newIndex = Point.clone(moving.index);
-            Point add = Point.zero;
+            newIndex = Point.Clone(moving.index);
+            Point add = Point.Zero;
             if (dir.magnitude > 32) //Ha rákattintunk és 32pixellel arréb húzzuk az egerünket
             {
                 if (aDir.x > aDir.y)
@@ -31,19 +40,50 @@ public class MovePieces : MonoBehaviour {
                 else if (aDir.y > aDir.x)
                     add = (new Point(0, (nDir.y > 0) ? -1 : 1));
             }
-            newIndex.add(add);
+            newIndex.Add(add);
 
-            Vector2 pos = game.getPositionFromPoint(moving.index);
+            Vector2 pos = game.GetPositionFromPoint(moving.index);
             if (!newIndex.Equals(moving.index)) // az irányába a gem egy kicsit mozduljon meg
-                pos += Point.mul(new Point(add.x, -add.y), 64).ToVector();
+                pos += Point.Mul(new Point(add.x, -add.y), 64).ToVector();
             moving.MovePositionTo(pos);
         }
+    }
+
+    public void EnemyMove(NodePiece from, NodePiece to) {
+        moving = from;
+        mouseStart = from.transform.position;
+
+        Vector2 dir = ((Vector2)to.transform.position - mouseStart);
+        Vector2 nDir = dir.normalized;
+        Vector2 aDir = new Vector2(Mathf.Abs(dir.x), Mathf.Abs(dir.y));
+
+        newIndex = Point.Clone(moving.index);
+        Point add = Point.Zero;
+        if (dir.magnitude > 32) //Ha rákattintunk és 32pixellel arréb húzzuk az egerünket
+        {
+            if (aDir.x > aDir.y)
+                add = (new Point((nDir.x > 0) ? 1 : -1, 0));
+            else if (aDir.y > aDir.x)
+                add = (new Point(0, (nDir.y > 0) ? -1 : 1));
+        }
+        newIndex.Add(add);
+
+        Vector2 pos = game.GetPositionFromPoint(moving.index);
+        if (!newIndex.Equals(moving.index)) // az irányába a gem egy kicsit mozduljon meg
+            pos += Point.Mul(new Point(add.x, -add.y), 64).ToVector();
+        moving.MovePositionTo(pos);
+
+        DropPiece();
     }
 
     public void MovePiece(NodePiece piece) {
         if (moving != null) return;
         moving = piece;
-        mouseStart = Input.mousePosition;
+        if (BattleStateHandler.GetState() == BattleState.EnemyTurn) {
+            mouseStart = piece.transform.position;
+        }
+        else
+            mouseStart = Input.mousePosition;
     }
 
     public void DropPiece() {

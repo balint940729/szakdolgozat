@@ -40,7 +40,7 @@ public class NodePiece : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
         transform.name = "Node [" + index.x + ", " + index.y + "]";
     }
 
-    public bool updatePiece() {
+    public bool UpdatePiece() {
         if (Vector3.Distance(rect.anchoredPosition, pos) > 1) {
             MovePositionTo(pos);
             updating = true;
@@ -63,14 +63,18 @@ public class NodePiece : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
     }
 
     public void OnPointerDown(PointerEventData eventData) {
-        if (updating) return;
-        rect.SetAsLastSibling();
-        MovePieces.instance.MovePiece(this);
+        if (BattleStateHandler.GetState() == BattleState.WaitingForPlayer) {
+            if (updating) return;
+            rect.SetAsLastSibling();
+            MovePieces.instance.MovePiece(this);
+        }
     }
 
     public void OnPointerUp(PointerEventData eventData) {
-        rect.SetSiblingIndex(originalOrder);
-        MovePieces.instance.DropPiece();
+        if (BattleStateHandler.GetState() == BattleState.WaitingForPlayer) {
+            rect.SetSiblingIndex(originalOrder);
+            MovePieces.instance.DropPiece();
+        }
     }
 
     public int GetValue() {

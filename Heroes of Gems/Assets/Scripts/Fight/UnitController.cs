@@ -10,7 +10,7 @@ public class UnitController : MonoBehaviour, IPointerClickHandler {
 
     public event System.Action<string> onSpellDisplay;
 
-    public event System.Action onTargetSelection;
+    //public event System.Action onTargetSelection;
 
     private string spellFolderPath = "Assets/Sprites/Spells";
     private string[] assetGuids;
@@ -32,7 +32,7 @@ public class UnitController : MonoBehaviour, IPointerClickHandler {
         assetGuids = AssetDatabase.FindAssets("t:Unit", new string[] { folderPath });
     }
 
-    public void setUp(int cardID, GameObject spellGO) {
+    public void SetUp(int cardID, GameObject spellGO) {
         string assetPath = AssetDatabase.GUIDToAssetPath(assetGuids[cardID]);
         unitCard.card = AssetDatabase.LoadAssetAtPath<Unit>(assetPath);
 
@@ -69,7 +69,7 @@ public class UnitController : MonoBehaviour, IPointerClickHandler {
     }
 
     //public bool castSpell(List<UnitController> allyTargets, List<UnitController> targets) {
-    public bool castSpell(List<UnitController> targets) {
+    public bool CastSpell(List<UnitController> targets) {
         if (mana == maxMana) {
             if (BattleStateHandler.GetState() == BattleState.WaitingForPlayer) {
                 BattleStateHandler.setState(BattleState.PlayerTurn);
@@ -77,7 +77,7 @@ public class UnitController : MonoBehaviour, IPointerClickHandler {
             else if (BattleStateHandler.GetState() == BattleState.WaitingForEnemy) {
                 BattleStateHandler.setState(BattleState.EnemyTurn);
             }
-            spell.setCaster(this);
+            spell.SetCaster(this);
             spell.setTargets(targets);
             //spell.setEnemyTargets(targets);
             //spell.setPlayerTargets(allyTargets);
@@ -85,9 +85,9 @@ public class UnitController : MonoBehaviour, IPointerClickHandler {
             unitCard.SetMana(mana);
             SpellController.CloseSpell();
 
-            if (spell.isSpellTargets()) {
-                onTargetSelection?.Invoke();
-            }
+            //if (spell.isSpellTargets()) {
+            //    onTargetSelection?.Invoke();
+            //}
             spell.InitializeSpell();
 
             return true;
@@ -96,19 +96,19 @@ public class UnitController : MonoBehaviour, IPointerClickHandler {
         return false;
     }
 
-    public void setUpColors(GameObject colorBG, int index) {
-        unitCard.setColors(colorBG, index);
+    public void SetUpColors(GameObject colorBG, int index) {
+        unitCard.SetColors(colorBG, index);
     }
 
-    public List<Colors> getColors() {
+    public List<Colors> GetColors() {
         return colors;
     }
 
-    public int getColorsCount() {
+    public int GetColorsCount() {
         return colors.Count;
     }
 
-    public void normalDamage(int damage, UnitController target) {
+    public void NormalDamage(int damage, UnitController target) {
         target.armor -= damage;
 
         if (target.armor < 0) {
@@ -133,7 +133,7 @@ public class UnitController : MonoBehaviour, IPointerClickHandler {
         target.unitCard.SetStats(target.health, target.armor);
     }
 
-    public void spellAttack(int spellDamage, UnitController target) {
+    public void SpellAttack(int spellDamage, UnitController target) {
         target.armor -= spellDamage;
 
         if (target.armor < 0) {
@@ -148,7 +148,7 @@ public class UnitController : MonoBehaviour, IPointerClickHandler {
         target.unitCard.SetStats(target.health, target.armor);
     }
 
-    public int gainMana(int manaAmount) {
+    public int GainMana(int manaAmount) {
         int remainedMana = 0;
         mana += manaAmount;
 
@@ -162,7 +162,7 @@ public class UnitController : MonoBehaviour, IPointerClickHandler {
         return remainedMana;
     }
 
-    public bool isOnFullMana() {
+    public bool IsOnFullMana() {
         if (mana == maxMana) {
             return true;
         }

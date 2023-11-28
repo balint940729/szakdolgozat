@@ -18,26 +18,38 @@ public class EnemyAI : MonoBehaviour {
         }
     }
 
+    private MoveValue bestMove;
+
     private int[,] boardValues;
     private int[,] tempBoardValues;
 
     // Update is called once per frame
     private void Update() {
         if (BattleStateHandler.GetState() == BattleState.WaitingForEnemy) {
+            BattleStateHandler.setState(BattleState.EnemyTurn);
             CastSpell();
             CalculateMove();
 
-            BattleStateHandler.setState(BattleState.WaitingForPlayer);
+            if (!bestMove.Equals(default(MoveValue))) {
+                GameObject fromGO = GameObject.Find("Node [" + bestMove.from.x + ", " + bestMove.from.y + "]");
+                GameObject toGO = GameObject.Find("Node [" + bestMove.to.x + ", " + bestMove.to.y + "]");
+                NodePiece fromNode = fromGO.GetComponent<NodePiece>();
+                NodePiece toNode = toGO.GetComponent<NodePiece>();
+                MovePieces.instance.EnemyMove(fromNode, toNode);
+                //MovePieces.instance.MovePiece(fromGO.GetComponent<NodePiece>());
+                bestMove = default;
+            }
+
+            //BattleStateHandler.setState(BattleState.WaitingForPlayer);
         }
     }
 
     private void CalculateMove() {
-        if (BattleStateHandler.GetState() == BattleState.WaitingForEnemy) {
+        if (BattleStateHandler.GetState() == BattleState.EnemyTurn) {
             Node[,] board = FindObjectOfType<Match3>().GetBoard();
             boardValues = new int[board.GetLength(0), board.GetLength(1)];
             tempBoardValues = new int[board.GetLength(0), board.GetLength(1)];
             List<MoveValue> possibleMoves = new List<MoveValue>();
-            MoveValue bestMove;
 
             for (int i = 0; i < board.GetLength(0); i++) {
                 for (int j = 0; j < board.GetLength(1); j++) {
@@ -55,14 +67,18 @@ public class EnemyAI : MonoBehaviour {
                 Debug.Log("No match");
             }
 
-            Debug.Log("Best move: from [" + bestMove.from.x.ToString() + "," + bestMove.from.y.ToString() + "] to [" + bestMove.to.x.ToString() + "," + bestMove.to.y.ToString() + "]");
+            //Debug.Log("Best move: from [" + bestMove.from.x.ToString() + "," + bestMove.from.y.ToString() + "] to [" + bestMove.to.x.ToString() + "," + bestMove.to.y.ToString() + "]");
         }
+    }
+
+    public MoveValue GetBestMove() {
+        return bestMove;
     }
 
     private MoveValue CalculateBestMove(List<MoveValue> moveValues) {
         MoveValue bestMove;
 
-        List<GameObject> enemyTeam = TurnBase.GetInstance().getEnemyTeam();
+        List<GameObject> enemyTeam = TurnBase.GetInstance().GetEnemyTeam();
         bestMove = moveValues.Find(em => em.isExtraTurn && em.color == 1); // Extra turn + skull
 
         if (bestMove.Equals(default(MoveValue))) {
@@ -72,8 +88,8 @@ public class EnemyAI : MonoBehaviour {
             foreach (GameObject enemyGo in enemyTeam) {
                 UnitController enemy = enemyGo.GetComponent<UnitController>();
 
-                if (!enemy.isOnFullMana()) {
-                    enemyUsedColors.AddRange(enemy.getColors().Select(color => color.colorCode));
+                if (!enemy.IsOnFullMana()) {
+                    enemyUsedColors.AddRange(enemy.GetColors().Select(color => color.colorCode));
                 }
             }
 
@@ -109,9 +125,9 @@ public class EnemyAI : MonoBehaviour {
     }
 
     private void CastSpell() {
-        foreach (GameObject casterGO in TurnBase.GetInstance().getEnemyTeam()) {
+        foreach (GameObject casterGO in TurnBase.GetInstance().GetEnemyTeam()) {
             UnitController caster = casterGO.GetComponent<UnitController>();
-            if (caster.isOnFullMana()) {
+            if (caster.IsOnFullMana()) {
                 TurnBase.GetInstance().CastSpell(caster);
                 break;
             }
@@ -126,17 +142,17 @@ public class EnemyAI : MonoBehaviour {
                 Point point = new Point(x, y);
 
                 Point[] directions = {
-                    Point.up,
-                    Point.right,
-                    Point.down,
-                    Point.left
+                    Point.Up,
+                    Point.Right,
+                    Point.Down,
+                    Point.Left
                 };
 
                 int width = FindObjectOfType<Match3>().GetBoardWidth();
                 int height = FindObjectOfType<Match3>().GetBoardHeight();
 
                 foreach (Point dir in directions) { //Checking if there is 2 same in the directions -> X X Y OR Y X X
-                    Point newPoint = Point.add(point, Point.mul(dir, -1));
+                    Point newPoint = Point.Add(point, Point.Mul(dir, -1));
                     //Check if this valid move
                     if (newPoint.x < 0 || newPoint.x >= width || newPoint.y < 0 || newPoint.y >= height) continue;
 
@@ -155,7 +171,7 @@ public class EnemyAI : MonoBehaviour {
                     foreach (Point dir2 in directions) {
                         int same = 0;
                         for (int i = 1; i < 3; i++) {
-                            Point check = Point.add(newPoint, Point.mul(dir2, i));
+                            Point check = Point.Add(newPoint, Point.Mul(dir2, i));
                             if (GetValueAtPoint(check) == val) {
                                 same++;
                             }
@@ -170,8 +186,8 @@ public class EnemyAI : MonoBehaviour {
                     for (int i = 0; i < 2; i++) {
                         int same = 0;
                         Point[] check = {
-                            Point.add(newPoint, directions[i]),
-                            Point.add(newPoint, directions[i+2])
+                            Point.Add(newPoint, directions[i]),
+                            Point.Add(newPoint, directions[i+2])
                         };
 
                         // Check both sides of the piece
@@ -182,8 +198,8 @@ public class EnemyAI : MonoBehaviour {
 
                             if (same == 2) {
                                 Point[] check2 = {
-                                    Point.add(newPoint, Point.mul(directions[i], 2)),
-                                    Point.add(newPoint, Point.mul(directions[i+2], 2))
+                                    Point.Add(newPoint, Point.Mul(directions[i], 2)),
+                                    Point.Add(newPoint, Point.Mul(directions[i+2], 2))
                                 };
                                 foreach (Point next2 in check2) { // Check both sides of the piece
                                     if (GetValueAtPoint(next2) == val) {
@@ -205,17 +221,17 @@ public class EnemyAI : MonoBehaviour {
                         int same = 0;
                         int same2 = 0;
                         Point[] checkEdge = {
-                            Point.add(newPoint, directions[i]),
-                            Point.add(newPoint, Point.mul(directions[i], 2)),
-                            Point.add(newPoint, directions[1]),
-                            Point.add(newPoint, Point.mul(directions[1], 2))
+                            Point.Add(newPoint, directions[i]),
+                            Point.Add(newPoint, Point.Mul(directions[i], 2)),
+                            Point.Add(newPoint, directions[1]),
+                            Point.Add(newPoint, Point.Mul(directions[1], 2))
                         };
 
                         Point[] checkEdge2 = {
-                            Point.add(newPoint, directions[i]),
-                            Point.add(newPoint, Point.mul(directions[i], 2)),
-                            Point.add(newPoint, directions[3]),
-                            Point.add(newPoint, Point.mul(directions[3], 2))
+                            Point.Add(newPoint, directions[i]),
+                            Point.Add(newPoint, Point.Mul(directions[i], 2)),
+                            Point.Add(newPoint, directions[3]),
+                            Point.Add(newPoint, Point.Mul(directions[3], 2))
                         };
 
                         foreach (Point next in checkEdge) {
@@ -244,17 +260,17 @@ public class EnemyAI : MonoBehaviour {
                         }
 
                         Point[] checkTShape = {
-                            Point.add(newPoint, directions[i]),
-                            Point.add(newPoint, Point.mul(directions[i], 2)),
-                            Point.add(newPoint, directions[i+1]),
-                            Point.add(newPoint, directions[tempDir]),
+                            Point.Add(newPoint, directions[i]),
+                            Point.Add(newPoint, Point.Mul(directions[i], 2)),
+                            Point.Add(newPoint, directions[i+1]),
+                            Point.Add(newPoint, directions[tempDir]),
                         };
 
                         Point[] checkTShape2 = {
-                            Point.add(newPoint, directions[i+2]),
-                            Point.add(newPoint, Point.mul(directions[i+2], 2)),
-                            Point.add(newPoint, directions[i+1]),
-                            Point.add(newPoint, directions[tempDir]),
+                            Point.Add(newPoint, directions[i+2]),
+                            Point.Add(newPoint, Point.Mul(directions[i+2], 2)),
+                            Point.Add(newPoint, directions[i+1]),
+                            Point.Add(newPoint, directions[tempDir]),
                         };
 
                         foreach (Point next in checkTShape) {

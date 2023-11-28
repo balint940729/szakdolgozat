@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 [CreateAssetMenu(fileName = "Spell", menuName = "Spells/Wizard")]
 public class WizardSpell : SpellBase {
@@ -10,15 +10,15 @@ public class WizardSpell : SpellBase {
     public override void InitializeSpell() {
         List<GameObject> targetsGO = new List<GameObject>();
         if (BattleStateHandler.GetState() == BattleState.PlayerTurn) {
-            targetsGO = TurnBase.GetInstance().getEnemyTeam();
+            targetsGO = TurnBase.GetInstance().GetEnemyTeam();
         }
         else if (BattleStateHandler.GetState() == BattleState.EnemyTurn) {
-            targetsGO = TurnBase.GetInstance().getPlayerTeam();
+            targetsGO = TurnBase.GetInstance().GetPlayerTeam();
         }
 
         foreach (GameObject targetGO in targetsGO) {
             UnitController target = targetGO.GetComponent<UnitController>();
-            caster.spellAttack(caster.GetSpellDamage(), target);
+            caster.SpellAttack(caster.GetSpellDamage(), target);
         }
     }
 }

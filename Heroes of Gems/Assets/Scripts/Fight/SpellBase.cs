@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 [System.Serializable]
@@ -29,7 +28,7 @@ public abstract class SpellBase : ScriptableObject {
     //    allyTargets = units;
     //}
 
-    public virtual void setCaster(UnitController caster) {
+    public virtual void SetCaster(UnitController caster) {
         this.caster = caster;
     }
 
@@ -41,7 +40,7 @@ public abstract class SpellBase : ScriptableObject {
         }
     }
 
-    public virtual bool isSpellTargets() {
+    public virtual bool IsSpellTargets() {
         return false;
     }
 }
