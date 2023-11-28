@@ -23,9 +23,11 @@ public class Match3 : MonoBehaviour {
 
     public event System.Action attackTriggered;
 
-    private bool extraTurn = false;
-    private bool isMatch = false;
-    private bool isUpdate = false;
+    public event System.Action<int, string> gainManaTriggered;
+
+    public event System.Action turnChangeTriggered;
+
+    private bool isTurnEnd = false;
 
     private System.Random random;
 
@@ -33,9 +35,13 @@ public class Match3 : MonoBehaviour {
         StartGame();
     }
 
+    public Node[,] GetBoard() {
+        return board;
+    }
+
     private void StartGame() {
         fills = new int[width];
-        string seed = getRandomSeed();
+        string seed = GetRandomSeed();
         random = new System.Random(seed.GetHashCode());
         update = new List<NodePiece>();
         dead = new List<NodePiece>();
@@ -51,7 +57,7 @@ public class Match3 : MonoBehaviour {
         board = new Node[width, height];
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-                board[x, y] = new Node((boardLayout.rows[y].row[x]) ? -1 : fillPiece(), new Point(x, y));
+                board[x, y] = new Node((boardLayout.rows[y].row[x]) ? -1 : FillPiece(), new Point(x, y));
             }
         }
     }
@@ -59,7 +65,7 @@ public class Match3 : MonoBehaviour {
     private void InstantiateBoard() {
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
-                Node node = getNodeAtPoint(new Point(x, y));
+                Node node = GetNodeAtPoint(new Point(x, y));
                 int val = node.value;
                 if (val <= 0) continue;
                 GameObject p = Instantiate(nodePiece, gameBoard);
@@ -79,16 +85,16 @@ public class Match3 : MonoBehaviour {
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 Point point = new Point(x, y);
-                int val = getValueAtPoint(point);
+                int val = GetValueAtPoint(point);
                 if (val <= 0) continue;
 
                 remove = new List<int>();
-                while (isConnected(point, true).Count > 0) {
-                    val = getValueAtPoint(point);
+                while (IsConnected(point, true).Count > 0) {
+                    val = GetValueAtPoint(point);
                     if (!remove.Contains(val)) {
                         remove.Add(val);
                     }
-                    setValueAtPoint(point, newValue(ref remove));
+                    SetValueAtPoint(point, NewValue(ref remove));
                 }
             }
         }
@@ -98,18 +104,18 @@ public class Match3 : MonoBehaviour {
         for (int x = 0; x < width; x++) {
             for (int y = (height - 1); y >= 0; y--) {
                 Point p = new Point(x, y);
-                Node node = getNodeAtPoint(p);
-                int val = getValueAtPoint(p);
+                Node node = GetNodeAtPoint(p);
+                int val = GetValueAtPoint(p);
 
                 if (val != 0) continue;
                 for (int ny = (y - 1); ny >= -1; ny--) {
                     Point next = new Point(x, ny);
-                    int nextVal = getValueAtPoint(next);
+                    int nextVal = GetValueAtPoint(next);
                     if (nextVal == 0) continue;
                     if (nextVal != -1) // fill the current hole
                     {
-                        Node got = getNodeAtPoint(next);
-                        NodePiece piece = got.getPiece();
+                        Node got = GetNodeAtPoint(next);
+                        NodePiece piece = got.GetPiece();
 
                         node.SetPiece(piece);
                         update.Add(piece);
@@ -117,7 +123,7 @@ public class Match3 : MonoBehaviour {
                         got.SetPiece(null);
                     }
                     else {
-                        int newVal = fillPiece();
+                        int newVal = FillPiece();
                         NodePiece piece;
                         Point fallPoint = new Point(x, -1 - fills[x]);
                         if (dead.Count > 0) {
@@ -133,9 +139,9 @@ public class Match3 : MonoBehaviour {
                             piece = n;
                         }
                         piece.Initialize(newVal, p, pieces[newVal - 1]);
-                        piece.rect.anchoredPosition = getPositionFromPoint(fallPoint);
+                        piece.rect.anchoredPosition = GetPositionFromPoint(fallPoint);
 
-                        Node hole = getNodeAtPoint(p);
+                        Node hole = GetNodeAtPoint(p);
                         hole.SetPiece(piece);
                         ResetPiece(piece);
                         fills[x]++;
@@ -147,20 +153,28 @@ public class Match3 : MonoBehaviour {
         }
     }
 
+    public int GetBoardWidth() {
+        return width;
+    }
+
+    public int GetBoardHeight() {
+        return height;
+    }
+
     public void ResetPiece(NodePiece piece) {
         piece.ResetPosition();
         update.Add(piece);
     }
 
     public void FlipPieces(Point one, Point two, bool main) {
-        if (getValueAtPoint(one) < 0) return;
+        if (GetValueAtPoint(one) < 0) return;
 
-        Node nodeOne = getNodeAtPoint(one);
-        NodePiece pieceOne = nodeOne.getPiece();
+        Node nodeOne = GetNodeAtPoint(one);
+        NodePiece pieceOne = nodeOne.GetPiece();
 
-        if (getValueAtPoint(two) > 0) {
-            Node nodeTwo = getNodeAtPoint(two);
-            NodePiece pieceTwo = nodeTwo.getPiece();
+        if (GetValueAtPoint(two) > 0) {
+            Node nodeTwo = GetNodeAtPoint(two);
+            NodePiece pieceTwo = nodeTwo.GetPiece();
             nodeOne.SetPiece(pieceTwo);
             nodeTwo.SetPiece(pieceOne);
 
@@ -173,11 +187,11 @@ public class Match3 : MonoBehaviour {
         else ResetPiece(pieceOne);
     }
 
-    private Node getNodeAtPoint(Point point) {
+    private Node GetNodeAtPoint(Point point) {
         return board[point.x, point.y];
     }
 
-    private int newValue(ref List<int> remove) // Kivesszük az értéket és helyette teszünk bele egy másikat, úgy hogy az ne legyen ütközés az ellőzővel
+    private int NewValue(ref List<int> remove) // Remove the value and change to different one
     {
         List<int> available = new List<int>();
         for (int i = 0; i < pieces.Length; i++)
@@ -190,56 +204,50 @@ public class Match3 : MonoBehaviour {
         return available[random.Next(0, available.Count)];
     }
 
-    private int setValueAtPoint(Point p, int v) {
+    private int SetValueAtPoint(Point p, int v) {
         return board[p.x, p.y].value = v;
     }
 
-    private List<Point> isConnected(Point point, bool main) {
+    private List<Point> IsConnected(Point point, bool main) {
         List<Point> connected = new List<Point>();
-        int val = getValueAtPoint(point);
+        int val = GetValueAtPoint(point);
         Point[] directions = {
-            Point.up,
-            Point.right,
-            Point.down,
-            Point.left
+            Point.Up,
+            Point.Right,
+            Point.Down,
+            Point.Left
         };
 
-        foreach (Point dir in directions) //Checking if there is 2 more same in the directions
+        foreach (Point dir in directions) //Checking if there is 2 same in the directions -> X X Y OR Y X X
         {
             List<Point> line = new List<Point>();
 
             int same = 0;
-            for (int i = 1; i < 4; i++) {
-                Point check = Point.add(point, Point.mul(dir, i));
-                if (getValueAtPoint(check) == val) {
+            for (int i = 1; i < 3; i++) {
+                Point check = Point.Add(point, Point.Mul(dir, i));
+                if (GetValueAtPoint(check) == val) {
                     line.Add(check);
                     same++;
                 }
             }
+
             if (same > 1) {
                 AddPoints(ref connected, line);
             }
-
-            if (BattleStateHandler.GetState() != BattleState.Start) {
-                if (same > 2) {
-                    //Debug.Log("extra turn");
-                    extraTurn = true;
-                }
-            }
         }
 
-        for (int i = 0; i < 2; i++) //Checking if we are in the middle
+        for (int i = 0; i < 2; i++) //Checking if we are in the middle  X Y X
         {
             List<Point> line = new List<Point>();
 
             int same = 0;
-            Point[] check = { //Megnézi az egyik illetve a másik irányban is, hogy van-e match
-                    Point.add(point, directions[i]),
-                    Point.add(point, directions[i+2])
+            Point[] check = {
+                    Point.Add(point, directions[i]),
+                    Point.Add(point, directions[i+2])
                 };
             foreach (Point next in check) // Check both sides of the piece
             {
-                if (getValueAtPoint(next) == val) {
+                if (GetValueAtPoint(next) == val) {
                     line.Add(next);
                     same++;
                 }
@@ -248,17 +256,111 @@ public class Match3 : MonoBehaviour {
             if (same > 1) {
                 AddPoints(ref connected, line);
             }
-        }
 
-        if (main) //Megnézi hogy van e több match is az adott pontban
-        {
-            for (int i = 0; i < connected.Count; i++) {
-                AddPoints(ref connected, isConnected(connected[i], false));
+            if (BattleStateHandler.GetState() != BattleState.Start) {
+                if (same == 2) { // When we are middle, check if can be an extra turn
+                    Point[] check2 = {
+                    Point.Add(point, Point.Mul(directions[i], 2)),
+                    Point.Add(point, Point.Mul(directions[i+2], 2))
+                };
+                    foreach (Point next in check2) // Check both sides of the piece
+                    {
+                        if (GetValueAtPoint(next) == val) {
+                            same++;
+                        }
+                    }
+                }
+
+                if (same > 2) {
+                    //Debug.Log("extra turn");
+                    ExtraTurnHandler.SetExtraTurn();
+                }
             }
         }
 
-        /*if (connected.Count > 0)
-            connected.Add(point);*/
+        if (BattleStateHandler.GetState() != BattleState.Start && !ExtraTurnHandler.IsExtraTurn()) {
+            for (int i = 0; i < 3; i += 2) //Checking if we are in the edge
+            {
+                int same = 0;
+                int same2 = 0;
+                Point[] checkEdge = {
+                    Point.Add(point, directions[i]),
+                    Point.Add(point, Point.Mul(directions[i], 2)),
+                    Point.Add(point, directions[1]),
+                    Point.Add(point, Point.Mul(directions[1], 2))
+                };
+
+                Point[] checkEdge2 = {
+                    Point.Add(point, directions[i]),
+                    Point.Add(point, Point.Mul(directions[i], 2)),
+                    Point.Add(point, directions[3]),
+                    Point.Add(point, Point.Mul(directions[3], 2))
+                };
+
+                foreach (Point next in checkEdge) {
+                    if (GetValueAtPoint(next) == val)
+                        same++;
+                }
+
+                foreach (Point next in checkEdge2) {
+                    if (GetValueAtPoint(next) == val)
+                        same2++;
+                }
+
+                if (same == 4 || same2 == 4) {
+                    ExtraTurnHandler.SetExtraTurn();
+                }
+            }
+
+            if (!ExtraTurnHandler.IsExtraTurn()) {
+                for (int i = 0; i < 2; i++) //Checking if we are in T shape
+                {
+                    int same = 0;
+                    int same2 = 0;
+
+                    //Only 4 directions are in the array
+                    int tempDir = 3;
+                    if (i + 3 > 3) {
+                        tempDir = 0;
+                    }
+
+                    Point[] checkTShape = {
+                        Point.Add(point, directions[i]),
+                        Point.Add(point, Point.Mul(directions[i], 2)),
+                        Point.Add(point, directions[i+1]),
+                        Point.Add(point, directions[tempDir]),
+                    };
+
+                    Point[] checkTShape2 = {
+                        Point.Add(point, directions[i+2]),
+                        Point.Add(point, Point.Mul(directions[i+2], 2)),
+                        Point.Add(point, directions[i+1]),
+                        Point.Add(point, directions[tempDir]),
+                    };
+
+                    foreach (Point next in checkTShape) {
+                        if (GetValueAtPoint(next) == val)
+                            same++;
+                    }
+
+                    foreach (Point next in checkTShape2) {
+                        if (GetValueAtPoint(next) == val)
+                            same2++;
+                    }
+
+                    if (same == 4 || same2 == 4) {
+                        ExtraTurnHandler.SetExtraTurn();
+                    }
+                }
+            }
+        }
+
+        if (main) // Check if there is more match can be
+    {
+            for (int i = 0; i < connected.Count; i++) {
+                AddPoints(ref connected, IsConnected(connected[i], false));
+            }
+        }
 
         return connected;
     }
@@ -276,141 +378,181 @@ public class Match3 : MonoBehaviour {
         }
     }
 
-    private int getValueAtPoint(Point point) {
+    public int GetValueAtPoint(Point point) {
         if (point.x < 0 || point.x >= width || point.y < 0 || point.y >= height) return -1;
         return board[point.x, point.y].value;
     }
 
-    private int fillPiece() {
-        int val = 1;
-        val = (random.Next(0, 350) / (350 / pieces.Length)) + 1;
+    private int FillPiece() {
+        int val = (random.Next(0, 350) / (350 / pieces.Length)) + 1;
         return val;
     }
 
     private void Update() {
         List<NodePiece> finishedUpdating = new List<NodePiece>();
         List<Point> connected = new List<Point>();
-        if (BattleStateHandler.GetState() == BattleState.WaitingForPlayer || BattleStateHandler.GetState() == BattleState.WaitingForEnemy) {
-            for (int i = 0; i < update.Count; i++) {
-                NodePiece piece = update[i];
-                if (!piece.updatePiece())
-                    finishedUpdating.Add(piece);
+
+        for (int i = 0; i < update.Count; i++) {
+            NodePiece piece = update[i];
+            if (!piece.UpdatePiece())
+                finishedUpdating.Add(piece);
+        }
+
+        for (int i = 0; i < finishedUpdating.Count; i++) {
+            NodePiece piece = finishedUpdating[i];
+            FlippedPieces flip = GetFlipped(piece);
+            NodePiece flippedPiece = null;
+
+            int x = (int)piece.index.x;
+            fills[x] = Mathf.Clamp(fills[x] - 1, 0, width);
+
+            connected = IsConnected(piece.index, true);
+            bool wasFlipped = (flip != null);
+
+            if (wasFlipped) // ha felcseréltük akkor hívjuk meg az update-t
+            {
+                flippedPiece = flip.GetOtherPiece(piece);
+                AddPoints(ref connected, IsConnected(flippedPiece.index, true));
             }
 
-            for (int i = 0; i < finishedUpdating.Count; i++) {
-                NodePiece piece = finishedUpdating[i];
-                FlippedPieces flip = getFlipped(piece);
-                NodePiece flippedPiece = null;
+            if (connected.Count == 0) {
+                if (wasFlipped)
+                    FlipPieces(piece.index, flippedPiece.index, false); // If we flipped the piece, but no match - reverse
 
-                int x = (int)piece.index.x;
-                fills[x] = Mathf.Clamp(fills[x] - 1, 0, width);
-
-                connected = isConnected(piece.index, true);
-                bool wasFlipped = (flip != null);
-
-                if (wasFlipped) // ha felcseréltük akkor hívjuk meg az update-t
-                {
-                    flippedPiece = flip.getOtherPiece(piece);
-                    AddPoints(ref connected, isConnected(flippedPiece.index, true));
-                }
-
-                if (connected.Count == 0) // Ha nincs matchünk
-                {
-                    if (wasFlipped) // Ha felcseréltük
-                        FlipPieces(piece.index, flippedPiece.index, false); //Visszacserélés
-                }
-                else    // Ha match van
-                {
-                    isMatch = true;
+                if (!wasFlipped && update.Count == 1)
+                    isTurnEnd = true;
+            }
+            else    // If there is a match
+            {
+                if (wasFlipped) { // If we flipped the piece and match
                     if (BattleStateHandler.GetState() == BattleState.WaitingForPlayer) {
                         BattleStateHandler.setState(BattleState.PlayerTurn);
                     }
                     else if (BattleStateHandler.GetState() == BattleState.WaitingForEnemy) {
                         BattleStateHandler.setState(BattleState.EnemyTurn);
                     }
-                    //Debug.Log(BattleStateHandler.GetState() + " was");
-
-                    matchAction(connected[0]);
-
-                    foreach (Point pnt in connected) //Összekapcsoltakat kivesszük
-                    {
-                        Node node = getNodeAtPoint(pnt);
-                        NodePiece nodePiece = node.getPiece();
-
-                        if (piece != null) {
-                            nodePiece.gameObject.SetActive(false);
-                            dead.Add(nodePiece);
-                        }
-                        node.SetPiece(null);
-                    }
-                    ApplyGravityToBoard();
                 }
 
-                flipped.Remove(flip);
-                update.Remove(piece);
+                MatchAction(connected);
+
+                foreach (Point pnt in connected) // Remove the connected ones
+                {
+                    Node node = GetNodeAtPoint(pnt);
+                    NodePiece nodePiece = node.GetPiece();
+
+                    if (piece != null) {
+                        nodePiece.gameObject.SetActive(false);
+                        dead.Add(nodePiece);
+                    }
+                    node.SetPiece(null);
+                }
+                ApplyGravityToBoard();
             }
+
+            flipped.Remove(flip);
+            update.Remove(piece);
         }
     }
 
     private void LateUpdate() {
-        if (isMatch) {
+        if (isTurnEnd) {
             if (BattleStateHandler.GetState() == BattleState.PlayerTurn) {
-                BattleStateHandler.setState((extraTurn) ? BattleState.WaitingForPlayer : BattleState.WaitingForEnemy);
-                Debug.Log(BattleStateHandler.GetState() + " changed to");
+                BattleStateHandler.setState(ExtraTurnHandler.IsExtraTurn() ? BattleState.WaitingForPlayer : BattleState.WaitingForEnemy);
+                //Debug.Log(BattleStateHandler.GetState());
             }
             else if (BattleStateHandler.GetState() == BattleState.EnemyTurn) {
-                BattleStateHandler.setState((extraTurn) ? BattleState.WaitingForEnemy : BattleState.WaitingForPlayer);
-                Debug.Log(BattleStateHandler.GetState() + " changed to");
+                BattleStateHandler.setState(ExtraTurnHandler.IsExtraTurn() ? BattleState.WaitingForEnemy : BattleState.WaitingForPlayer);
+                //Debug.Log(BattleStateHandler.GetState());
             }
-            extraTurn = false;
-            isMatch = false;
+            turnChangeTriggered?.Invoke();
+            ExtraTurnHandler.ResetExtraTurn();
+            isTurnEnd = false;
         }
     }
 
-    //private bool isStillUpdating() {
-    //    List<int> remove = new List<int>();
-    //    for (int x = 0; x < width; x++) {
-    //        for (int y = 0; y < height; y++) {
-    //            Point point = new Point(x, y);
-    //            int val = getValueAtPoint(point);
-    //            if (val <= 0) continue;
+    private void MatchAction(List<Point> points) {
+        List<MatchedGem> matchGems = new List<MatchedGem>();
+        MatchedGem gem;
 
-    //            while (isConnected(point, true).Count > 0) {
-    //                val = getValueAtPoint(point);
-    //                if (!remove.Contains(val)) {
-    //                    remove.Add(val);
-    //                }
-    //                //setValueAtPoint(point, newValue(ref remove));
-    //            }
-    //        }
-    //    }
-    //    if (remove.Count > 0) {
-    //        return true;
-    //    }
-    //    else
-    //        return false;
-    //}
+        foreach (Point point in points) {
+            Node node = GetNodeAtPoint(point);
+            NodePiece nodePiece = node.GetPiece();
+            int pieceValue = nodePiece.GetValue();
 
-    private void matchAction(Point point) {
-        Node node = getNodeAtPoint(point);
-        NodePiece nodePiece = node.getPiece();
-        int pieceValue = nodePiece.GetValue();
-
-        if (pieceValue == 1) {
-            if (BattleStateHandler.GetState() == BattleState.WaitingForPlayer) {
-                BattleStateHandler.setState(BattleState.PlayerTurn);
+            if (matchGems.Find(MatchGems => MatchGems.colorCode == pieceValue) == null) {
+                gem = new MatchedGem(1, pieceValue);
+                matchGems.Add(gem);
             }
-            else if (BattleStateHandler.GetState() == BattleState.WaitingForEnemy) {
-                BattleStateHandler.setState(BattleState.EnemyTurn);
+            else {
+                gem = matchGems.Find(MatchGems => MatchGems.colorCode == pieceValue);
+                gem.IncreaseCount();
             }
-            attackTriggered?.Invoke();
+        }
+
+        foreach (MatchedGem matchedGem in matchGems) {
+            if (matchedGem.colorCode == 1) {
+                if (BattleStateHandler.GetState() == BattleState.WaitingForPlayer) {
+                    BattleStateHandler.setState(BattleState.PlayerTurn);
+                }
+                else if (BattleStateHandler.GetState() == BattleState.WaitingForEnemy) {
+                    BattleStateHandler.setState(BattleState.EnemyTurn);
+                }
+                attackTriggered?.Invoke();
+            }
+
+            if (matchedGem.colorCode > 1) {
+                string color = null;
+                int manaGain = 0;
+
+                switch (matchedGem.colorCode) {
+                    case 2:
+                        color = "Purple";
+                        break;
+
+                    case 3:
+                        color = "Green";
+                        break;
+
+                    case 4:
+                        color = "Red";
+                        break;
+
+                    case 5:
+                        color = "Blue";
+                        break;
+
+                    case 6:
+                        color = "Yellow";
+                        break;
+
+                    case 7:
+                        color = "Brown";
+                        break;
+
+                    default:
+                        color = null;
+                        break;
+                }
+
+                if (matchedGem.count >= 5) {
+                    manaGain = 5;
+                }
+                else if (matchedGem.count == 4) {
+                    manaGain = 4;
+                }
+                else {
+                    manaGain = 3;
+                }
+
+                gainManaTriggered?.Invoke(manaGain, color);
+            }
         }
     }
 
-    private FlippedPieces getFlipped(NodePiece p) {
+    private FlippedPieces GetFlipped(NodePiece p) {
         FlippedPieces flip = null;
         for (int i = 0; i < flipped.Count; i++) {
-            if (flipped[i].getOtherPiece(p) != null) {
+            if (flipped[i].GetOtherPiece(p) != null) {
                 flip = flipped[i];
                 break;
             }
@@ -418,7 +560,7 @@ public class Match3 : MonoBehaviour {
         return flip;
     }
 
-    private string getRandomSeed() {
+    private string GetRandomSeed() {
         string seed = "";
         string acceptableChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890!@#$%^&*()";
 
@@ -429,16 +571,29 @@ public class Match3 : MonoBehaviour {
         return seed;
     }
 
-    public Vector2 getPositionFromPoint(Point point) {
+    public Vector2 GetPositionFromPoint(Point point) {
         return new Vector2(64 + (130 * point.x), -64 - (136 * point.y));
+    }
+
+    private class MatchedGem {
+        public int count { get; set; }
+        public int colorCode { get; set; }
+
+        public MatchedGem(int count, int colorCode) {
+            this.count = count;
+            this.colorCode = colorCode;
+        }
+
+        public void IncreaseCount() {
+            count++;
+        }
     }
 }
 
 [System.Serializable]
 public class Node {
 
-    //0 = üres, 1 = amethyst, 2 = emerald, 3 = sapphire, 4 = ruby, 5 = topaz, 6-turmaline, -1 = hole
-    //0 = üres, 1 = skull, 2 = amethyst, 3 = emerald, 4 = sapphire, 5 = ruby, 6 = topaz, 7 = turmaline, -1 = hole
+    //0 = üres, 1 = skull, 2 = amethyst, 3 = emerald, 4 = ruby, 5 = sapphire, 6 = topaz, 7 = turmaline, -1 = hole
     public int value; //Az adott mezőn található Gem értéke
 
     public Point index;
@@ -456,7 +611,7 @@ public class Node {
         piece.SetIndex(index);
     }
 
-    public NodePiece getPiece() {
+    public NodePiece GetPiece() {
         return piece;
     }
 }
@@ -471,7 +626,7 @@ public class FlippedPieces {
         two = t;
     }
 
-    public NodePiece getOtherPiece(NodePiece piece) {
+    public NodePiece GetOtherPiece(NodePiece piece) {
         if (piece == one)
             return two;
         else if (piece == two)

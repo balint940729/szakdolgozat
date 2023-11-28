@@ -844,6 +844,49 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &593567553
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 593567555}
+  - component: {fileID: 593567554}
+  m_Layer: 0
+  m_Name: EnemyAI
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &593567554
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 593567553}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f74dc291609bb3b4cbae46cfa72c858b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &593567555
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 593567553}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 280.0419, y: 209.44408, z: -9562.875}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &609753437
 GameObject:
   m_ObjectHideFlags: 0
@@ -986,6 +1029,7 @@ GameObject:
   - component: {fileID: 1090456485}
   - component: {fileID: 1090456484}
   - component: {fileID: 1090456483}
+  - component: {fileID: 1090456487}
   m_Layer: 5
   m_Name: GameCanvas
   m_TagString: Untagged
@@ -1073,6 +1117,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1090456487
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1090456482}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58780a9d4439ef2478ba5c517282af40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1131812624
 GameObject:
   m_ObjectHideFlags: 0
@@ -1182,7 +1238,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardPrefab: {fileID: 4815057449383010390, guid: a74bd9138ed085843a8e06f3036e624f,
     type: 3}
-  parentScene: {fileID: 0}
+  spellPrefab: {fileID: 631441205120170080, guid: b489e832a57090e438b4092b8b1433b2,
+    type: 3}
+  buttonPrefab: {fileID: 3639255606650294794, guid: 85eaf508c69070844a4abdeac4adf255,
+    type: 3}
+  turnPrefab: {fileID: 4196951729806470333, guid: 07f375a77babc144e9480291209b042f,
+    type: 3}
 --- !u!4 &1377176822
 Transform:
   m_ObjectHideFlags: 0

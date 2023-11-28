@@ -24,7 +24,7 @@ Szakdolgozat - Köles Bálint
 
 	* [ ] -  Egyedi Gameboardok elmentése (lyukakkal)
 
-	* [ ] -  Felváltva történő mozgatás
+	* [x] -  Felváltva történő mozgatás
 
 	* [ ] -  Lehetséges lépés animációja
 
@@ -54,9 +54,9 @@ Szakdolgozat - Köles Bálint
 
 +  Kártyák
 
-      * [ ] -  Kártyák létrehozása
+      * [x] -  Kártyák létrehozása
 
-      * [ ] -  Kártyák elhelyezése a Gameboardon
+      * [x] -  Kártyák elhelyezése a Gameboardon
 
       * [ ] -  Kártyákhoz tartozó statok hozzáadása
 
@@ -66,7 +66,7 @@ Szakdolgozat - Köles Bálint
 
       * [ ] -  Animáció a mana begyűjtésénél
 
-      * [ ] -  Harc matchelésnél támadás a másik oldalon lévő egységet
+      * [x] -  Harc matchelésnél támadás a másik oldalon lévő egységet
 
       * [ ] -  Harc animáció
 
