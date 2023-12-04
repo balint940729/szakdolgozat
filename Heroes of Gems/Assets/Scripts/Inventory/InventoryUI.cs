@@ -4,6 +4,11 @@ public class InventoryUI : MonoBehaviour {
     public static bool gameIsPaused = false;
     public GameObject inventoryMenuUI;
 
+    private void Start() {
+        GameObject title = GameObject.Find("Title");
+        title.transform.position = new Vector3(Screen.width / 2, title.transform.position.y);
+    }
+
     // Update is called once per frame
     private void Update() {
         if (Input.GetKeyDown(KeyCode.I)) {
