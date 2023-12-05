@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: DwarfSpell
   m_EditorClassIdentifier: Assembly-CSharp::DwarfSpell
   spellName: Mining
-  spellDescription: Deal 10 damage to the last two enemies.
+  spellDescription: Deal &X damage to the last two enemies.
   spellImage: {fileID: 21300000, guid: 14a0f66a7be165c4ba476e3d7c40e390, type: 3}

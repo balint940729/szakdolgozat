@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   baseName: Dwarf
   baseHealth: 30
-  baseAttack: 8
-  baseArmor: 20
+  baseAttack: 12
+  baseArmor: 30
   maxMana: 15
   currentMana: 0
   baseSpellDamage: 10

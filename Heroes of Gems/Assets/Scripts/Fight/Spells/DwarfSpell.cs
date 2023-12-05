@@ -24,7 +24,7 @@ public class DwarfSpell : SpellBase {
                 break;
             }
             UnitController target = targetsGO.ElementAt(i).GetComponent<UnitController>();
-            caster.SpellAttack(caster.GetSpellDamage(), target);
+            caster.NormalDamage(caster.GetSpellDamage(), target);
             iterator++;
         }
     }

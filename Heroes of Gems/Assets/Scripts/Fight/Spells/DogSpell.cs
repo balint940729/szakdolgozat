@@ -17,8 +17,11 @@ public class DogSpell : SpellBase {
             targetsGO = TurnBase.GetInstance().GetPlayerTeam();
         }
         UnitController target = targetsGO.First().GetComponent<UnitController>();
-        caster.SpellAttack(caster.GetSpellDamage(), target);
+        caster.NormalDamage(caster.GetSpellDamage(), target);
     }
+
+    //public override void ChangeSpellDescription(int spellDamage) {
+    //}
 
     //public override bool isSpellTargets() {
     //    return true;

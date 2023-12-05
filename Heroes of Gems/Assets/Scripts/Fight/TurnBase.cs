@@ -97,12 +97,12 @@ public class TurnBase : MonoBehaviour {
                     break;
 
                 case Race.Dwarf:
-                    unit.GainArmor(dwarfs <= 1 ? 0 : dwarfs * 8);
+                    unit.ModifyArmor(dwarfs <= 1 ? 0 : dwarfs * 8);
                     break;
 
                 case Race.Beast:
-                    unit.GainAttack(beasts <= 1 ? 0 : beasts * 10);
-                    unit.GainSpellDamage(beasts <= 1 ? 0 : beasts * 10);
+                    unit.ModifyAttack(beasts <= 1 ? 0 : beasts * 2);
+                    unit.ModifySpellDamage(beasts <= 1 ? 0 : beasts * 2);
                     break;
 
                 default:
@@ -268,10 +268,10 @@ public class TurnBase : MonoBehaviour {
         parentScene = GameObject.Find("GameCanvas").transform;
 
         if (isPlayerTeam) {
-            tempTeamList = new int[] { 0, 0, 1, 2 };
+            tempTeamList = new int[] { 1, 2, 3, 4 };
         }
         else {
-            tempTeamList = new int[] { 1, 2, 1, 1 };
+            tempTeamList = new int[] { 8, 9, 10, 0 };
         }
         for (int i = 0; i < 4; i++) {
             SetUpUnit(isPlayerTeam, i, tempTeamList[i]);
@@ -327,7 +327,7 @@ public class TurnBase : MonoBehaviour {
         }
 
         spellGO.SetActive(false);
-        FindObjectOfType<UnitController>().onSpellDisplay += SpellDisplay;
+        FindObjectOfType<UnitController>().OnSpellDisplay += SpellDisplay;
         //FindObjectOfType<UnitController>().onTargetSelection += SelectTarget;
     }
 

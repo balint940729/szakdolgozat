@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Dog
   m_EditorClassIdentifier: 
   baseName: Warhound
-  baseHealth: 20
-  baseAttack: 6
-  baseArmor: 10
+  baseHealth: 21
+  baseAttack: 15
+  baseArmor: 2
   maxMana: 4
   currentMana: 0
   baseSpellDamage: 5

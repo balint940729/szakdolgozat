@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5c60185e56f7fc44b3e9dd6bf5468fd, type: 3}
   m_Name: Dwarf
   m_EditorClassIdentifier: 
-  Name: 
-  Icon: {fileID: 0}
+  Name: Dwarf
+  Icon: {fileID: 21300000, guid: af7226e30c27aab4486f406051ce398e, type: 3}

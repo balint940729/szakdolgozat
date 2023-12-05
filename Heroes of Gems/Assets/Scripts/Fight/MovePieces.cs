@@ -20,9 +20,6 @@ public class MovePieces : MonoBehaviour {
         if (BattleStateHandler.GetState() == BattleState.WaitingForPlayer) {
             PlayerMove();
         }
-        //else if (BattleStateHandler.GetState() == BattleState.WaitingForEnemy) {
-        //    EnemyMove();
-        //}
     }
 
     private void PlayerMove() {

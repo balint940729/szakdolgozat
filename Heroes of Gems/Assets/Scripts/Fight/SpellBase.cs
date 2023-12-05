@@ -12,6 +12,8 @@ public abstract class SpellBase : ScriptableObject {
     //protected List<UnitController> allyTargets;
     protected UnitController caster;
 
+    protected string originalDesc;
+
     protected SpellBase(string spellName, string spellDescription, Sprite spellImage) {
         this.spellName = spellName;
         this.spellDescription = spellDescription;
@@ -34,11 +36,15 @@ public abstract class SpellBase : ScriptableObject {
 
     public abstract void InitializeSpell();
 
-    public virtual void ChangeSpellDescription(int spellDamage) {
-        if (spellDescription.Contains("&X")) {
-            spellDescription = spellDescription.Replace("&X", spellDamage.ToString());
-        }
-    }
+    //public virtual void ChangeSpellDescription(string spellDesc) {
+    //    //if (spellDescription.Contains("&X")) {
+    //    //if (originalDesc == null) {
+    //    //    originalDesc = spellDescription;
+    //    //}
+
+    //    spellDescription = spellDesc;
+    //    //spellDescription = originalDesc.Replace("&X", spellDamage.ToString());
+    //}
 
     public virtual bool IsSpellTargets() {
         return false;
