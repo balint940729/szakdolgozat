@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public enum Race { Human, Dwarf, Beast };
+//public enum Race { Human, Dwarf, Beast };
 
 [CreateAssetMenu(fileName = "New Card", menuName = "Card")]
 [System.Serializable]

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
+
 public class ItemSlot : MonoBehaviour {
     [SerializeField] private Image image;
 
@@ -14,15 +15,15 @@ public class ItemSlot : MonoBehaviour {
                 image.enabled = false;
             }
             else {
-                image.sprite = item.Icon;
+                //image.sprite = item.Icon;
                 image.enabled = true;
             }
         }
     }
 
-    private void OnValidate() {
-        if (image == null) {
-            image = GetComponent<Image>();
-        }
-    }
+    //private void OnValidate() {
+    //    if (image == null) {
+    //        image = GetComponent<Image>();
+    //    }
+    //}
 }

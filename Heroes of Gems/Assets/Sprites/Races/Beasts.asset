@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b93d3cf0b65965a4ba0be4197b12a059, type: 3}
+  m_Name: Beasts
+  m_EditorClassIdentifier: 
+  raceName: Beasts
+  raceBonusModifier: 5
+  strongAgainst: []
+  weakAgainst: []
+  raceBonusStat:
+  - Attack
+  raceImage: {fileID: 21300000, guid: c4ce1c1d27047a24295e994df826b31f, type: 3}

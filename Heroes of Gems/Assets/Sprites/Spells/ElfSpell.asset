@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12438df1f2fc0ad4882138b3e700dbf1, type: 3}
   m_Name: ElfSpell
   m_EditorClassIdentifier: 
-  spellName: 
-  spellDescription: 
-  spellImage: {fileID: 0}
+  spellName: Snipe
+  spellDescription: Deal &X damage to the weakest enemy.
+  spellImage: {fileID: 21300000, guid: 530bcabb1501d8148a19a77465ecac03, type: 3}

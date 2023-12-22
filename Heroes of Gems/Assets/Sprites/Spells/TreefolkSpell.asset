@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ff3da94a7ee87f4789e8c8268791b56, type: 3}
   m_Name: TreefolkSpell
   m_EditorClassIdentifier: 
-  spellName: 
-  spellDescription: 
-  spellImage: {fileID: 0}
+  spellName: Roots
+  spellDescription: Gain &X Health and deal &X damage to the last enemy.
+  spellImage: {fileID: 21300000, guid: c3aab7237df394c4890e647a4ae580ea, type: 3}

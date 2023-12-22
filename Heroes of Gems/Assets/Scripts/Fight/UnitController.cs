@@ -29,11 +29,11 @@ public class UnitController : MonoBehaviour, IPointerClickHandler {
     private void Awake() {
         unitCard = GetComponent<UnitDisplay>();
         spellCard = GetComponent<SpellDisplay>();
-        assetGuids = AssetDatabase.FindAssets("t:Unit", new string[] { folderPath });
     }
 
-    public void SetUp(int cardID, GameObject spellGO) {
-        string assetPath = AssetDatabase.GUIDToAssetPath(assetGuids[cardID]);
+    public void SetUp(Unit card, GameObject spellGO) {
+        assetGuids = AssetDatabase.FindAssets(card.name + " t:Unit", new string[] { folderPath });
+        string assetPath = AssetDatabase.GUIDToAssetPath(assetGuids[0]);
         unitCard.card = AssetDatabase.LoadAssetAtPath<Unit>(assetPath);
 
         string typeSpell = "t:" + unitCard.card.name + "Spell";
@@ -74,10 +74,10 @@ public class UnitController : MonoBehaviour, IPointerClickHandler {
     public bool CastSpell(List<UnitController> targets) {
         if (mana == maxMana) {
             if (BattleStateHandler.GetState() == BattleState.WaitingForPlayer) {
-                BattleStateHandler.setState(BattleState.PlayerTurn);
+                BattleStateHandler.SetState(BattleState.PlayerTurn);
             }
             else if (BattleStateHandler.GetState() == BattleState.WaitingForEnemy) {
-                BattleStateHandler.setState(BattleState.EnemyTurn);
+                BattleStateHandler.SetState(BattleState.EnemyTurn);
             }
             spell.SetCaster(this);
             spell.setTargets(targets);

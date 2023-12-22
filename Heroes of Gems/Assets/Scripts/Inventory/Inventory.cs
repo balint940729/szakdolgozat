@@ -2,66 +2,50 @@
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
+using System.Linq;
 
 public class Inventory : MonoBehaviour {
-    public GameObject emptyItemPrefab;
-    [SerializeField] private List<Item> items;
-    [SerializeField] private Transform itemsParent;
-    [SerializeField] private ItemSlot[] itemSlots;
-    public int numberOfItems;
-    private string folderPath = "Assets/Sprites/Items";
-    private string[] assetGuids;
+    [SerializeField] private GameObject inventoryContainerPrefab;
+
+    [SerializeField] private Transform containerParent;
+    [SerializeField] private List<GameObject> invItemsPrefabs;
 
     private void Start() {
-        //if (itemsParent != null) {
-        //    itemSlots = itemsParent.GetComponentsInChildren<ItemSlot>();
-        //}
-        for (int i = 0; i < numberOfItems; i++) {
-            GameObject itemGO = Instantiate(emptyItemPrefab);
-            itemGO.name = "ItemSlot" + i;
-            itemGO.transform.SetParent(itemsParent.transform, false);
-            assetGuids = AssetDatabase.FindAssets("t:Item", new string[] { folderPath });
+        for (int i = 0; i < 2; i++) {
+            GameObject invCont = Instantiate(inventoryContainerPrefab);
+            invCont.transform.SetParent(containerParent, false);
 
-            string assetPath = AssetDatabase.GUIDToAssetPath(assetGuids[1]);
+            ////RectTransform rectTR = (RectTransform)containerParent.transform;
+            //RectTransform rectTR = (RectTransform)invCont.transform;
+            //float invHeight = rectTR.rect.height;
+            //float invWidth = rectTR.rect.width;
+            ////invCont.transform.position = new Vector3(Screen.width * (25f * titleCount) / 100, Screen.height - titleHeight);
+            ////invCont.transform.position = new Vector3(invWidth * 75f / 100, invHeight * 75f / 100);
+            //rectTR.rect.Set(rectTR.rect.x, rectTR.rect.y, rectTR.rect.width - 600f, rectTR.rect.height * 75f / 100);
 
-            Item item = AssetDatabase.LoadAssetAtPath<Item>(assetPath);
-            GameObject icon = GameObject.Find("Icon");
-            icon.name = "Icon" + i;
-            Image img = icon.GetComponent<Image>();
-            img.sprite = item.Icon;
+            GameObject.Find("InventoryCanvas").GetComponent<InventoryUI>().AddInvContainer(invCont);
+            switch (i) {
+                case 0:
+                    invCont.name = "UnitsContainer";
+                    invCont.AddComponent<UnitsInventory>();
+                    invCont.GetComponent<UnitsInventory>().emptyItemPrefab = invItemsPrefabs.Find(item => item.name == "InventorySlot");
+                    invCont.GetComponent<UnitsInventory>().folderPath = "Assets/Sprites/Items/UnitsInventory";
+
+                    //invCont.SetActive(false);
+                    break;
+
+                case 1:
+                    invCont.name = "ItemsContainer";
+                    invCont.AddComponent<ItemsInventory>();
+                    invCont.GetComponent<ItemsInventory>().emptyItemPrefab = invItemsPrefabs.Find(item => item.name == "InventorySlot");
+                    invCont.GetComponent<ItemsInventory>().folderPath = "Assets/Sprites/Items/ItemsInventory";
+
+                    break;
+
+                default:
+                    break;
+            }
         }
-        RefreshUI();
-    }
-
-    private void RefreshUI() {
-        for (int i = 0; i < items.Count && i < itemSlots.Length; i++) {
-            itemSlots[i].Item = items[i];
-        }
-
-        for (int i = 0; i < itemSlots.Length; i++) {
-            itemSlots[i].Item = null;
-        }
-    }
-
-    public bool AddItem(Item item) {
-        if (IsFull()) {
-            return false;
-        }
-
-        items.Add(item);
-        RefreshUI();
-        return true;
-    }
-
-    public bool RemoveItem(Item item) {
-        if (items.Remove(item)) {
-            RefreshUI();
-            return true;
-        }
-        return false;
-    }
-
-    public bool IsFull() {
-        return items.Count >= itemSlots.Length;
     }
 }

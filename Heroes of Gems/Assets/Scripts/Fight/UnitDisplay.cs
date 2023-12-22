@@ -11,9 +11,11 @@ public class UnitDisplay : MonoBehaviour {
     public TMP_Text mana;
 
     public Image image;
+    public Image raceIcon;
 
     private void Start() {
         image.sprite = card.image;
+        raceIcon.sprite = card.race.raceImage;
     }
 
     public void SetColors(GameObject manaGO, int index) {

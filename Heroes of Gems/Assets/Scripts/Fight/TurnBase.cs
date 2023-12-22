@@ -7,11 +7,11 @@ using UnityEngine.UI;
 public class TurnBase : MonoBehaviour {
 
     // Card Prefab - Border, Attack, Health, Armor, Mana icons
-    public GameObject cardPrefab;
+    [SerializeField] private GameObject cardPrefab;
 
-    public GameObject spellPrefab;
-    public GameObject buttonPrefab;
-    public GameObject turnPrefab;
+    [SerializeField] private GameObject spellPrefab;
+    [SerializeField] private GameObject buttonPrefab;
+    [SerializeField] private GameObject turnPrefab;
 
     private Transform parentScene;
     private GameObject turnArrowGO;
@@ -64,51 +64,51 @@ public class TurnBase : MonoBehaviour {
     //}
 
     private void CheckStatBonuses(List<GameObject> team) {
-        int humans = 0;
-        int dwarfs = 0;
-        int beasts = 0;
-        foreach (GameObject unitGO in team) {
-            UnitController unit = unitGO.GetComponent<UnitController>();
+        //int humans = 0;
+        //int dwarfs = 0;
+        //int beasts = 0;
+        //foreach (GameObject unitGO in team) {
+        //    UnitController unit = unitGO.GetComponent<UnitController>();
 
-            switch (unit.GetRace()) {
-                case Race.Human:
-                    humans++;
-                    break;
+        //    switch (unit.GetRace()) {
+        //        case Race.Human:
+        //            humans++;
+        //            break;
 
-                case Race.Dwarf:
-                    dwarfs++;
-                    break;
+        //        case Race.Dwarf:
+        //            dwarfs++;
+        //            break;
 
-                case Race.Beast:
-                    beasts++;
-                    break;
+        //        case Race.Beast:
+        //            beasts++;
+        //            break;
 
-                default:
-                    break;
-            }
-        }
+        //        default:
+        //            break;
+        //    }
+        //}
 
-        foreach (GameObject unitGO in team) {
-            UnitController unit = unitGO.GetComponent<UnitController>();
+        //foreach (GameObject unitGO in team) {
+        //    UnitController unit = unitGO.GetComponent<UnitController>();
 
-            switch (unit.GetRace()) {
-                case Race.Human:
-                    unit.GainStats(humans <= 1 ? 0 : humans * 5, humans <= 1 ? 0 : humans * 5);
-                    break;
+        //    switch (unit.GetRace()) {
+        //        case Race.Human:
+        //            unit.GainStats(humans <= 1 ? 0 : humans * 5, humans <= 1 ? 0 : humans * 5);
+        //            break;
 
-                case Race.Dwarf:
-                    unit.ModifyArmor(dwarfs <= 1 ? 0 : dwarfs * 8);
-                    break;
+        //        case Race.Dwarf:
+        //            unit.ModifyArmor(dwarfs <= 1 ? 0 : dwarfs * 8);
+        //            break;
 
-                case Race.Beast:
-                    unit.ModifyAttack(beasts <= 1 ? 0 : beasts * 2);
-                    unit.ModifySpellDamage(beasts <= 1 ? 0 : beasts * 2);
-                    break;
+        //        case Race.Beast:
+        //            unit.ModifyAttack(beasts <= 1 ? 0 : beasts * 2);
+        //            unit.ModifySpellDamage(beasts <= 1 ? 0 : beasts * 2);
+        //            break;
 
-                default:
-                    break;
-            }
-        }
+        //        default:
+        //            break;
+        //    }
+        //}
     }
 
     private void SpellDisplay(string spellName) {
@@ -167,10 +167,10 @@ public class TurnBase : MonoBehaviour {
             bool isSpellCasted = player.CastSpell(spellTargets);
             if (isSpellCasted) {
                 if (BattleStateHandler.GetState() == BattleState.PlayerTurn) {
-                    BattleStateHandler.setState(BattleState.WaitingForEnemy);
+                    BattleStateHandler.SetState(BattleState.WaitingForEnemy);
                 }
                 else if (BattleStateHandler.GetState() == BattleState.EnemyTurn) {
-                    BattleStateHandler.setState(BattleState.WaitingForPlayer);
+                    BattleStateHandler.SetState(BattleState.WaitingForPlayer);
                 }
                 TurnChange();
             }
@@ -264,21 +264,26 @@ public class TurnBase : MonoBehaviour {
 
     // Setup the Card to the Board
     private void SetUpTeam(bool isPlayerTeam) {
-        int[] tempTeamList;
+        List<Unit> tempTeamList;
         parentScene = GameObject.Find("GameCanvas").transform;
 
         if (isPlayerTeam) {
-            tempTeamList = new int[] { 1, 2, 3, 4 };
+            //tempTeamList = new int[] { 1, 2, 3, 4 };
+            tempTeamList = PlayerTeamHandler.GetTeam();
         }
         else {
-            tempTeamList = new int[] { 8, 9, 10, 0 };
+            //tempTeamList = new int[] { 8, 9, 10, 0 };
+            tempTeamList = EnemyTeamHandler.GetTeam();
         }
-        for (int i = 0; i < 4; i++) {
-            SetUpUnit(isPlayerTeam, i, tempTeamList[i]);
+
+        int i = 0;
+        foreach (Unit unit in tempTeamList) {
+            SetUpUnit(isPlayerTeam, i, unit);
+            i++;
         }
     }
 
-    private void SetUpUnit(bool isPlayerTeam, int index, int cardID) {
+    private void SetUpUnit(bool isPlayerTeam, int index, Unit card) {
         GameObject cardUnitGO = Instantiate(cardPrefab);
         GameObject spellGO = Instantiate(spellPrefab);
 
@@ -313,7 +318,7 @@ public class TurnBase : MonoBehaviour {
 
         UnitController cardUnitController = cardUnitGO.GetComponent<UnitController>();
 
-        cardUnitController.SetUp(cardID, spellGO);
+        cardUnitController.SetUp(card, spellGO);
 
         SetUpUnitColor(isPlayerTeam, cardUnitController, index);
 
@@ -422,10 +427,10 @@ public class TurnBase : MonoBehaviour {
 
     private void CheckGameResult() {
         if (enemyTeam.Count == 0) {
-            BattleStateHandler.setState(BattleState.Won);
+            BattleStateHandler.SetState(BattleState.Won);
         }
         else if (playerTeam.Count == 0) {
-            BattleStateHandler.setState(BattleState.Lost);
+            BattleStateHandler.SetState(BattleState.Lost);
         }
     }
 

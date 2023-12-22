@@ -26,7 +26,7 @@ public class EnemyAI : MonoBehaviour {
     // Update is called once per frame
     private void Update() {
         if (BattleStateHandler.GetState() == BattleState.WaitingForEnemy) {
-            BattleStateHandler.setState(BattleState.EnemyTurn);
+            BattleStateHandler.SetState(BattleState.EnemyTurn);
             CastSpell();
             CalculateMove();
 

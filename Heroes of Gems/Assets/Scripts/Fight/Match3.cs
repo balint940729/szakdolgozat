@@ -46,7 +46,7 @@ public class Match3 : MonoBehaviour {
         update = new List<NodePiece>();
         dead = new List<NodePiece>();
         flipped = new List<FlippedPieces>();
-        BattleStateHandler.setState(BattleState.Start);
+        BattleStateHandler.SetState(BattleState.Start);
 
         InitializeBoard();
         VerifyBoard();
@@ -77,7 +77,7 @@ public class Match3 : MonoBehaviour {
             }
         }
 
-        BattleStateHandler.setState(BattleState.WaitingForPlayer);
+        BattleStateHandler.SetState(BattleState.WaitingForPlayer);
     }
 
     private void VerifyBoard() {
@@ -426,10 +426,10 @@ public class Match3 : MonoBehaviour {
             {
                 if (wasFlipped) { // If we flipped the piece and match
                     if (BattleStateHandler.GetState() == BattleState.WaitingForPlayer) {
-                        BattleStateHandler.setState(BattleState.PlayerTurn);
+                        BattleStateHandler.SetState(BattleState.PlayerTurn);
                     }
                     else if (BattleStateHandler.GetState() == BattleState.WaitingForEnemy) {
-                        BattleStateHandler.setState(BattleState.EnemyTurn);
+                        BattleStateHandler.SetState(BattleState.EnemyTurn);
                     }
                 }
 
@@ -457,11 +457,11 @@ public class Match3 : MonoBehaviour {
     private void LateUpdate() {
         if (isTurnEnd) {
             if (BattleStateHandler.GetState() == BattleState.PlayerTurn) {
-                BattleStateHandler.setState(ExtraTurnHandler.IsExtraTurn() ? BattleState.WaitingForPlayer : BattleState.WaitingForEnemy);
+                BattleStateHandler.SetState(ExtraTurnHandler.IsExtraTurn() ? BattleState.WaitingForPlayer : BattleState.WaitingForEnemy);
                 //Debug.Log(BattleStateHandler.GetState());
             }
             else if (BattleStateHandler.GetState() == BattleState.EnemyTurn) {
-                BattleStateHandler.setState(ExtraTurnHandler.IsExtraTurn() ? BattleState.WaitingForEnemy : BattleState.WaitingForPlayer);
+                BattleStateHandler.SetState(ExtraTurnHandler.IsExtraTurn() ? BattleState.WaitingForEnemy : BattleState.WaitingForPlayer);
                 //Debug.Log(BattleStateHandler.GetState());
             }
             turnChangeTriggered?.Invoke();
@@ -492,10 +492,10 @@ public class Match3 : MonoBehaviour {
         foreach (MatchedGem matchedGem in matchGems) {
             if (matchedGem.colorCode == 1) {
                 if (BattleStateHandler.GetState() == BattleState.WaitingForPlayer) {
-                    BattleStateHandler.setState(BattleState.PlayerTurn);
+                    BattleStateHandler.SetState(BattleState.PlayerTurn);
                 }
                 else if (BattleStateHandler.GetState() == BattleState.WaitingForEnemy) {
-                    BattleStateHandler.setState(BattleState.EnemyTurn);
+                    BattleStateHandler.SetState(BattleState.EnemyTurn);
                 }
                 attackTriggered?.Invoke();
             }

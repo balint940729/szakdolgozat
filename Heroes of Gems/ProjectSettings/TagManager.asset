@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Teleporters
   - Chests
+  - Race
   layers:
   - Default
   - TransparentFX

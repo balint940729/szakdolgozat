@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: BarbarianSpell
   m_EditorClassIdentifier: 
   spellName: War Cry
-  spellDescription: 
+  spellDescription: Gain &X attack and deal damage to the first enemy with his attack.
   spellImage: {fileID: 21300000, guid: 04aa6d588031cca46a8bd5e5e6582140, type: 3}

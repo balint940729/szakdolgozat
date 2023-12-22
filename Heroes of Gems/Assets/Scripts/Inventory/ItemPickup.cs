@@ -2,7 +2,7 @@
 
 public class ItemPickup : MonoBehaviour {
     [SerializeField] private Item item;
-    [SerializeField] private Inventory inventory;
+    [SerializeField] private UnitsInventory inventory;
     [SerializeField] private KeyCode itemPickupKeyCode = KeyCode.E;
 
     [SerializeField] private GameObject PlayerGameObject;
