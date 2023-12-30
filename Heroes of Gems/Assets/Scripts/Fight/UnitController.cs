@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -111,6 +112,8 @@ public class UnitController : MonoBehaviour, IPointerClickHandler {
     }
 
     public void NormalDamage(int damage, UnitController target) {
+        damage = CalculateRaceBonusDamage(damage, target);
+
         target.armor -= damage;
 
         if (target.armor < 0) {
@@ -147,6 +150,18 @@ public class UnitController : MonoBehaviour, IPointerClickHandler {
         unitCard.SetMana(mana);
 
         return remainedMana;
+    }
+
+    private int CalculateRaceBonusDamage(int damage, UnitController target) {
+        if (race.strongAgainst.Contains(target.GetRace())) {
+            damage = (int)Math.Ceiling(damage * 1.5f);
+        }
+
+        if (race.weakAgainst.Contains(target.GetRace())) {
+            damage = (int)Math.Ceiling(damage * 0.5f);
+        }
+
+        return damage;
     }
 
     public bool IsOnFullMana() {

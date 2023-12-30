@@ -64,51 +64,11 @@ public class TurnBase : MonoBehaviour {
     //}
 
     private void CheckStatBonuses(List<GameObject> team) {
-        //int humans = 0;
-        //int dwarfs = 0;
-        //int beasts = 0;
-        //foreach (GameObject unitGO in team) {
-        //    UnitController unit = unitGO.GetComponent<UnitController>();
+        foreach (GameObject unitGO in team) {
+            UnitController unit = unitGO.GetComponent<UnitController>();
 
-        //    switch (unit.GetRace()) {
-        //        case Race.Human:
-        //            humans++;
-        //            break;
-
-        //        case Race.Dwarf:
-        //            dwarfs++;
-        //            break;
-
-        //        case Race.Beast:
-        //            beasts++;
-        //            break;
-
-        //        default:
-        //            break;
-        //    }
-        //}
-
-        //foreach (GameObject unitGO in team) {
-        //    UnitController unit = unitGO.GetComponent<UnitController>();
-
-        //    switch (unit.GetRace()) {
-        //        case Race.Human:
-        //            unit.GainStats(humans <= 1 ? 0 : humans * 5, humans <= 1 ? 0 : humans * 5);
-        //            break;
-
-        //        case Race.Dwarf:
-        //            unit.ModifyArmor(dwarfs <= 1 ? 0 : dwarfs * 8);
-        //            break;
-
-        //        case Race.Beast:
-        //            unit.ModifyAttack(beasts <= 1 ? 0 : beasts * 2);
-        //            unit.ModifySpellDamage(beasts <= 1 ? 0 : beasts * 2);
-        //            break;
-
-        //        default:
-        //            break;
-        //    }
-        //}
+            unit.GetRace().raceBonus.InitializeRaceBonus(team, unit);
+        }
     }
 
     private void SpellDisplay(string spellName) {

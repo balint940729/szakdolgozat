@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Undeads
   m_EditorClassIdentifier: 
   raceName: Undeads
-  raceBonusModifier: 5
-  strongAgainst: []
+  strongAgainst:
+  - {fileID: 11400000}
+  - {fileID: 11400000, guid: 0a9f239c3cc90e341be1ee9d7cf4e4f8, type: 2}
   weakAgainst: []
-  raceBonusStat:
-  - Spell damage
+  raceBonus: {fileID: 11400000, guid: 8dd0461539d16964caec91596a9f7f5c, type: 2}
   raceImage: {fileID: 21300000, guid: 4dc9f4d4706b9dc459395d6456006ef8, type: 3}

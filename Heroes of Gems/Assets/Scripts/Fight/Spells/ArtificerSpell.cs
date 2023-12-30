@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Spell", menuName = "Spells/Artificer")]
+[CreateAssetMenu(fileName = "ArtificerSpell", menuName = "Spells/Artificer")]
 public class ArtificerSpell : SpellBase {
 
     public ArtificerSpell(string spellName, string spellDescription, Sprite spellImage) : base(spellName, spellDescription, spellImage) {
