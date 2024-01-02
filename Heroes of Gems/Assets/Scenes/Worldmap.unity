@@ -6198,7 +6198,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd2a1aa15dad67b4198adf72aab815fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventoryContainerPrefab: {fileID: 8785193025821608078, guid: 09e312f78382f984eae2157f100a7879,
+  inventoryContainerPrefab: {fileID: 7709605746251947372, guid: 32df7bb34edbc9146a172aae620a9c0e,
     type: 3}
   containerParent: {fileID: 721091835}
   invItemsPrefabs:
@@ -6315,10 +6315,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   team:
-  - {fileID: 11400000, guid: c02ccfdb9dda50a4290ca9dcab64222e, type: 2}
-  - {fileID: 11400000, guid: c02ccfdb9dda50a4290ca9dcab64222e, type: 2}
-  - {fileID: 11400000, guid: 3d8df925fd7f1104ea63516e350aec53, type: 2}
-  - {fileID: 11400000, guid: 3d8df925fd7f1104ea63516e350aec53, type: 2}
+  - {fileID: 11400000, guid: e447de4190b2f2b45bf37b90f8924a9d, type: 2}
+  - {fileID: 11400000, guid: e447de4190b2f2b45bf37b90f8924a9d, type: 2}
+  - {fileID: 11400000, guid: e447de4190b2f2b45bf37b90f8924a9d, type: 2}
+  - {fileID: 11400000, guid: e447de4190b2f2b45bf37b90f8924a9d, type: 2}
 --- !u!1 &1081485718
 GameObject:
   m_ObjectHideFlags: 0
@@ -7553,10 +7553,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   team:
-  - {fileID: 11400000, guid: 9c87d6ad94c449146a77253aa41180f9, type: 2}
-  - {fileID: 11400000, guid: c02ccfdb9dda50a4290ca9dcab64222e, type: 2}
-  - {fileID: 11400000, guid: 749bc3860d851a64e82e9493a9a43b12, type: 2}
-  - {fileID: 11400000, guid: 29eece0a97ee2704a8451c9377e68831, type: 2}
+  - {fileID: 11400000, guid: e447de4190b2f2b45bf37b90f8924a9d, type: 2}
+  - {fileID: 11400000, guid: e447de4190b2f2b45bf37b90f8924a9d, type: 2}
+  - {fileID: 11400000, guid: e447de4190b2f2b45bf37b90f8924a9d, type: 2}
+  - {fileID: 11400000, guid: e447de4190b2f2b45bf37b90f8924a9d, type: 2}
 --- !u!1001 &2007489674
 PrefabInstance:
   m_ObjectHideFlags: 0

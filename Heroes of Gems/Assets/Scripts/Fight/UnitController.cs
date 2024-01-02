@@ -24,7 +24,7 @@ public class UnitController : MonoBehaviour, IPointerClickHandler {
     private int mana;
     private int maxMana;
     private List<Colors> colors;
-    private SpellBase spell;
+    private SpellBaseSO spell;
     private Race race;
 
     private void Awake() {
@@ -37,12 +37,13 @@ public class UnitController : MonoBehaviour, IPointerClickHandler {
         string assetPath = AssetDatabase.GUIDToAssetPath(assetGuids[0]);
         unitCard.card = AssetDatabase.LoadAssetAtPath<Unit>(assetPath);
 
-        string typeSpell = "t:" + unitCard.card.name + "Spell";
-        spellAssetGuids = AssetDatabase.FindAssets(typeSpell, new string[] { spellFolderPath });
+        //string typeSpell = "t:" + unitCard.card.name + "Spell";
+        //spellAssetGuids = AssetDatabase.FindAssets(typeSpell, new string[] { spellFolderPath });
 
-        string spellAssetPath = AssetDatabase.GUIDToAssetPath(spellAssetGuids[0]);
+        //string spellAssetPath = AssetDatabase.GUIDToAssetPath(spellAssetGuids[0]);
         spellCard = spellGO.GetComponent<SpellDisplay>();
-        spellCard.spell = AssetDatabase.LoadAssetAtPath<SpellBase>(spellAssetPath);
+        //spellCard.spell = AssetDatabase.LoadAssetAtPath<SpellBase>(spellAssetPath);
+        spellCard.spell = unitCard.card.spell;
 
         health = unitCard.card.baseHealth;
         armor = unitCard.card.baseArmor;
@@ -58,8 +59,16 @@ public class UnitController : MonoBehaviour, IPointerClickHandler {
         unitCard.SetStats(health, armor, attack, mana);
 
         colors = unitCard.card.colors;
+
         spell = unitCard.card.spell;
+
         spellCard.SetSpellDescription(spellDamage);
+    }
+
+    private SpellBaseClass CreateSpell(SpellBaseSO spell) {
+        SpellRef spellRef = new SpellRef(spell);
+
+        return spellRef.GetSpell();
     }
 
     public void OnPointerClick(PointerEventData eventData) {
@@ -80,8 +89,15 @@ public class UnitController : MonoBehaviour, IPointerClickHandler {
             else if (BattleStateHandler.GetState() == BattleState.WaitingForEnemy) {
                 BattleStateHandler.SetState(BattleState.EnemyTurn);
             }
-            spell.SetCaster(this);
-            spell.setTargets(targets);
+
+            SpellBaseClass spellLogic = CreateSpell(spell);
+
+            spellLogic.SetCaster(this);
+            spellLogic.SetTargets(targets);
+
+            //spell.spellLog.SetCaster(this);
+            //spell.spellLogic.SetTargets(targets);
+
             //spell.setEnemyTargets(targets);
             //spell.setPlayerTargets(allyTargets);
             mana = 0;
@@ -91,7 +107,9 @@ public class UnitController : MonoBehaviour, IPointerClickHandler {
             //if (spell.isSpellTargets()) {
             //    onTargetSelection?.Invoke();
             //}
-            spell.InitializeSpell();
+
+            //spell.spellLogic.InitializeSpell();
+            spellLogic.InitializeSpell();
 
             return true;
         }

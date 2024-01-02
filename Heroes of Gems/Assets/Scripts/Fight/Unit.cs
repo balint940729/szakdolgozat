@@ -23,7 +23,7 @@ public class Unit : ScriptableObject {
 
     public List<Colors> colors;
 
-    public SpellBase spell;
+    public SpellBaseSO spell;
 
     public Race race;
 }

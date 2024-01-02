@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9dd202b8275d37346a7567bada9d8aae, type: 3}
+  m_Name: GiantSpider
+  m_EditorClassIdentifier: 
+  baseName: Giant Spider
+  baseHealth: 30
+  baseAttack: 20
+  baseArmor: 10
+  maxMana: 15
+  currentMana: 0
+  baseSpellDamage: 17
+  image: {fileID: 21300000, guid: 6e0f9804d91d47c4393060269c9cfe9d, type: 3}
+  colors:
+  - {fileID: 11400000, guid: 211a02be994cd0c42911b2d973046802, type: 2}
+  - {fileID: 11400000, guid: 8942c16a4b2a68d44a452f707073ebaa, type: 2}
+  spell: {fileID: 0}
+  race: {fileID: 11400000, guid: 0092d8bcb74e2564b810b7337fd76a90, type: 2}

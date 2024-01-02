@@ -13,7 +13,7 @@ public class UnitsInventory : MonoBehaviour {
     public ItemSlot[] itemSlots;
 
     //public int numberOfItems;
-    public string folderPath = "Assets/Sprites/Items/";
+    public string folderPath = "Assets/Sprites/Cards";
 
     private string[] assetGuids;
 
@@ -23,7 +23,7 @@ public class UnitsInventory : MonoBehaviour {
         //    itemSlots = itemsParent.GetComponentsInChildren<ItemSlot>();
         //}
 
-        assetGuids = AssetDatabase.FindAssets("t:Item", new string[] { folderPath });
+        assetGuids = AssetDatabase.FindAssets("t:Unit", new string[] { folderPath });
         for (int i = 0; i < assetGuids.Length; i++) {
             GameObject itemGO = Instantiate(emptyItemPrefab);
             itemGO.name = "ItemSlot" + i;
@@ -37,7 +37,7 @@ public class UnitsInventory : MonoBehaviour {
 
             string assetPath = AssetDatabase.GUIDToAssetPath(assetGuids[i]);
 
-            Item item = AssetDatabase.LoadAssetAtPath<Item>(assetPath);
+            Unit item = AssetDatabase.LoadAssetAtPath<Unit>(assetPath);
             ItemDisplay itemUI = itemGO.GetComponent<ItemDisplay>();
 
             itemUI.grayScale = grayScaleGO;
@@ -48,7 +48,7 @@ public class UnitsInventory : MonoBehaviour {
             itemUI.ChangeGrayScale(itemCount > 0 ? false : true);
 
             itemUI.ChangeItemCounter(itemCount);
-            itemUI.ChangeItemImage(item.Icon);
+            itemUI.ChangeItemImage(item.image);
         }
         //RefreshUI();
     }

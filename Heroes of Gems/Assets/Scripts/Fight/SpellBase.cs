@@ -7,6 +7,7 @@ public abstract class SpellBase : ScriptableObject {
     public string spellDescription;
     public Sprite spellImage;
     protected List<UnitController> targets;
+    //public ISpellScript spellsScript;
 
     //protected List<UnitController> enemyTargets;
     //protected List<UnitController> allyTargets;

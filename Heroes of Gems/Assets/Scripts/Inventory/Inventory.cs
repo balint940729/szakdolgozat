@@ -16,30 +16,33 @@ public class Inventory : MonoBehaviour {
             GameObject invCont = Instantiate(inventoryContainerPrefab);
             invCont.transform.SetParent(containerParent, false);
 
-            ////RectTransform rectTR = (RectTransform)containerParent.transform;
-            //RectTransform rectTR = (RectTransform)invCont.transform;
-            //float invHeight = rectTR.rect.height;
-            //float invWidth = rectTR.rect.width;
-            ////invCont.transform.position = new Vector3(Screen.width * (25f * titleCount) / 100, Screen.height - titleHeight);
-            ////invCont.transform.position = new Vector3(invWidth * 75f / 100, invHeight * 75f / 100);
-            //rectTR.rect.Set(rectTR.rect.x, rectTR.rect.y, rectTR.rect.width - 600f, rectTR.rect.height * 75f / 100);
+            RectTransform parentTR = (RectTransform)containerParent.transform;
+            RectTransform rectTR = (RectTransform)invCont.transform;
+            float invHeight = parentTR.rect.height;
+            float invWidth = parentTR.rect.width;
+            rectTR.sizeDelta = new Vector2(invWidth * 50f / 100, invHeight * 90f / 100);
+            rectTR.transform.localPosition = new Vector3(-invWidth * 24f / 100, -invHeight * 3f / 100, 0);
 
             GameObject.Find("InventoryCanvas").GetComponent<InventoryUI>().AddInvContainer(invCont);
             switch (i) {
                 case 0:
                     invCont.name = "UnitsContainer";
-                    invCont.AddComponent<UnitsInventory>();
-                    invCont.GetComponent<UnitsInventory>().emptyItemPrefab = invItemsPrefabs.Find(item => item.name == "InventorySlot");
-                    invCont.GetComponent<UnitsInventory>().folderPath = "Assets/Sprites/Items/UnitsInventory";
+                    GameObject unitsContent = GameObject.Find("Content");
+                    unitsContent.name = "UnitsContent";
+                    unitsContent.AddComponent<UnitsInventory>();
+                    unitsContent.GetComponent<UnitsInventory>().emptyItemPrefab = invItemsPrefabs.Find(item => item.name == "InventorySlot");
+                    unitsContent.GetComponent<UnitsInventory>().folderPath = "Assets/Sprites/Cards";
 
                     //invCont.SetActive(false);
                     break;
 
                 case 1:
                     invCont.name = "ItemsContainer";
-                    invCont.AddComponent<ItemsInventory>();
-                    invCont.GetComponent<ItemsInventory>().emptyItemPrefab = invItemsPrefabs.Find(item => item.name == "InventorySlot");
-                    invCont.GetComponent<ItemsInventory>().folderPath = "Assets/Sprites/Items/ItemsInventory";
+                    GameObject itemsContent = GameObject.Find("Content");
+                    itemsContent.name = "ItemsContent";
+                    itemsContent.AddComponent<ItemsInventory>();
+                    itemsContent.GetComponent<ItemsInventory>().emptyItemPrefab = invItemsPrefabs.Find(item => item.name == "InventorySlot");
+                    itemsContent.GetComponent<ItemsInventory>().folderPath = "Assets/Sprites/Items/ItemsInventory";
 
                     break;
 

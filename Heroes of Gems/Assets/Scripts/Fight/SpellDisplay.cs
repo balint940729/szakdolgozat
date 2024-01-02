@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class SpellDisplay : MonoBehaviour {
-    public SpellBase spell;
+    public SpellBaseSO spell;
 
     public TMP_Text spellName;
     public TMP_Text spellDescription;
