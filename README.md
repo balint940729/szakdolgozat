@@ -58,11 +58,11 @@ Szakdolgozat - Köles Bálint
 
       * [x] -  Kártyák elhelyezése a Gameboardon
 
-      * [ ] -  Kártyákhoz tartozó statok hozzáadása
+      * [x] -  Kártyákhoz tartozó statok hozzáadása
 
-      * [ ] -  Gemek párosításával a mana gyűjtése
+      * [x] -  Gemek párosításával a mana gyűjtése
 
-      * [ ] -  Megfelelő színű a megfelő kártyának menjen (Sárga gem-sárga mana)
+      * [x] -  Megfelelő színű a megfelő kártyának menjen (Sárga gem-sárga mana)
 
       * [ ] -  Animáció a mana begyűjtésénél
 
@@ -70,7 +70,7 @@ Szakdolgozat - Köles Bálint
 
       * [ ] -  Harc animáció
 
-      * [ ] -  Bónuszok létrehozása (Több ugyanolyan fajhoz tartozóknak)
+      * [x] -  Bónuszok létrehozása (Több ugyanolyan fajhoz tartozóknak)
     
 
 +  Inventory
@@ -83,7 +83,7 @@ Szakdolgozat - Köles Bálint
 
 	* [x] -  Tárgyak felvétele a karakterrel
 
-	* [ ] -  Egység kártyákhoz tartozó album létrehozása
+	* [x] -  Egység kártyákhoz tartozó album létrehozása
 
 	* [ ] -  Kártyák megjelenítése az albumban
 
@@ -94,41 +94,41 @@ Szakdolgozat - Köles Bálint
 	* [ ] -  Csapatok mentése
 
 	* [ ] -  Alap csapat kiválasztása (Harcnál ez a csapat lesz kiválasztva)
-    
+
 
 +  Világtérkép - harc
+    
+	* [x] -  Karakter inventory menüjének a létrehozása
 
-        * [x] -  Ellenfélhez menve Match3 játék indítása
+	* [ ] -  Tárgyak létrehozása
 
-        * [ ] -  A saját csapatunk kiválasztása
-
-        * [ ] -  Ellenfél egységeinek a megjelenítése
+ 	* [ ] -  Ellenfél egységeinek a megjelenítése
 
 
 +  Dungeonok kialakítása
 
-        * [x] -  Teleportálás a dungeonhoz
+  	* [x] -  Teleportálás a dungeonhoz
 
-        * [ ] -  Csapat kiválasztása
+	* [ ] -  Csapat kiválasztása
 
-        * [ ] -  Kiválasztott csapat megtartása a dungeon végéig
+	* [ ] -  Kiválasztott csapat megtartása a dungeon végéig
 		
 
 +  Városok létrehozása
 
-        * [ ] -  Városok ikonjának elhelyezése a világtérképen
+  	* [ ] -  Városok ikonjának elhelyezése a világtérképen
 
-        * [ ] -  Városhoz tartozó menük létrehozása
+	* [ ] -  Városhoz tartozó menük létrehozása
 
-        * [ ] -  Város épületeinek a kilistázása
+	* [ ] -  Város épületeinek a kilistázása
 
-        * [ ] -  Épületekhez tartozó tárgyak/egységek kilistázása
+	* [ ] -  Épületekhez tartozó tárgyak/egységek kilistázása
 
-        * [ ] -  Városhoz tartozó Scene létrehozása
+	* [ ] -  Városhoz tartozó Scene létrehozása
 
-        * [ ] -  Épület kiválasztása és hozzá tartozó tárgyak megjelenítése
+	* [ ] -  Épület kiválasztása és hozzá tartozó tárgyak megjelenítése
 
-        * [ ] -  Küldetések létrehozása
+	* [ ] -  Küldetések létrehozása
 
-        * [ ] -  Küldetések összekapcsolása a megfelelő épülettel/NPC-vel
+	* [ ] -  Küldetések összekapcsolása a megfelelő épülettel/NPC-vel
 
