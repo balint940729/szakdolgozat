@@ -27,7 +27,7 @@ public class EnemyAI : MonoBehaviour {
     private void Update() {
         if (BattleStateHandler.GetState() == BattleState.WaitingForEnemy) {
             BattleStateHandler.SetState(BattleState.EnemyTurn);
-            CastSpell();
+            CheckSpellCast();
             CalculateMove();
 
             if (!bestMove.Equals(default(MoveValue))) {
@@ -124,14 +124,19 @@ public class EnemyAI : MonoBehaviour {
         return bestMove;
     }
 
-    private void CastSpell() {
+    private void CheckSpellCast() {
         foreach (GameObject casterGO in TurnBase.GetInstance().GetEnemyTeam()) {
             UnitController caster = casterGO.GetComponent<UnitController>();
             if (caster.IsOnFullMana()) {
+                CastSpellDelay(30);
                 TurnBase.GetInstance().CastSpell(caster);
                 break;
             }
         }
+    }
+
+    private IEnumerator<WaitForSeconds> CastSpellDelay(float second) {
+        yield return new WaitForSeconds(5);
     }
 
     private List<MoveValue> GetPossibleMoves() {

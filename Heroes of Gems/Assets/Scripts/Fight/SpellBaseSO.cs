@@ -3,7 +3,7 @@ using UnityEditor;
 using UnityEngine;
 
 [System.Serializable]
-[CreateAssetMenu(fileName = "SpellSO", menuName = "Spells/SpellSO")]
+[CreateAssetMenu(fileName = "New Spell", menuName = "Spell")]
 public class SpellBaseSO : ScriptableObject {
     public string spellName;
     public string spellDescription;

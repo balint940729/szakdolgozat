@@ -1,66 +1,50 @@
-﻿//#if UNITY_EDITOR
+﻿#if UNITY_EDITOR
 
-//using UnityEditor;
-//using UnityEngine;
+using UnityEditor;
+using UnityEngine;
 
-//[CustomEditor(typeof(SpellBaseSO))]
-//public class SpellBaseEditor : Editor {
-//    SerializedProperty spellLogicProperty;
+[CustomEditor(typeof(SpellBaseSO))]
+public class SpellBaseEditor : Editor {
+    private SerializedProperty spellLogicProperty;
 
-//    private void OnEnable() {
-//        spellLogicProperty = serializedObject.FindProperty("spellLogic");
-//    }
-//    public override void OnInspectorGUI() {
-//        serializedObject.Update();
+    private void OnEnable() {
+        // Fetch the SerializedProperty for the SpellLogic field
+        spellLogicProperty = serializedObject.FindProperty("spellLogic");
+    }
 
-//        SpellBaseSO container = (SpellBaseSO)target;
+    public override void OnInspectorGUI() {
+        // Draw the default inspector, which includes the field for SpellLogic
+        DrawDefaultInspector();
 
-//        DrawDefaultInspector();
+        // Update the SerializedObject
+        serializedObject.Update();
 
-//        //EditorGUILayout.PropertyField(serializedObject.FindProperty("spellLogic"), true);
+        // Check if the SpellLogic field has changed
+        CheckSpellLogicChange();
 
-//        // Custom editor GUI for assigning the script reference
-//        EditorGUI.BeginChangeCheck();
-//        //EditorGUILayout.PropertyField(spellLogicProperty, new GUIContent("Spell Logic"), false);
-//        if (EditorGUI.EndChangeCheck()) {
-//            serializedObject.ApplyModifiedProperties();
-//        }
+        // Apply modified properties to save changes
+        serializedObject.ApplyModifiedProperties();
+    }
 
-//        //if (GUILayout.Button("Add Spell")) {
-//        //    AssignSpell(container);
-//        //}
+    private void CheckSpellLogicChange() {
+        // Check if the field is a MonoScript
+        if (spellLogicProperty != null && spellLogicProperty.propertyType == SerializedPropertyType.ObjectReference) {
+            MonoScript currentSpellLogicScript = spellLogicProperty.objectReferenceValue as MonoScript;
 
-//        serializedObject.ApplyModifiedProperties();
-//    }
+            if (currentSpellLogicScript != null) {
+                // Check if the MonoScript is a child of SpellBaseClass
+                if (!IsSubclassOfSpellBase(currentSpellLogicScript)) {
+                    Debug.Log($"{currentSpellLogicScript.name} is not derived from SpellBaseClass.");
 
-//    //private void AssignSpell(SpellBaseSO container) {
-//    //    string path = EditorUtility.OpenFilePanel("Select Spell Script", "Assets/Scripts/Fight/Spells", "cs");
-//    //    if (!string.IsNullOrEmpty(path)) {
-//    //        string assetPath = path.Replace(Application.dataPath, "Assets");
-//    //        MonoScript script = AssetDatabase.LoadAssetAtPath<MonoScript>(assetPath);
+                    spellLogicProperty.objectReferenceValue = null;
+                }
+            }
+        }
+    }
 
-//    //        if (script != null && script.GetClass() != null) {
-//    //            if (script.GetClass().IsSubclassOf(typeof(SpellBaseClass)) || script.GetClass() == typeof(SpellBaseClass)) {
-//    //                // Create an instance of the script class
-//    //                container.spellLogic = script.GetClass().Assembly.CreateInstance(script.GetClass().FullName) as SpellBaseClass;
+    private bool IsSubclassOfSpellBase(MonoScript monoScript) {
+        return monoScript != null && monoScript.GetClass().IsSubclassOf(typeof(SpellBaseClass));
+    }
+}
 
-
-
-//    //                // Save the changes to the asset
-//    //                EditorUtility.SetDirty(container);
-//    //                AssetDatabase.SaveAssets();
-//    //                AssetDatabase.Refresh();
-//    //            }
-//    //            else {
-//    //                Debug.LogWarning("Selected script is not a valid SpellBaseClass or its subclass.");
-//    //            }
-//    //        }
-//    //        else {
-//    //            Debug.LogWarning("Failed to load script.");
-//    //        }
-//    //    }
-
-//    //}
-//}
-
-//#endif
+#endif

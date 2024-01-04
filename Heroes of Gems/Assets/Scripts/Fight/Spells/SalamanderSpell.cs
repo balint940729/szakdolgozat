@@ -1,20 +1,14 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Spell", menuName = "Spells/Salamander")]
-public class SalamanderSpell : SpellBase {
+[System.Serializable]
+public class SalamanderSpell : SpellBaseClass {
 
     public SalamanderSpell(string spellName, string spellDescription, Sprite spellImage) : base(spellName, spellDescription, spellImage) {
     }
 
     public override void InitializeSpell() {
-        List<GameObject> targetsGO = new List<GameObject>();
-        if (BattleStateHandler.GetState() == BattleState.PlayerTurn) {
-            targetsGO = TurnBase.GetInstance().GetEnemyTeam();
-        }
-        else if (BattleStateHandler.GetState() == BattleState.EnemyTurn) {
-            targetsGO = TurnBase.GetInstance().GetPlayerTeam();
-        }
+        List<GameObject> targetsGO = GetOppenentTeam();
 
         foreach (GameObject targetGO in targetsGO) {
             UnitController target = targetGO.GetComponent<UnitController>();

@@ -9,10 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a2f102ba97834264e938f8a2a1ae31fe, type: 3}
+  m_Script: {fileID: 11500000, guid: 037d7986921bd8a429e3c3301b913c79, type: 3}
   m_Name: ShadeSpell
   m_EditorClassIdentifier: 
   spellName: Lifesteal
-  spellDescription: Deal &X true damage the first enemy. Gain Health equal for the
-    drained amount.
+  spellDescription: Deal &X true damage to the first enemy and gain life equally
+    the stealed amount.
   spellImage: {fileID: 21300000, guid: e691198d56e3a1848b5009e1ff94dbb5, type: 3}
+  spellLogic: {fileID: 11500000, guid: a2f102ba97834264e938f8a2a1ae31fe, type: 3}

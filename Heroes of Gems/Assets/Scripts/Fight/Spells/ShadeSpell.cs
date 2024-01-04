@@ -2,20 +2,14 @@
 using System.Linq;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Spell", menuName = "Spells/Shade")]
-public class ShadeSpell : SpellBase {
+[System.Serializable]
+public class ShadeSpell : SpellBaseClass {
 
     public ShadeSpell(string spellName, string spellDescription, Sprite spellImage) : base(spellName, spellDescription, spellImage) {
     }
 
     public override void InitializeSpell() {
-        List<GameObject> targetsGO = new List<GameObject>();
-        if (BattleStateHandler.GetState() == BattleState.PlayerTurn) {
-            targetsGO = TurnBase.GetInstance().GetEnemyTeam();
-        }
-        else if (BattleStateHandler.GetState() == BattleState.EnemyTurn) {
-            targetsGO = TurnBase.GetInstance().GetPlayerTeam();
-        }
+        List<GameObject> targetsGO = GetOppenentTeam();
 
         UnitController target = targetsGO.First().GetComponent<UnitController>();
 

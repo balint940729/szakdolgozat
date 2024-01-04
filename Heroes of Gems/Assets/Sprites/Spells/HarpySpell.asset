@@ -9,9 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c2bc52c8bed34114cac0ada8bb199513, type: 3}
+  m_Script: {fileID: 11500000, guid: 037d7986921bd8a429e3c3301b913c79, type: 3}
   m_Name: HarpySpell
   m_EditorClassIdentifier: 
-  spellName: Confuse
-  spellDescription: Drain &X mana from all enemies.
-  spellImage: {fileID: 21300000, guid: b1d0f3bd916dc1946a77ee71952cebbd, type: 3}
+  spellName: Silence
+  spellDescription: All enemies lose &X mana.
+  spellImage: {fileID: 21300000, guid: 4a59da33ae922924dbd2e6dae5f25353, type: 3}
+  spellLogic: {fileID: 11500000, guid: c2bc52c8bed34114cac0ada8bb199513, type: 3}
