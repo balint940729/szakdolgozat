@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,9 +11,10 @@ public class DwarfWarriorSpell : SpellBaseClass {
     public override void InitializeSpell() {
         List<GameObject> targetsGO = GetOppenentTeam();
 
-        foreach (GameObject targetGO in targetsGO) {
-            UnitController target = targetGO.GetComponent<UnitController>();
-            caster.NormalDamage(caster.GetSpellDamage(), target);
-        }
+        caster.ModifyArmor(caster.GetSpellDamage());
+
+        UnitController target = targetsGO.First().GetComponent<UnitController>();
+
+        UnitController.NormalDamage(caster.GetArmor(), target);
     }
 }

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 037d7986921bd8a429e3c3301b913c79, type: 3}
   m_Name: HighElfSpell
   m_EditorClassIdentifier: 
-  spellName: Bless
+  spellName: Circle of blessing
   spellDescription: All allies gain &X life.
   spellImage: {fileID: 21300000, guid: 0b606ca79e3ecbe4394977aaf1d3e486, type: 3}
   spellLogic: {fileID: 11500000, guid: 5384a55677da5794e879f0674fb0fa31, type: 3}

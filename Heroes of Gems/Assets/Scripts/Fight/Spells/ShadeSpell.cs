@@ -22,6 +22,6 @@ public class ShadeSpell : SpellBaseClass {
             caster.ModifyHealth(caster.GetSpellDamage());
         }
 
-        caster.TrueDamage(caster.GetSpellDamage(), target);
+        UnitController.TrueDamage(caster.GetSpellDamage(), target);
     }
 }

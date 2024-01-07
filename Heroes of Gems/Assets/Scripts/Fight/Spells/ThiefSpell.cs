@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,9 +11,7 @@ public class ThiefSpell : SpellBaseClass {
     public override void InitializeSpell() {
         List<GameObject> targetsGO = GetOppenentTeam();
 
-        foreach (GameObject targetGO in targetsGO) {
-            UnitController target = targetGO.GetComponent<UnitController>();
-            caster.NormalDamage(caster.GetSpellDamage(), target);
-        }
+        UnitController target = targetsGO.Last().GetComponent<UnitController>();
+        UnitController.TrueDamage(caster.GetSpellDamage(), target);
     }
 }

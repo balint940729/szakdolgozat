@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,10 +10,13 @@ public class SorcererSpell : SpellBaseClass {
 
     public override void InitializeSpell() {
         List<GameObject> targetsGO = GetOppenentTeam();
+        List<GameObject> alliesGO = GetOppenentTeam();
 
-        foreach (GameObject targetGO in targetsGO) {
-            UnitController target = targetGO.GetComponent<UnitController>();
-            caster.NormalDamage(caster.GetSpellDamage(), target);
-        }
+        UnitController target = targetsGO.First().GetComponent<UnitController>();
+        UnitController firstAlly = alliesGO.First().GetComponent<UnitController>();
+
+        firstAlly.ModifySpellDamage(caster.GetSpellDamage());
+
+        UnitController.NormalDamage(firstAlly.GetSpellDamage(), target);
     }
 }

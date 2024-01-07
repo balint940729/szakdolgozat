@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,9 +11,16 @@ public class DruidSpell : SpellBaseClass {
     public override void InitializeSpell() {
         List<GameObject> targetsGO = GetOppenentTeam();
 
-        foreach (GameObject targetGO in targetsGO) {
-            UnitController target = targetGO.GetComponent<UnitController>();
-            caster.NormalDamage(caster.GetSpellDamage(), target);
+        caster.ModifyHealth(caster.GetSpellDamage());
+        caster.ModifyArmor(caster.GetSpellDamage());
+        caster.ModifyAttack(caster.GetSpellDamage());
+
+        UnitController target = targetsGO.First().GetComponent<UnitController>();
+        if (target.GetRace().raceName == "Beasts") {
+            UnitController.NormalDamage(caster.GetSpellDamage() * 2, target);
+            return;
         }
+
+        UnitController.NormalDamage(caster.GetSpellDamage(), target);
     }
 }

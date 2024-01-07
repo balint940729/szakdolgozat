@@ -12,7 +12,7 @@ public class WizardSpell : SpellBaseClass {
 
         foreach (GameObject targetGO in targetsGO) {
             UnitController target = targetGO.GetComponent<UnitController>();
-            caster.NormalDamage(caster.GetSpellDamage(), target);
+            UnitController.NormalDamage(caster.GetSpellDamage(), target);
         }
     }
 }

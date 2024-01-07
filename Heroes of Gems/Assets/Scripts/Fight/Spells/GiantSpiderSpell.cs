@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,7 +13,10 @@ public class GiantSpiderSpell : SpellBaseClass {
 
         foreach (GameObject targetGO in targetsGO) {
             UnitController target = targetGO.GetComponent<UnitController>();
-            caster.NormalDamage(caster.GetSpellDamage(), target);
+            target.ModifyAttack(-caster.GetSpellDamage());
         }
+
+        UnitController lastEnemy = targetsGO.Last().GetComponent<UnitController>();
+        UnitController.NormalDamage(caster.GetSpellDamage(), lastEnemy);
     }
 }

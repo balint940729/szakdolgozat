@@ -22,6 +22,6 @@ public class WoodElfSpell : SpellBaseClass {
             }
         }
 
-        caster.NormalDamage(caster.GetSpellDamage(), weakestTarget);
+        UnitController.NormalDamage(caster.GetSpellDamage(), weakestTarget);
     }
 }

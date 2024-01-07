@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: SalamanderSpell
   m_EditorClassIdentifier: 
   spellName: Firebreath
-  spellDescription: Deal &X damage to all enemies for green enemies deal 2x.
+  spellDescription: Deal &X damage to all enemies. Deal 2x against Green enemies.
   spellImage: {fileID: 21300000, guid: 4c23b06316097984f81a98530ef17462, type: 3}
   spellLogic: {fileID: 11500000, guid: b3bd155f976f4e745a0dbd193aa977f3, type: 3}

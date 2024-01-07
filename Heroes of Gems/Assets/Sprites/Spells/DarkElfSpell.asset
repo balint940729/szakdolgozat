@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 037d7986921bd8a429e3c3301b913c79, type: 3}
   m_Name: DarkElfSpell
   m_EditorClassIdentifier: 
-  spellName: 
-  spellDescription: 
-  spellImage: {fileID: 0}
-  spellLogic: {fileID: 0}
+  spellName: Night bolt
+  spellDescription: Deal &X true damage to the first enemy. Deal 2x against Yellow
+    enemies.
+  spellImage: {fileID: 21300000, guid: 4029a9cfeb86f134c9c5af05993eaac8, type: 3}
+  spellLogic: {fileID: 11500000, guid: d4fc64684084b3f4d928aaa616242838, type: 3}

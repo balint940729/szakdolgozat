@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 037d7986921bd8a429e3c3301b913c79, type: 3}
   m_Name: WarlordSpell
   m_EditorClassIdentifier: 
-  spellName: 
-  spellDescription: 
-  spellImage: {fileID: 0}
+  spellName: Berserkering
+  spellDescription: Gain &X attack, spell damage. Deal &X damage to random enemy.
+  spellImage: {fileID: 21300000, guid: 04aa6d588031cca46a8bd5e5e6582140, type: 3}
   spellLogic: {fileID: 11500000, guid: a651a9317fe9f6b489f3be727a8da2bb, type: 3}

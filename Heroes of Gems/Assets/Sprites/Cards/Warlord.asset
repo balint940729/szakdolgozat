@@ -23,5 +23,5 @@ MonoBehaviour:
   colors:
   - {fileID: 11400000, guid: 02914e36603c40b488f99963102723bc, type: 2}
   - {fileID: 11400000, guid: 8942c16a4b2a68d44a452f707073ebaa, type: 2}
-  spell: {fileID: 0}
+  spell: {fileID: 11400000, guid: 8dbda91bd437bbf4bb40aa7000b27cfb, type: 2}
   race: {fileID: 11400000, guid: 0a9f239c3cc90e341be1ee9d7cf4e4f8, type: 2}

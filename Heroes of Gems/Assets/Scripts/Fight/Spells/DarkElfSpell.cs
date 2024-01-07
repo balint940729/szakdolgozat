@@ -12,6 +12,11 @@ public class DarkElfSpell : SpellBaseClass {
         List<GameObject> targetsGO = GetOppenentTeam();
 
         UnitController target = targetsGO.First().GetComponent<UnitController>();
-        caster.NormalDamage(caster.GetSpellDamage(), target);
+        if (target.GetColors().Find(color => color.colorName == "Yellow") != null) {
+            UnitController.TrueDamage(caster.GetSpellDamage() * 2, target);
+            return;
+        }
+
+        UnitController.TrueDamage(caster.GetSpellDamage(), target);
     }
 }

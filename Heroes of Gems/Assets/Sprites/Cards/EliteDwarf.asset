@@ -18,11 +18,11 @@ MonoBehaviour:
   baseArmor: 40
   maxMana: 17
   currentMana: 0
-  baseSpellDamage: 15
+  baseSpellDamage: 10
   image: {fileID: 21300000, guid: fef27f32c962ac743aa3bef8b0a8df35, type: 3}
   colors:
   - {fileID: 11400000, guid: 8942c16a4b2a68d44a452f707073ebaa, type: 2}
   - {fileID: 11400000, guid: db845ec6003d27a4fa0d6bcd24d5de99, type: 2}
   - {fileID: 11400000, guid: 02914e36603c40b488f99963102723bc, type: 2}
-  spell: {fileID: 0}
+  spell: {fileID: 11400000, guid: 89c3a11fc01bd2a49ab318076422fddb, type: 2}
   race: {fileID: 11400000, guid: b0fc0009a36b7ad48a3521d8b2d97eaf, type: 2}

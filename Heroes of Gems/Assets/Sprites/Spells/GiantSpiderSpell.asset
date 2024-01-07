@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 037d7986921bd8a429e3c3301b913c79, type: 3}
   m_Name: GiantSpiderSpell
   m_EditorClassIdentifier: 
-  spellName: 
-  spellDescription: 
-  spellImage: {fileID: 0}
+  spellName: Arachnid Ensnare
+  spellDescription: All enemies lose &X attack. Deal &X damage to the last enemy.
+  spellImage: {fileID: 21300000, guid: 51dcbb3542a768b49ac5942bd2a0c8bb, type: 3}
   spellLogic: {fileID: 11500000, guid: b4e4e2168fbacc34cbc879e8a5c39e4b, type: 3}

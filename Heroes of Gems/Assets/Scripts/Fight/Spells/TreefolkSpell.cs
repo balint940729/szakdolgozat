@@ -13,6 +13,6 @@ public class TreefolkSpell : SpellBaseClass {
 
         UnitController target = targetsGO.Last().GetComponent<UnitController>();
         caster.ModifyHealth(caster.GetSpellDamage());
-        caster.NormalDamage(caster.GetSpellDamage(), target);
+        UnitController.NormalDamage(caster.GetSpellDamage(), target);
     }
 }

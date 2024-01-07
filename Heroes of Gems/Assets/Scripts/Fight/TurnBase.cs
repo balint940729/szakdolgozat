@@ -203,10 +203,10 @@ public class TurnBase : MonoBehaviour {
             UnitController enemy = enemyTeam[0].GetComponent<UnitController>();
 
             if (state == BattleState.PlayerTurn) {
-                player.NormalDamage(player.GetAttack(), enemy);
+                player.SkullDamage(player.GetAttack(), enemy);
             }
             else if (state == BattleState.EnemyTurn) {
-                enemy.NormalDamage(enemy.GetAttack(), player);
+                enemy.SkullDamage(enemy.GetAttack(), player);
             }
             RemoveOnZero();
         }

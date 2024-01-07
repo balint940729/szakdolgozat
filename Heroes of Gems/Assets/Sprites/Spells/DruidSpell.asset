@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 037d7986921bd8a429e3c3301b913c79, type: 3}
   m_Name: DruidSpell
   m_EditorClassIdentifier: 
-  spellName: 
-  spellDescription: 
-  spellImage: {fileID: 0}
+  spellName: Feral Might
+  spellDescription: Gain &X armor, life, attack. Deal &X damage to the first enemy.
+    Deal 2x against Beasts.
+  spellImage: {fileID: 21300000, guid: 3510c64a52bee13439da1124824ae238, type: 3}
   spellLogic: {fileID: 11500000, guid: 4145d06e9e5dda74285d384cfcc812cb, type: 3}

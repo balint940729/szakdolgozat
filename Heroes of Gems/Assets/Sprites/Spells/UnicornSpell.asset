@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 037d7986921bd8a429e3c3301b913c79, type: 3}
   m_Name: UnicornSpell
   m_EditorClassIdentifier: 
-  spellName: 
-  spellDescription: 
-  spellImage: {fileID: 0}
+  spellName: Purity Surge
+  spellDescription: First two allies gain &X health and 3 mana.
+  spellImage: {fileID: 21300000, guid: 3470248b14cfc4144a1cf55ffd1af7e6, type: 3}
   spellLogic: {fileID: 11500000, guid: 214c7b1747cc8b04fbed539717d56c8b, type: 3}

@@ -14,6 +14,6 @@ public class BarbarianSpell : SpellBaseClass {
         List<GameObject> targetsGO = GetOppenentTeam();
 
         UnitController target = targetsGO.First().GetComponent<UnitController>();
-        caster.NormalDamage(caster.GetAttack(), target);
+        UnitController.NormalDamage(caster.GetAttack(), target);
     }
 }

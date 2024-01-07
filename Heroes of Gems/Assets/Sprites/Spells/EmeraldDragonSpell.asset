@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 037d7986921bd8a429e3c3301b913c79, type: 3}
   m_Name: EmeraldDragonSpell
   m_EditorClassIdentifier: 
-  spellName: 
-  spellDescription: 
-  spellImage: {fileID: 0}
+  spellName: Fire rain
+  spellDescription: Deal &X damage to all enemies. Boosted by Red allies.
+  spellImage: {fileID: 21300000, guid: a1e3648e024bc12489355bf370599ca0, type: 3}
   spellLogic: {fileID: 11500000, guid: 8fa2feed984eade4a8671cee4c600380, type: 3}

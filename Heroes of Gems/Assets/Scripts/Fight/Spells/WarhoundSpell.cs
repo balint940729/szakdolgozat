@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
@@ -13,7 +12,11 @@ public class WarhoundSpell : SpellBaseClass {
 
         foreach (GameObject targetGO in targetsGO) {
             UnitController target = targetGO.GetComponent<UnitController>();
-            caster.NormalDamage(caster.GetSpellDamage(), target);
+            target.ModifyAttack(-caster.GetSpellDamage());
+
+            if (target.GetRace().raceName != "Undeads") {
+                UnitController.NormalDamage(caster.GetSpellDamage(), target);
+            }
         }
     }
 }

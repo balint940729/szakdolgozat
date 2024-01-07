@@ -15,13 +15,13 @@ public class DwarfMinerSpell : SpellBaseClass {
         if (targetsGO.Count == 2) {
             foreach (GameObject targetGO in targetsGO) {
                 UnitController target = targetGO.GetComponent<UnitController>();
-                caster.NormalDamage(caster.GetSpellDamage(), target);
+                UnitController.NormalDamage(caster.GetSpellDamage(), target);
             }
         }
-        else if (targetsGO.Count < 2 && targetsGO.Count > 0) {
+        else if (targetsGO.Count == 1) {
             UnitController target = targetsGO.First().GetComponent<UnitController>();
             for (int i = 0; i < 2; i++) {
-                caster.NormalDamage(caster.GetSpellDamage(), target);
+                UnitController.NormalDamage(caster.GetSpellDamage(), target);
             }
         }
         else if (targetsGO.Count > 2) {
@@ -31,7 +31,7 @@ public class DwarfMinerSpell : SpellBaseClass {
                     break;
                 }
                 UnitController target = targetsGO.ElementAt(i).GetComponent<UnitController>();
-                caster.NormalDamage(caster.GetSpellDamage(), target);
+                UnitController.NormalDamage(caster.GetSpellDamage(), target);
                 iterator++;
             }
         }

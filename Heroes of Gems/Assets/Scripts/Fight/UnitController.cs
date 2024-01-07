@@ -129,7 +129,7 @@ public class UnitController : MonoBehaviour, IPointerClickHandler {
         return colors.Count;
     }
 
-    public void NormalDamage(int damage, UnitController target) {
+    public void SkullDamage(int damage, UnitController target) {
         damage = CalculateRaceBonusDamage(damage, target);
 
         target.armor -= damage;
@@ -146,7 +146,22 @@ public class UnitController : MonoBehaviour, IPointerClickHandler {
         target.unitCard.SetStats(target.health, target.armor);
     }
 
-    public void TrueDamage(int damage, UnitController target) {
+    public static void NormalDamage(int damage, UnitController target) {
+        target.armor -= damage;
+
+        if (target.armor < 0) {
+            target.health += target.armor;
+            target.armor = 0;
+        }
+
+        if (target.health < 0) {
+            target.health = 0;
+        }
+
+        target.unitCard.SetStats(target.health, target.armor);
+    }
+
+    public static void TrueDamage(int damage, UnitController target) {
         target.health -= damage;
 
         target.health = target.health < 0 ? 0 : target.health;

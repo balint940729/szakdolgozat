@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 037d7986921bd8a429e3c3301b913c79, type: 3}
   m_Name: WerewolfSpell
   m_EditorClassIdentifier: 
-  spellName: 
-  spellDescription: 
-  spellImage: {fileID: 0}
+  spellName: Lycanthopy
+  spellDescription: Deal &X true damage to the first enemy and it's lose &X attack,
+    armor. Deal 2x against Humans.
+  spellImage: {fileID: 21300000, guid: 098dafe51c34c254286ed83a925ed4d5, type: 3}
   spellLogic: {fileID: 11500000, guid: eb2b4628bd23b1b49af04b7048646a34, type: 3}

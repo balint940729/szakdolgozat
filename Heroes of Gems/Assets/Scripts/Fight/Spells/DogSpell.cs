@@ -12,6 +12,6 @@ public class DogSpell : SpellBaseClass {
         List<GameObject> targetsGO = GetOppenentTeam();
 
         UnitController target = targetsGO.First().GetComponent<UnitController>();
-        caster.NormalDamage(caster.GetSpellDamage(), target);
+        UnitController.NormalDamage(caster.GetSpellDamage(), target);
     }
 }

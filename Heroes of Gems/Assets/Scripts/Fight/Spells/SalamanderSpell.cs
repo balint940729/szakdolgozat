@@ -13,10 +13,10 @@ public class SalamanderSpell : SpellBaseClass {
         foreach (GameObject targetGO in targetsGO) {
             UnitController target = targetGO.GetComponent<UnitController>();
             if (target.GetColors().Find(color => color.colorName == "Green") != null) {
-                caster.NormalDamage(caster.GetSpellDamage() * 2, target);
+                UnitController.NormalDamage(caster.GetSpellDamage() * 2, target);
                 continue;
             }
-            caster.NormalDamage(caster.GetSpellDamage(), target);
+            UnitController.NormalDamage(caster.GetSpellDamage(), target);
         }
     }
 }

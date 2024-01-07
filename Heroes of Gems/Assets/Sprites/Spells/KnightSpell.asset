@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 037d7986921bd8a429e3c3301b913c79, type: 3}
   m_Name: KnightSpell
   m_EditorClassIdentifier: 
-  spellName: 
-  spellDescription: 
-  spellImage: {fileID: 0}
+  spellName: Joust
+  spellDescription: Deal &X damage to the first enemy. Deal 2x against non-Human
+    enemies.
+  spellImage: {fileID: 21300000, guid: b066c869b51f9384fa8ac9cce36b4648, type: 3}
   spellLogic: {fileID: 11500000, guid: 7164adbb951ede841bd1dc7406710ec0, type: 3}

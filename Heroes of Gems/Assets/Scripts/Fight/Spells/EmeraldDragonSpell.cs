@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,11 +9,22 @@ public class EmeraldDragonSpell : SpellBaseClass {
     }
 
     public override void InitializeSpell() {
-        List<GameObject> targetsGO = GetOppenentTeam();
+        List<GameObject> enemyTargetsGO = GetOppenentTeam();
+        List<GameObject> alliesGO = GetAllyTeam();
 
-        foreach (GameObject targetGO in targetsGO) {
+        int spellDamage = caster.GetSpellDamage();
+        int redAlly = 0;
+
+        foreach (GameObject allyGO in alliesGO) {
+            UnitController ally = allyGO.GetComponent<UnitController>();
+            if (ally.GetColors().Find(color => color.colorName == "Red") != null) {
+                redAlly++;
+            }
+        }
+
+        foreach (GameObject targetGO in enemyTargetsGO) {
             UnitController target = targetGO.GetComponent<UnitController>();
-            caster.NormalDamage(caster.GetSpellDamage(), target);
+            UnitController.NormalDamage(caster.GetSpellDamage() * (redAlly > 1 ? redAlly - 1 : 1), target);
         }
     }
 }
