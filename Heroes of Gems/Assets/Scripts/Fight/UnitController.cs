@@ -8,14 +8,12 @@ public class UnitController : MonoBehaviour, IPointerClickHandler {
     private UnitDisplay unitCard;
     private SpellDisplay spellCard;
     private readonly string folderPath = "Assets/Sprites/Cards";
-    private readonly string spellFolderPath = "Assets/Sprites/Spells";
 
-    public event System.Action<string> OnSpellDisplay;
+    public event Action<string> OnSpellDisplay;
 
     //public event System.Action onTargetSelection;
 
     private string[] assetGuids;
-    private string[] spellAssetGuids;
 
     private int health;
     private int armor;
@@ -37,12 +35,7 @@ public class UnitController : MonoBehaviour, IPointerClickHandler {
         string assetPath = AssetDatabase.GUIDToAssetPath(assetGuids[0]);
         unitCard.card = AssetDatabase.LoadAssetAtPath<Unit>(assetPath);
 
-        //string typeSpell = "t:" + unitCard.card.name + "Spell";
-        //spellAssetGuids = AssetDatabase.FindAssets(typeSpell, new string[] { spellFolderPath });
-
-        //string spellAssetPath = AssetDatabase.GUIDToAssetPath(spellAssetGuids[0]);
         spellCard = spellGO.GetComponent<SpellDisplay>();
-        //spellCard.spell = AssetDatabase.LoadAssetAtPath<SpellBase>(spellAssetPath);
         spellCard.spell = unitCard.card.spell;
 
         health = unitCard.card.baseHealth;
@@ -50,8 +43,11 @@ public class UnitController : MonoBehaviour, IPointerClickHandler {
         attack = unitCard.card.baseAttack;
         spellDamage = unitCard.card.baseSpellDamage;
 
-        //mana = unitCard.card.maxMana;
         mana = unitCard.card.currentMana;
+
+        if (unitCard.card.baseName == "Harpy") {
+            mana = unitCard.card.maxMana;
+        }
 
         maxMana = unitCard.card.maxMana;
         race = unitCard.card.race;

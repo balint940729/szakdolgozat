@@ -5,13 +5,13 @@ public class ItemPickup : MonoBehaviour {
     [SerializeField] private UnitsInventory inventory;
     [SerializeField] private KeyCode itemPickupKeyCode = KeyCode.E;
 
-    [SerializeField] private GameObject PlayerGameObject;
+    [SerializeField] private GameObject PlayerGameObject = default;
     [SerializeField] private bool InRange;
 
     private void Update() {
         if (InRange == true && Input.GetKeyDown(itemPickupKeyCode)) {
             //Achievements.ach01Count += 1;
-            inventory.AddItem(item);
+            //inventory.AddItem(item);
             Destroy(gameObject);
         }
     }

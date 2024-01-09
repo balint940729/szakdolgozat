@@ -6198,6 +6198,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd2a1aa15dad67b4198adf72aab815fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inventoryCanvas: {fileID: 1768312708}
   inventoryContainerPrefab: {fileID: 7709605746251947372, guid: 32df7bb34edbc9146a172aae620a9c0e,
     type: 3}
   containerParent: {fileID: 721091835}

@@ -8,7 +8,7 @@ using System.Linq;
 public class InventoryUI : MonoBehaviour {
     public static bool gameIsPaused = false;
     public GameObject inventoryMenuUI;
-    public GameObject titlePrefab;
+    [SerializeField] private GameObject titlePrefab = default;
     public List<GameObject> inventoryContainers;
 
     private void Start() {

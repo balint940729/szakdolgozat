@@ -4,21 +4,26 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
 
-public class UnitsInventory : MonoBehaviour {
-    public GameObject emptyItemPrefab;
+public class UnitsInventory : BaseInventory {
+    //public GameObject emptyItemPrefab;
 
-    [SerializeField] private List<Item> items;
+    //[SerializeField] private List<Item> items;
 
-    public Transform itemsParent;
-    public ItemSlot[] itemSlots;
+    //public Transform itemsParent;
+    //public ItemSlot[] itemSlots;
 
-    //public int numberOfItems;
-    public string folderPath = "Assets/Sprites/Cards";
+    ////public int numberOfItems;
+    //public string folderPath = "Assets/Sprites/Cards";
 
-    private string[] assetGuids;
+    //private string[] assetGuids;
+
 
     // Start is called before the first frame update
     private void Start() {
+        FillInventory();
+    }
+
+    protected override void FillInventory() {
         //if (itemsParent != null) {
         //    itemSlots = itemsParent.GetComponentsInChildren<ItemSlot>();
         //}
@@ -53,35 +58,8 @@ public class UnitsInventory : MonoBehaviour {
         //RefreshUI();
     }
 
-    private void RefreshUI() {
-        for (int i = 0; i < items.Count && i < itemSlots.Length; i++) {
-            itemSlots[i].Item = items[i];
-        }
 
-        for (int i = 0; i < itemSlots.Length; i++) {
-            itemSlots[i].Item = null;
-        }
-    }
 
-    public bool AddItem(Item item) {
-        if (IsFull()) {
-            return false;
-        }
 
-        items.Add(item);
-        RefreshUI();
-        return true;
-    }
-
-    public bool RemoveItem(Item item) {
-        if (items.Remove(item)) {
-            RefreshUI();
-            return true;
-        }
-        return false;
-    }
-
-    public bool IsFull() {
-        return items.Count >= itemSlots.Length;
-    }
+ 
 }

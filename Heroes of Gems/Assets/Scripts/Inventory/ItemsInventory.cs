@@ -4,21 +4,25 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
 
-public class ItemsInventory : MonoBehaviour {
-    public GameObject emptyItemPrefab;
+public class ItemsInventory : BaseInventory {
+    //public GameObject emptyItemPrefab;
 
-    [SerializeField] private List<Item> items;
+    //[SerializeField] private List<Item> items;
 
-    public Transform itemsParent;
-    public ItemSlot[] itemSlots;
+    //public Transform itemsParent;
+    //public ItemSlot[] itemSlots;
 
-    //public int numberOfItems;
-    public string folderPath = "Assets/Sprites/Items/";
+    ////public int numberOfItems;
+    //public string folderPath = "Assets/Sprites/Items/ItemsInventory";
 
-    private string[] assetGuids;
+    //private string[] assetGuids;
 
     // Start is called before the first frame update
     private void Start() {
+        FillInventory();
+    }
+
+    protected override void FillInventory() {
         //if (itemsParent != null) {
         //    itemSlots = itemsParent.GetComponentsInChildren<ItemSlot>();
         //}
@@ -53,35 +57,35 @@ public class ItemsInventory : MonoBehaviour {
         //RefreshUI();
     }
 
-    private void RefreshUI() {
-        for (int i = 0; i < items.Count && i < itemSlots.Length; i++) {
-            itemSlots[i].Item = items[i];
-        }
+    //private void RefreshUI() {
+    //    for (int i = 0; i < items.Count && i < itemSlots.Length; i++) {
+    //        itemSlots[i].Item = items[i];
+    //    }
 
-        for (int i = 0; i < itemSlots.Length; i++) {
-            itemSlots[i].Item = null;
-        }
-    }
+    //    for (int i = 0; i < itemSlots.Length; i++) {
+    //        itemSlots[i].Item = null;
+    //    }
+    //}
 
-    public bool AddItem(Item item) {
-        if (IsFull()) {
-            return false;
-        }
+    //public bool AddItem(Item item) {
+    //    if (IsFull()) {
+    //        return false;
+    //    }
 
-        items.Add(item);
-        RefreshUI();
-        return true;
-    }
+    //    items.Add(item);
+    //    RefreshUI();
+    //    return true;
+    //}
 
-    public bool RemoveItem(Item item) {
-        if (items.Remove(item)) {
-            RefreshUI();
-            return true;
-        }
-        return false;
-    }
+    //public bool RemoveItem(Item item) {
+    //    if (items.Remove(item)) {
+    //        RefreshUI();
+    //        return true;
+    //    }
+    //    return false;
+    //}
 
-    public bool IsFull() {
-        return items.Count >= itemSlots.Length;
-    }
+    //public bool IsFull() {
+    //    return items.Count >= itemSlots.Length;
+    //}
 }

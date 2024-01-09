@@ -3,15 +3,15 @@
 public class PlayerController : MonoBehaviour {
     public float moveSpeed;
     private Animator anim;
-    private SpriteRenderer renderer;
-    private Rigidbody2D rigidbody2D;
+    private new SpriteRenderer renderer;
+    private new Rigidbody2D rigidbody2D;
     public bool controls = true;
 
     // Start is called before the first frame update
     private void Start() {
         anim = GetComponent<Animator>();
-        renderer = GetComponent<SpriteRenderer>();
-        rigidbody2D = GetComponent<Rigidbody2D>();
+        //renderer = GetComponent<SpriteRenderer>();
+        //rigidbody2D = GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame

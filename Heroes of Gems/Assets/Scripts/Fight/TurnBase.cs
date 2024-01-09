@@ -7,14 +7,15 @@ using UnityEngine.UI;
 public class TurnBase : MonoBehaviour {
 
     // Card Prefab - Border, Attack, Health, Armor, Mana icons
-    [SerializeField] private GameObject cardPrefab;
+    [SerializeField] private GameObject cardPrefab = default;
 
-    [SerializeField] private GameObject spellPrefab;
-    [SerializeField] private GameObject buttonPrefab;
-    [SerializeField] private GameObject turnPrefab;
+    [SerializeField] private GameObject spellPrefab = default;
+    [SerializeField] private GameObject buttonPrefab = default;
+    [SerializeField] private GameObject turnPrefab = default;
+    [SerializeField] private GameObject parentScene = default;
 
-    private Transform parentScene;
-    private GameObject turnArrowGO;
+    private Transform parentSceneTR;
+    private GameObject turnArrowGO = default;
 
     private List<GameObject> playerTeam = new List<GameObject>();
     private List<GameObject> playerTeamSpells = new List<GameObject>();
@@ -216,7 +217,7 @@ public class TurnBase : MonoBehaviour {
         turnArrowGO = Instantiate(turnPrefab);
 
         turnArrowGO.name = "TurnArrow";
-        turnArrowGO.transform.SetParent(parentScene.transform, false);
+        turnArrowGO.transform.SetParent(parentSceneTR.transform, false);
 
         turnArrowGO.transform.position = new Vector3(arrowX, arrowY);
         turnArrowGO.transform.SetAsLastSibling();
@@ -225,7 +226,7 @@ public class TurnBase : MonoBehaviour {
     // Setup the Card to the Board
     private void SetUpTeam(bool isPlayerTeam) {
         List<Unit> tempTeamList;
-        parentScene = GameObject.Find("GameCanvas").transform;
+        parentSceneTR = parentScene.transform;
 
         if (isPlayerTeam) {
             //tempTeamList = new int[] { 1, 2, 3, 4 };
@@ -254,7 +255,7 @@ public class TurnBase : MonoBehaviour {
         float cardY = (Screen.height * (87.5f - index * 25) / 100);
 
         cardUnitGO.name = teamName + index;
-        cardUnitGO.transform.SetParent(parentScene.transform, false);
+        cardUnitGO.transform.SetParent(parentSceneTR.transform, false);
         cardUnitGO.transform.position = new Vector3(cardX, cardY);
 
         spellGO.name = teamName + index + "Spell";
