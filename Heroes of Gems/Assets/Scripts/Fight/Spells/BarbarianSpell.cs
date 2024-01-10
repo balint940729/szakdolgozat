@@ -5,9 +5,6 @@ using UnityEngine;
 [System.Serializable]
 public class BarbarianSpell : SpellBaseClass {
 
-    public BarbarianSpell(string spellName, string spellDescription, Sprite spellImage) : base(spellName, spellDescription, spellImage) {
-    }
-
     public override void InitializeSpell() {
         caster.ModifyAttack(caster.GetSpellDamage());
 

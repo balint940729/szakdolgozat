@@ -1,24 +1,9 @@
-﻿using System.Collections.Generic;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Linq;
 
 public class UnitsInventory : BaseInventory {
-    //public GameObject emptyItemPrefab;
 
-    //[SerializeField] private List<Item> items;
-
-    //public Transform itemsParent;
-    //public ItemSlot[] itemSlots;
-
-    ////public int numberOfItems;
-    //public string folderPath = "Assets/Sprites/Cards";
-
-    //private string[] assetGuids;
-
-
-    // Start is called before the first frame update
     private void Start() {
         FillInventory();
     }
@@ -32,9 +17,7 @@ public class UnitsInventory : BaseInventory {
         for (int i = 0; i < assetGuids.Length; i++) {
             GameObject itemGO = Instantiate(emptyItemPrefab);
             itemGO.name = "ItemSlot" + i;
-            //itemGO.transform.SetParent(itemsParent.transform, false);
             itemGO.transform.SetParent(transform, false);
-            //itemGO.GetComponent<Toggle>().group = itemsParent.GetComponent<ToggleGroup>();
             itemGO.GetComponent<Toggle>().group = GetComponent<ToggleGroup>();
 
             GameObject grayScaleGO = GameObject.Find("GrayScale");
@@ -55,11 +38,5 @@ public class UnitsInventory : BaseInventory {
             itemUI.ChangeItemCounter(itemCount);
             itemUI.ChangeItemImage(item.image);
         }
-        //RefreshUI();
     }
-
-
-
-
- 
 }

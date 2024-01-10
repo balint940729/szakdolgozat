@@ -1,12 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
 public class EliteDwarfSpell : SpellBaseClass {
-
-    public EliteDwarfSpell(string spellName, string spellDescription, Sprite spellImage) : base(spellName, spellDescription, spellImage) {
-    }
 
     public override void InitializeSpell() {
         List<GameObject> targetsGO = GetOppenentTeam();

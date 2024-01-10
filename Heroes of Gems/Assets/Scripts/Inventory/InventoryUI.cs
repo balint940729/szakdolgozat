@@ -7,7 +7,7 @@ using System.Linq;
 
 public class InventoryUI : MonoBehaviour {
     public static bool gameIsPaused = false;
-    public GameObject inventoryMenuUI;
+    [SerializeField] private GameObject inventoryMenuUI = default;
     [SerializeField] private GameObject titlePrefab = default;
     public List<GameObject> inventoryContainers;
 
@@ -33,7 +33,6 @@ public class InventoryUI : MonoBehaviour {
                 Pause();
             }
         }
-        
     }
 
     public void AddInvContainer(GameObject invContainer) {
@@ -42,15 +41,17 @@ public class InventoryUI : MonoBehaviour {
 
     private void OnTitleSelected() {
         if (inventoryMenuUI.activeSelf) {
-            Toggle activeTitle = GameObject.Find("Inventory").GetComponent<ToggleGroup>().ActiveToggles().FirstOrDefault();
+            Toggle activeTitle = inventoryMenuUI.GetComponent<ToggleGroup>().ActiveToggles().FirstOrDefault();
             if (activeTitle.name.Contains("Units")) {
-                List<GameObject> inactive = inventoryContainers.FindAll(cont => !cont.name.Contains("Units"));
+                List<GameObject> inactive = inventoryContainers.FindAll(cont => !cont.name.Contains("Teams") || !cont.name.Contains("Units"));
                 foreach (GameObject inact in inactive) {
                     inact.SetActive(false);
                 }
-                GameObject container = inventoryContainers.Find(cont => cont.name.Contains("Units"));
-                container.SetActive(true);
-
+                List<GameObject> containers = inventoryContainers.FindAll(cont => cont.name.Contains("Teams") || cont.name.Contains("Units"));
+                foreach (GameObject container in containers) {
+                    container.SetActive(true);
+                }
+                
             }
             else if (activeTitle.name.Contains("Items")) {
                 List<GameObject> inactive = inventoryContainers.FindAll(cont => !cont.name.Contains("Items"));

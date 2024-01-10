@@ -5,9 +5,6 @@ using UnityEngine;
 [System.Serializable]
 public class DwarfMinerSpell : SpellBaseClass {
 
-    public DwarfMinerSpell(string spellName, string spellDescription, Sprite spellImage) : base(spellName, spellDescription, spellImage) {
-    }
-
     public override void InitializeSpell() {
         int iterator = 0;
         List<GameObject> targetsGO = GetOppenentTeam();

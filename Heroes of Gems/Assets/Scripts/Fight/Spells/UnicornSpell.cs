@@ -5,9 +5,6 @@ using UnityEngine;
 [System.Serializable]
 public class UnicornSpell : SpellBaseClass {
 
-    public UnicornSpell(string spellName, string spellDescription, Sprite spellImage) : base(spellName, spellDescription, spellImage) {
-    }
-
     public override void InitializeSpell() {
         List<GameObject> targetsGO = GetAllyTeam();
 

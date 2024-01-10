@@ -1,23 +1,9 @@
-﻿using System.Collections.Generic;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Linq;
 
 public class ItemsInventory : BaseInventory {
-    //public GameObject emptyItemPrefab;
 
-    //[SerializeField] private List<Item> items;
-
-    //public Transform itemsParent;
-    //public ItemSlot[] itemSlots;
-
-    ////public int numberOfItems;
-    //public string folderPath = "Assets/Sprites/Items/ItemsInventory";
-
-    //private string[] assetGuids;
-
-    // Start is called before the first frame update
     private void Start() {
         FillInventory();
     }
@@ -31,9 +17,7 @@ public class ItemsInventory : BaseInventory {
         for (int i = 0; i < assetGuids.Length; i++) {
             GameObject itemGO = Instantiate(emptyItemPrefab);
             itemGO.name = "ItemSlot" + i;
-            //itemGO.transform.SetParent(itemsParent.transform, false);
             itemGO.transform.SetParent(transform, false);
-            //itemGO.GetComponent<Toggle>().group = itemsParent.GetComponent<ToggleGroup>();
             itemGO.GetComponent<Toggle>().group = GetComponent<ToggleGroup>();
 
             GameObject grayScaleGO = GameObject.Find("GrayScale");
@@ -54,38 +38,5 @@ public class ItemsInventory : BaseInventory {
             itemUI.ChangeItemCounter(itemCount);
             itemUI.ChangeItemImage(item.Icon);
         }
-        //RefreshUI();
     }
-
-    //private void RefreshUI() {
-    //    for (int i = 0; i < items.Count && i < itemSlots.Length; i++) {
-    //        itemSlots[i].Item = items[i];
-    //    }
-
-    //    for (int i = 0; i < itemSlots.Length; i++) {
-    //        itemSlots[i].Item = null;
-    //    }
-    //}
-
-    //public bool AddItem(Item item) {
-    //    if (IsFull()) {
-    //        return false;
-    //    }
-
-    //    items.Add(item);
-    //    RefreshUI();
-    //    return true;
-    //}
-
-    //public bool RemoveItem(Item item) {
-    //    if (items.Remove(item)) {
-    //        RefreshUI();
-    //        return true;
-    //    }
-    //    return false;
-    //}
-
-    //public bool IsFull() {
-    //    return items.Count >= itemSlots.Length;
-    //}
 }

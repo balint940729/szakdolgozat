@@ -62,6 +62,7 @@ public class EnemyAI : MonoBehaviour {
 
             bestMove = CalculateBestMove(possibleMoves);
 
+            //if (bestMove.Equals(default(MoveValue))) {
             if (bestMove.Equals(default(MoveValue))) {
                 // No possible match
                 Debug.Log("No match");
@@ -99,7 +100,7 @@ public class EnemyAI : MonoBehaviour {
 
                 if (bestMove.Equals(default(MoveValue))) {
                     // Extra turn
-                    return extraTurnMoves.First();
+                    return extraTurnMoves.FirstOrDefault();
                 }
 
                 return bestMove;
@@ -115,7 +116,7 @@ public class EnemyAI : MonoBehaviour {
 
             if (bestMove.Equals(default(MoveValue))) {
                 // Other combination
-                return moveValues.First();
+                return moveValues.FirstOrDefault();
             }
 
             return bestMove;

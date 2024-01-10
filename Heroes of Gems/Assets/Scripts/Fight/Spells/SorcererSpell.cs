@@ -5,9 +5,6 @@ using UnityEngine;
 [System.Serializable]
 public class SorcererSpell : SpellBaseClass {
 
-    public SorcererSpell(string spellName, string spellDescription, Sprite spellImage) : base(spellName, spellDescription, spellImage) {
-    }
-
     public override void InitializeSpell() {
         List<GameObject> targetsGO = GetOppenentTeam();
         List<GameObject> alliesGO = GetOppenentTeam();

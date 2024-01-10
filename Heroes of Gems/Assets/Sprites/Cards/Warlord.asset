@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Warlord
   m_EditorClassIdentifier: 
   baseName: Warflord
-  baseHealth: 16
+  baseHealth: 26
   baseAttack: 26
-  baseArmor: 10
+  baseArmor: 15
   maxMana: 9
   currentMana: 0
   baseSpellDamage: 5

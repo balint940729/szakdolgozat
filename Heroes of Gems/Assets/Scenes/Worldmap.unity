@@ -6204,6 +6204,8 @@ MonoBehaviour:
   containerParent: {fileID: 721091835}
   invItemsPrefabs:
   - {fileID: 4511643335429578715, guid: f9f4560fdae48cb45a9f2fbecfefd9f8, type: 3}
+  teamsPrefab: {fileID: 5971086869362954400, guid: 8770b2ce8c3e9f44a9109fc3d7a42c18,
+    type: 3}
 --- !u!1 &797474702
 GameObject:
   m_ObjectHideFlags: 0
@@ -7554,7 +7556,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   team:
-  - {fileID: 11400000, guid: 0c6a2f753c6bbfe4f9d8f53e908bae1a, type: 2}
+  - {fileID: 11400000, guid: 3d8df925fd7f1104ea63516e350aec53, type: 2}
   - {fileID: 11400000, guid: 3d8df925fd7f1104ea63516e350aec53, type: 2}
   - {fileID: 11400000, guid: e447de4190b2f2b45bf37b90f8924a9d, type: 2}
   - {fileID: 11400000, guid: 5a539e155ef458e48bb8dc5aac93b439, type: 2}

@@ -1,12 +1,8 @@
-﻿using System.Linq;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
 public class EmeraldDragonSpell : SpellBaseClass {
-
-    public EmeraldDragonSpell(string spellName, string spellDescription, Sprite spellImage) : base(spellName, spellDescription, spellImage) {
-    }
 
     public override void InitializeSpell() {
         List<GameObject> enemyTargetsGO = GetOppenentTeam();

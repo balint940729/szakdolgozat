@@ -4,9 +4,6 @@ using UnityEngine;
 [System.Serializable]
 public class WoodElfSpell : SpellBaseClass {
 
-    public WoodElfSpell(string spellName, string spellDescription, Sprite spellImage) : base(spellName, spellDescription, spellImage) {
-    }
-
     public override void InitializeSpell() {
         List<GameObject> targetsGO = GetOppenentTeam();
 

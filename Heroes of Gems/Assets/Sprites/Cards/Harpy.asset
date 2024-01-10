@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Harpy
   m_EditorClassIdentifier: 
   baseName: Harpy
-  baseHealth: 15
+  baseHealth: 25
   baseAttack: 18
-  baseArmor: 15
+  baseArmor: 30
   maxMana: 9
   currentMana: 0
   baseSpellDamage: 2

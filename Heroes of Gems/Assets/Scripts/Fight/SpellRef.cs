@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class SpellRef {
     private SpellBaseClass spellInstance;
@@ -12,7 +11,8 @@ public class SpellRef {
         SpellBaseSO spellBaseSO = spellSO as SpellBaseSO;
 
         if (spellBaseSO != null) {
-            spellInstance = Activator.CreateInstance(spellBaseSO.spellLogic.GetClass(), spellBaseSO.spellName, spellBaseSO.spellDescription, spellBaseSO.spellImage) as SpellBaseClass;
+            //spellInstance = Activator.CreateInstance(spellBaseSO.spellLogic.GetClass(), spellBaseSO.spellName, spellBaseSO.spellDescription, spellBaseSO.spellImage) as SpellBaseClass;
+            spellInstance = ScriptableObject.CreateInstance(spellBaseSO.spellLogic.GetClass()) as SpellBaseClass;
         }
         else {
             Debug.LogError("The object is not a SpellBaseSO Scriptable Object.");
