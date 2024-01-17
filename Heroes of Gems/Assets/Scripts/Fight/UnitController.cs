@@ -45,9 +45,9 @@ public class UnitController : MonoBehaviour, IPointerClickHandler {
 
         mana = unitCard.card.currentMana;
 
-        if (unitCard.card.baseName == "Harpy") {
-            mana = unitCard.card.maxMana;
-        }
+        //if (unitCard.card.baseName == "Harpy") {
+        //    mana = unitCard.card.maxMana;
+        //}
 
         maxMana = unitCard.card.maxMana;
         race = unitCard.card.race;

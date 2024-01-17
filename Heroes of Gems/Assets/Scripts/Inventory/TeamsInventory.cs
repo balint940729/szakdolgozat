@@ -1,43 +1,93 @@
-﻿using UnityEditor;
+﻿using System.Collections;
+using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class TeamsInventory : BaseInventory {
+    private GameObject teamSlotsGO;
+    private GameObject buttonGO;
+    private GameObject buttonsContentGO;
 
     private void Start() {
         FillInventory();
     }
 
     protected override void FillInventory() {
-        //if (itemsParent != null) {
-        //    itemSlots = itemsParent.GetComponentsInChildren<ItemSlot>();
-        //}
+        teamSlotsGO = Instantiate(otherPrefabs.Find(other => other.name == "InventoryContent"));
+        teamSlotsGO.name = "TeamSlotsContent";
+        teamSlotsGO.transform.SetParent(transform, false);
+        StartCoroutine(ChangeTeamSlotLayoutGroup(teamSlotsGO));
+        teamSlotsGO.AddComponent<Teams>();
+        teamSlotsGO.GetComponent<Teams>().teams = new List<Team>();
 
-        //assetGuids = AssetDatabase.FindAssets("t:Unit", new string[] { folderPath });
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 2; i++) {
             GameObject itemGO = Instantiate(emptyItemPrefab);
-            itemGO.name = "ItemSlot" + i;
-            itemGO.transform.SetParent(transform, false);
+            itemGO.name = "Team" + i;
+            itemGO.transform.SetParent(teamSlotsGO.transform, false);
             itemGO.GetComponent<Toggle>().group = GetComponent<ToggleGroup>();
             itemGO.transform.localScale = new Vector3(3.0f, 3.0f, 3.0f);
+            teamSlotsGO.GetComponent<Teams>().teams.Add(itemGO.GetComponent<Team>());
+        }
 
-        //GameObject grayScaleGO = GameObject.Find("GrayScale");
-        //grayScaleGO.name += i;
+        buttonsContentGO = Instantiate(otherPrefabs.Find(other => other.name == "InventoryContent"));
+        buttonsContentGO.name = "ButtonsContent";
+        buttonsContentGO.transform.SetParent(transform, false);
+        StartCoroutine(ChangeButtonLayoutGroup(buttonsContentGO));
 
-        //string assetPath = AssetDatabase.GUIDToAssetPath(assetGuids[i]);
+        buttonGO = Instantiate(otherPrefabs.Find(other => other.name == "ButtonPrefab"));
+        buttonGO.name = "BuyTeamButton";
+        buttonGO.transform.SetParent(buttonsContentGO.transform, false);
+        buttonGO.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
 
-        //Unit item = AssetDatabase.LoadAssetAtPath<Unit>(assetPath);
-        //ItemDisplay itemUI = itemGO.GetComponent<ItemDisplay>();
+        buttonGO.GetComponent<Button>().onClick.AddListener(AddTeamSlot);
 
-        //itemUI.grayScale = grayScaleGO;
-
-        //int itemCount = items.Count(it => it.Name == item.Name);
-        //int itemCount = 0;
-
-        //itemUI.ChangeGrayScale(itemCount > 0 ? false : true);
-
-        //itemUI.ChangeItemCounter(itemCount);
-        //itemUI.ChangeItemImage(item.image);
+        buttonGO.GetComponentInChildren<TMP_Text>().enableAutoSizing = true;
+        buttonGO.GetComponentInChildren<TMP_Text>().enableWordWrapping = false;
+        buttonGO.GetComponentInChildren<TMP_Text>().fontSizeMin = 18;
+        buttonGO.GetComponentInChildren<TMP_Text>().fontSizeMax = 35;
+        buttonGO.GetComponentInChildren<TMP_Text>().text = "Buy Teamslot";
     }
+
+    private IEnumerator ChangeTeamSlotLayoutGroup(GameObject content) {
+        GridLayoutGroup deleteGrid = content.GetComponent<GridLayoutGroup>();
+
+        Destroy(deleteGrid);
+        yield return null;
+        content.AddComponent<VerticalLayoutGroup>();
+        VerticalLayoutGroup verticalGroup = content.GetComponent<VerticalLayoutGroup>();
+
+        verticalGroup.spacing = 325f;
+        verticalGroup.padding = new RectOffset(0, 0, 170, 170);
+
+        ContentSizeFitter sizeFitter = content.GetComponent<ContentSizeFitter>();
+        Destroy(sizeFitter);
+    }
+
+    private IEnumerator ChangeButtonLayoutGroup(GameObject content) {
+        GridLayoutGroup deleteGrid = content.GetComponent<GridLayoutGroup>();
+
+        Destroy(deleteGrid);
+        yield return null;
+        content.AddComponent<VerticalLayoutGroup>();
+        VerticalLayoutGroup verticalGroup = content.GetComponent<VerticalLayoutGroup>();
+
+        verticalGroup.childAlignment = TextAnchor.UpperCenter;
+        ContentSizeFitter sizeFitter = content.GetComponent<ContentSizeFitter>();
+        Destroy(sizeFitter);
+
+        verticalGroup.padding = new RectOffset(0, 0, -40, 0);
+    }
+
+    private void AddTeamSlot() {
+        GameObject itemGO = Instantiate(emptyItemPrefab);
+
+        itemGO.name = "Team" + teamSlotsGO.transform.childCount;
+        itemGO.transform.SetParent(teamSlotsGO.transform, false);
+        itemGO.GetComponent<Toggle>().group = GetComponent<ToggleGroup>();
+        itemGO.transform.localScale = new Vector3(3.0f, 3.0f, 3.0f);
+        teamSlotsGO.GetComponent<Teams>().teams.Add(itemGO.GetComponent<Team>());
+
+        //GetComponentInParent<ScrollRect>().normalizedPosition = new Vector2(buttonsContentGO.transform.position.x, buttonsContentGO.transform.position.y);
     }
 }

@@ -1,9 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class BaseInventory : MonoBehaviour
-{
+public abstract class BaseInventory : MonoBehaviour {
     public GameObject emptyItemPrefab;
 
     public string folderPath;
@@ -12,8 +10,13 @@ public abstract class BaseInventory : MonoBehaviour
 
     protected List<Item> items;
 
+    public GameObject inventoryCanvas = default;
+    public RectTransform container = default;
+
     //public Transform itemsParent;
     public ItemSlot[] itemSlots;
+
+    public List<GameObject> otherPrefabs;
 
     //public BaseInventory(GameObject emptyItemPrefab, string folderPath) {
     //    this.emptyItemPrefab = emptyItemPrefab;
@@ -22,7 +25,7 @@ public abstract class BaseInventory : MonoBehaviour
 
     protected abstract void FillInventory();
 
-    public void SetEmptyItemPrefab( GameObject emptyItemPrefab) {
+    public void SetEmptyItemPrefab(GameObject emptyItemPrefab) {
         this.emptyItemPrefab = emptyItemPrefab;
     }
 

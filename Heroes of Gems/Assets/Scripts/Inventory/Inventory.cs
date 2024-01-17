@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using System;
-using System.Collections;
 
 public class Inventory : MonoBehaviour {
     [SerializeField] private GameObject inventoryCanvas = default;
@@ -17,15 +17,7 @@ public class Inventory : MonoBehaviour {
         InstantiateContainer("Items", "Assets/Sprites/Items/ItemsInventory", Type.GetType("ItemsInventory"), true);
         InstantiateContainer("Equipments", "Assets/Sprites/Items/ItemsInventory", Type.GetType("ItemsInventory"), false);
         InstantiateContainer("Teams", teamsPrefab, Type.GetType("TeamsInventory"), false);
-        //StartCoroutine(StartInstantiate());
     }
-
-    //IEnumerator StartInstantiate() {
-    //    InstantiateContainer("Units", "Assets/Sprites/Cards", Type.GetType("UnitsInventory"), true);
-    //    InstantiateContainer("Items", "Assets/Sprites/Items/ItemsInventory", Type.GetType("ItemsInventory"), true);
-    //    InstantiateContainer("Equipments", "Assets/Sprites/Items/ItemsInventory", Type.GetType("ItemsInventory"), false);
-    //    yield return InstantiateContainer("Teams", teamsPrefab, Type.GetType("TeamsInventory"), false);
-    //}
 
     private void InstantiateContainer(string containerName, GameObject prefab, Type componentName, bool leftSide) {
         GameObject invCont = Instantiate(inventoryContainerPrefab);
@@ -50,31 +42,21 @@ public class Inventory : MonoBehaviour {
         GameObject invContent = GameObject.Find("Content");
         invContent.name = containerName + "Content";
 
-         StartCoroutine(switchGridLayout(invContent, componentName, prefab));
+        StartCoroutine(SwitchGridLayout(invContent));
 
         invContent.AddComponent(componentName);
         AddInvComponent<BaseInventory>(invContent, prefab);
+
+        GameObject viewPort = GameObject.Find("Viewport");
+        viewPort.name = containerName + viewPort.name;
     }
 
-    IEnumerator switchGridLayout(GameObject content, Type componentName, GameObject prefab) {
+    private IEnumerator SwitchGridLayout(GameObject content) {
         GridLayoutGroup deleteGrid = content.GetComponent<GridLayoutGroup>();
-        
+
         Destroy(deleteGrid);
         yield return null;
         content.AddComponent<VerticalLayoutGroup>();
-        VerticalLayoutGroup gridGroup = content.GetComponent<VerticalLayoutGroup>();
-
-        gridGroup.spacing = 305f;
-        gridGroup.padding = new RectOffset(0, 0, 150, 150);
-
-
-
-    }
-
-    IEnumerator addVertLayout(GameObject content) {
-        
-        yield return content.AddComponent<VerticalLayoutGroup>();
-
     }
 
     private void InstantiateContainer(string containerName, string folderPath, Type componentName, bool leftSide) {
@@ -102,16 +84,22 @@ public class Inventory : MonoBehaviour {
         invContent.name = containerName + "Content";
         invContent.AddComponent(componentName);
         AddInvComponent<BaseInventory>(invContent, folderPath);
+
+        GameObject viewPort = GameObject.Find("Viewport");
+        viewPort.name = containerName + viewPort.name;
     }
 
-    private void AddInvComponent<T>(GameObject invCont, string folderPath) where T : BaseInventory {
-        invCont.GetComponent<T>().emptyItemPrefab = invItemsPrefabs.Find(item => item.name == "InventorySlot");
-        invCont.GetComponent<T>().folderPath = folderPath;
+    private void AddInvComponent<T>(GameObject invContent, string folderPath) where T : BaseInventory {
+        invContent.GetComponent<T>().emptyItemPrefab = invItemsPrefabs.Find(item => item.name == "InventorySlot");
+        invContent.GetComponent<T>().inventoryCanvas = inventoryCanvas;
+        invContent.GetComponent<T>().container = (RectTransform)containerParent.transform;
+        invContent.GetComponent<T>().folderPath = folderPath;
     }
 
     private void AddInvComponent<T>(GameObject invCont, GameObject prefab) where T : BaseInventory {
         invCont.GetComponent<T>().emptyItemPrefab = prefab;
-        //invCont.GetComponent<T>().emptyItemPrefab = invItemsPrefabs.Find(item => item.name == "InventorySlot");
-        //invCont.GetComponent<T>().folderPath = folderPath;
+        List<GameObject> inventoryPrefabs = new List<GameObject>();
+        inventoryPrefabs = invItemsPrefabs.FindAll(other => other.name != "InventorySlot");
+        invCont.GetComponent<T>().otherPrefabs = inventoryPrefabs;
     }
 }

@@ -5945,7 +5945,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   team:
   - {fileID: 11400000, guid: f53ee200e23f7fb489526f337834feea, type: 2}
-  - {fileID: 11400000, guid: 0c6a2f753c6bbfe4f9d8f53e908bae1a, type: 2}
+  - {fileID: 0}
   - {fileID: 11400000, guid: 5a539e155ef458e48bb8dc5aac93b439, type: 2}
   - {fileID: 11400000, guid: ec0e52174b31bab4d9951dc4e8637ee2, type: 2}
 --- !u!95 &504627744
@@ -6110,6 +6110,7 @@ GameObject:
   - component: {fileID: 721091836}
   - component: {fileID: 721091838}
   - component: {fileID: 721091839}
+  - component: {fileID: 721091840}
   m_Layer: 5
   m_Name: Inventory
   m_TagString: Untagged
@@ -6204,8 +6205,22 @@ MonoBehaviour:
   containerParent: {fileID: 721091835}
   invItemsPrefabs:
   - {fileID: 4511643335429578715, guid: f9f4560fdae48cb45a9f2fbecfefd9f8, type: 3}
+  - {fileID: 3639255606650294794, guid: 85eaf508c69070844a4abdeac4adf255, type: 3}
+  - {fileID: 664093776957265204, guid: e8905c792e29b334d8f67932fddeaf48, type: 3}
   teamsPrefab: {fileID: 5971086869362954400, guid: 8770b2ce8c3e9f44a9109fc3d7a42c18,
     type: 3}
+--- !u!114 &721091840
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 721091834}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5de369cb757ed946939329efa7dc9c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &797474702
 GameObject:
   m_ObjectHideFlags: 0
@@ -7385,6 +7400,7 @@ MonoBehaviour:
   inventoryMenuUI: {fileID: 721091834}
   titlePrefab: {fileID: 8643343072656300065, guid: ee895b2d90526fc4c84e642aa0fef551,
     type: 3}
+  playerChar: {fileID: 1874081122}
   inventoryContainers: []
 --- !u!1 &1874081122
 GameObject:
@@ -7556,9 +7572,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   team:
+  - {fileID: 0}
   - {fileID: 11400000, guid: 3d8df925fd7f1104ea63516e350aec53, type: 2}
-  - {fileID: 11400000, guid: 3d8df925fd7f1104ea63516e350aec53, type: 2}
-  - {fileID: 11400000, guid: e447de4190b2f2b45bf37b90f8924a9d, type: 2}
+  - {fileID: 0}
   - {fileID: 11400000, guid: 5a539e155ef458e48bb8dc5aac93b439, type: 2}
 --- !u!1001 &2007489674
 PrefabInstance:

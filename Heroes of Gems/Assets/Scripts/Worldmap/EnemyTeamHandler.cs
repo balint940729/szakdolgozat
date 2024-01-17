@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public static class EnemyTeamHandler {
-    private static List<Unit> team;
+    private static Unit[] team;
 
-    public static List<Unit> GetTeam() {
+    public static Unit[] GetTeam() {
         return team;
     }
 
-    public static void SetTeam(List<Unit> team) {
+    public static void SetTeam(Unit[] team) {
         EnemyTeamHandler.team = team;
     }
 
-    public static void AddTeammember(Unit unit) {
-        team.Add(unit);
-    }
+    //public static void AddTeammember(Unit unit) {
+    //    team.AddFirst(unit);
+    //}
 }

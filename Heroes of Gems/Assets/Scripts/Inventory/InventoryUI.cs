@@ -1,14 +1,14 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
-using UnityEngine.EventSystems;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
 
 public class InventoryUI : MonoBehaviour {
     public static bool gameIsPaused = false;
     [SerializeField] private GameObject inventoryMenuUI = default;
     [SerializeField] private GameObject titlePrefab = default;
+    [SerializeField] private GameObject playerChar = default;
     public List<GameObject> inventoryContainers;
 
     private void Start() {
@@ -16,7 +16,7 @@ public class InventoryUI : MonoBehaviour {
 
         CreateTitle("Units", 1);
         CreateTitle("Items", 2);
-        CreateTitle("Teams", 3);
+        CreateTitle("Cities", 3);
 
         Toggle initialTitle = GameObject.Find("UnitsTitle").GetComponent<Toggle>();
         initialTitle.Select();
@@ -27,6 +27,7 @@ public class InventoryUI : MonoBehaviour {
     private void Update() {
         if (Input.GetKeyDown(KeyCode.I)) {
             if (gameIsPaused) {
+                playerChar.GetComponent<Team>().team = GetComponentInChildren<Teams>().teams.First().team;
                 Resume();
             }
             else {
@@ -51,7 +52,6 @@ public class InventoryUI : MonoBehaviour {
                 foreach (GameObject container in containers) {
                     container.SetActive(true);
                 }
-                
             }
             else if (activeTitle.name.Contains("Items")) {
                 List<GameObject> inactive = inventoryContainers.FindAll(cont => !cont.name.Contains("Items"));

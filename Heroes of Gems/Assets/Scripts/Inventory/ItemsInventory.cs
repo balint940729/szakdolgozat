@@ -1,6 +1,5 @@
 ﻿using UnityEditor;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class ItemsInventory : BaseInventory {
 
@@ -18,7 +17,9 @@ public class ItemsInventory : BaseInventory {
             GameObject itemGO = Instantiate(emptyItemPrefab);
             itemGO.name = "ItemSlot" + i;
             itemGO.transform.SetParent(transform, false);
-            itemGO.GetComponent<Toggle>().group = GetComponent<ToggleGroup>();
+            //itemGO.GetComponent<Toggle>().group = GetComponent<ToggleGroup>();
+            itemGO.GetComponentInChildren<DragAndDrop>().SetCanvas(inventoryCanvas.GetComponent<Canvas>());
+            itemGO.GetComponentInChildren<DragAndDrop>().SetParent(container);
 
             GameObject grayScaleGO = GameObject.Find("GrayScale");
             grayScaleGO.name += i;

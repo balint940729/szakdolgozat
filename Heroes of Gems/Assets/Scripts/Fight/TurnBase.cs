@@ -225,7 +225,7 @@ public class TurnBase : MonoBehaviour {
 
     // Setup the Card to the Board
     private void SetUpTeam(bool isPlayerTeam) {
-        List<Unit> tempTeamList;
+        Unit[] tempTeamList;
         parentSceneTR = parentScene.transform;
 
         if (isPlayerTeam) {
@@ -237,11 +237,20 @@ public class TurnBase : MonoBehaviour {
             tempTeamList = EnemyTeamHandler.GetTeam();
         }
 
-        int i = 0;
-        foreach (Unit unit in tempTeamList) {
-            SetUpUnit(isPlayerTeam, i, unit);
-            i++;
+        for (int i = 0; i < tempTeamList.Length; i++) {
+            if (tempTeamList[i] != null) {
+                SetUpUnit(isPlayerTeam, i, tempTeamList[i]);
+            }
         }
+
+        //int i = 0;
+        //foreach (Unit unit in tempTeamList) {
+        //    if (unit != null) {
+        //        SetUpUnit(isPlayerTeam, i, unit);
+        //    }
+
+        //    i++;
+        //}
     }
 
     private void SetUpUnit(bool isPlayerTeam, int index, Unit card) {

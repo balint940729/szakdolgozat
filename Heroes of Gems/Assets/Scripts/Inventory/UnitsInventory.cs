@@ -1,6 +1,5 @@
 ﻿using UnityEditor;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class UnitsInventory : BaseInventory {
 
@@ -18,7 +17,11 @@ public class UnitsInventory : BaseInventory {
             GameObject itemGO = Instantiate(emptyItemPrefab);
             itemGO.name = "ItemSlot" + i;
             itemGO.transform.SetParent(transform, false);
-            itemGO.GetComponent<Toggle>().group = GetComponent<ToggleGroup>();
+
+            //itemGO.GetComponent<Toggle>().group = GetComponent<ToggleGroup>();
+            //container = GameObject.Find("TeamsViewPort").GetComponent<RectTransform>();
+            itemGO.GetComponentInChildren<DragAndDrop>().SetCanvas(inventoryCanvas.GetComponent<Canvas>());
+            itemGO.GetComponentInChildren<DragAndDrop>().SetParent(container);
 
             GameObject grayScaleGO = GameObject.Find("GrayScale");
             grayScaleGO.name += i;
@@ -26,6 +29,8 @@ public class UnitsInventory : BaseInventory {
             string assetPath = AssetDatabase.GUIDToAssetPath(assetGuids[i]);
 
             Unit item = AssetDatabase.LoadAssetAtPath<Unit>(assetPath);
+            itemGO.AddComponent<UnitItem>();
+            itemGO.GetComponent<UnitItem>().unit = item;
             ItemDisplay itemUI = itemGO.GetComponent<ItemDisplay>();
 
             itemUI.grayScale = grayScaleGO;
