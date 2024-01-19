@@ -45,8 +45,8 @@ public class TeamsInventory : BaseInventory {
         buttonGO.GetComponentInChildren<TMP_Text>().enableAutoSizing = true;
         buttonGO.GetComponentInChildren<TMP_Text>().enableWordWrapping = false;
         buttonGO.GetComponentInChildren<TMP_Text>().fontSizeMin = 18;
-        buttonGO.GetComponentInChildren<TMP_Text>().fontSizeMax = 35;
-        buttonGO.GetComponentInChildren<TMP_Text>().text = "Buy Teamslot";
+        buttonGO.GetComponentInChildren<TMP_Text>().fontSizeMax = 28;
+        buttonGO.GetComponentInChildren<TMP_Text>().text = "Buy Teamslot (200g)";
     }
 
     private IEnumerator ChangeTeamSlotLayoutGroup(GameObject content) {

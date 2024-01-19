@@ -18,8 +18,8 @@ public class ItemsInventory : BaseInventory {
             itemGO.name = "ItemSlot" + i;
             itemGO.transform.SetParent(transform, false);
             //itemGO.GetComponent<Toggle>().group = GetComponent<ToggleGroup>();
-            itemGO.GetComponentInChildren<DragAndDrop>().SetCanvas(inventoryCanvas.GetComponent<Canvas>());
-            itemGO.GetComponentInChildren<DragAndDrop>().SetParent(container);
+            itemGO.GetComponentInChildren<DragUnit>().SetCanvas(inventoryCanvas.GetComponent<Canvas>());
+            itemGO.GetComponentInChildren<DragUnit>().SetParent(container);
 
             GameObject grayScaleGO = GameObject.Find("GrayScale");
             grayScaleGO.name += i;

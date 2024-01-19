@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class DragAndDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler {
+public class DragUnit : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler {
     private static Canvas canvas;
     public GameObject originalGO;
     private RectTransform rectTransform;
@@ -16,6 +16,10 @@ public class DragAndDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
         copyUnit = originalGO.GetComponentInParent<UnitItem>();
         copyObject.transform.SetParent(parentTR, false);
         copyObject.transform.position = new Vector3(originalGO.transform.position.x, originalGO.transform.position.y);
+
+        if (copyObject.GetComponent<TeamSlotDisplay>() != null) {
+            copyObject.GetComponent<TeamSlotDisplay>().SetMemberDisplay(copyUnit.unit);
+        }
 
         rectTransform = copyObject.GetComponent<RectTransform>();
         rectTransform.SetAsLastSibling();

@@ -94,12 +94,17 @@ public class Inventory : MonoBehaviour {
         invContent.GetComponent<T>().inventoryCanvas = inventoryCanvas;
         invContent.GetComponent<T>().container = (RectTransform)containerParent.transform;
         invContent.GetComponent<T>().folderPath = folderPath;
-    }
 
-    private void AddInvComponent<T>(GameObject invCont, GameObject prefab) where T : BaseInventory {
-        invCont.GetComponent<T>().emptyItemPrefab = prefab;
         List<GameObject> inventoryPrefabs = new List<GameObject>();
         inventoryPrefabs = invItemsPrefabs.FindAll(other => other.name != "InventorySlot");
-        invCont.GetComponent<T>().otherPrefabs = inventoryPrefabs;
+        invContent.GetComponent<T>().otherPrefabs = inventoryPrefabs;
+    }
+
+    private void AddInvComponent<T>(GameObject invContent, GameObject prefab) where T : BaseInventory {
+        invContent.GetComponent<T>().emptyItemPrefab = prefab;
+        invContent.GetComponent<T>().inventoryCanvas = inventoryCanvas;
+        List<GameObject> inventoryPrefabs = new List<GameObject>();
+        inventoryPrefabs = invItemsPrefabs.FindAll(other => other.name != "InventorySlot");
+        invContent.GetComponent<T>().otherPrefabs = inventoryPrefabs;
     }
 }
