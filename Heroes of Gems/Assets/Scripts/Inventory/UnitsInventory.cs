@@ -37,7 +37,8 @@ public class UnitsInventory : BaseInventory {
 
             itemUI.grayScale = grayScaleGO;
 
-            int itemCount = units.Count(it => it.baseName == item.baseName);
+            int itemCount = UnitCount(item);
+            //int itemCount = units.Count(it => it.baseName == item.baseName);
             //int itemCount = 0;
 
             itemUI.ChangeGrayScale(itemCount > 0 ? false : true);
@@ -97,8 +98,8 @@ public class UnitsInventory : BaseInventory {
         foreach (GameObject unitGO in unitsGO) {
             ItemDisplay itemUI = unitGO.GetComponent<ItemDisplay>();
 
-            int itemCount = units.Count(it => it.baseName == unitGO.GetComponent<UnitItem>().unit.baseName);
-            //int itemCount = 0;
+            //int itemCount = units.Count(it => it.baseName == unitGO.GetComponent<UnitItem>().unit.baseName);
+            int itemCount = UnitCount(unitGO.GetComponent<UnitItem>().unit);
 
             itemUI.ChangeGrayScale(itemCount > 0 ? false : true);
 

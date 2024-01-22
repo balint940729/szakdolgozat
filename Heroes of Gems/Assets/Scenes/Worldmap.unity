@@ -6207,8 +6207,9 @@ MonoBehaviour:
   - {fileID: 4511643335429578715, guid: f9f4560fdae48cb45a9f2fbecfefd9f8, type: 3}
   - {fileID: 3639255606650294794, guid: 85eaf508c69070844a4abdeac4adf255, type: 3}
   - {fileID: 664093776957265204, guid: e8905c792e29b334d8f67932fddeaf48, type: 3}
-  teamsPrefab: {fileID: 5971086869362954400, guid: 8770b2ce8c3e9f44a9109fc3d7a42c18,
-    type: 3}
+  - {fileID: 5971086869362954400, guid: 8770b2ce8c3e9f44a9109fc3d7a42c18, type: 3}
+  - {fileID: 2701713542628199129, guid: b4f5a608364f2eb4391463279d902c61, type: 3}
+  - {fileID: 5472323339300842460, guid: 865a40d1512fe184cada4375f9290e44, type: 3}
 --- !u!114 &721091840
 MonoBehaviour:
   m_ObjectHideFlags: 0

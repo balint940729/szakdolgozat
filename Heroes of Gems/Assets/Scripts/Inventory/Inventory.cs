@@ -10,13 +10,42 @@ public class Inventory : MonoBehaviour {
 
     [SerializeField] private Transform containerParent = default;
     [SerializeField] private List<GameObject> invItemsPrefabs = default;
-    [SerializeField] private GameObject teamsPrefab = default;
+    private GameObject teamsPrefab;
+    private GameObject equipmentPrefab;
+    private GameObject equipmentSlotPrefab;
 
     private void Start() {
+        teamsPrefab = invItemsPrefabs.Find(item => item.name == "TeamsPrefab");
+        equipmentPrefab = invItemsPrefabs.Find(item => item.name == "EquipmentContainer");
+        equipmentSlotPrefab = invItemsPrefabs.Find(item => item.name == "EquipmentSlot");
         InstantiateContainer("Units", "Assets/Sprites/Cards", Type.GetType("UnitsInventory"), true);
         InstantiateContainer("Items", "Assets/Sprites/Items/ItemsInventory", Type.GetType("ItemsInventory"), true);
-        InstantiateContainer("Equipments", "Assets/Sprites/Items/ItemsInventory", Type.GetType("ItemsInventory"), false);
+        InstantiateContainer("Equipments", equipmentSlotPrefab, Type.GetType("EquipmentsInventory"), false, equipmentPrefab);
         InstantiateContainer("Teams", teamsPrefab, Type.GetType("TeamsInventory"), false);
+    }
+
+    private void InstantiateContainer(string containerName, GameObject prefab, Type componentName, bool leftSide, GameObject containerPrefab) {
+        GameObject invCont = Instantiate(containerPrefab);
+        invCont.name = containerName + "Container";
+        invCont.transform.SetParent(containerParent, false);
+        RectTransform parentTR = (RectTransform)containerParent.transform;
+        RectTransform rectTR = (RectTransform)invCont.transform;
+        float invHeight = parentTR.rect.height;
+        float invWidth = parentTR.rect.width;
+
+        if (leftSide) {
+            rectTR.sizeDelta = new Vector2(invWidth * 50f / 100, invHeight * 90f / 100);
+            rectTR.transform.localPosition = new Vector3(-invWidth * 24f / 100, -invHeight * 3f / 100, 0);
+        }
+        else {
+            rectTR.sizeDelta = new Vector2(invWidth * 45f / 100, invHeight * 90f / 100);
+            rectTR.transform.localPosition = new Vector3(invWidth * 26f / 100, -invHeight * 3f / 100, 0);
+        }
+
+        inventoryCanvas.GetComponent<InventoryUI>().AddInvContainer(invCont);
+
+        invCont.AddComponent(componentName);
+        AddInvComponent<BaseInventory>(invCont, prefab);
     }
 
     private void InstantiateContainer(string containerName, GameObject prefab, Type componentName, bool leftSide) {

@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d5c60185e56f7fc44b3e9dd6bf5468fd, type: 3}
-  m_Name: Gold
+  m_Name: Shield
   m_EditorClassIdentifier: 
-  itemName: Gold
-  itemIcon: {fileID: 21300000, guid: 3577b55c46297da42b17fcc8a0d983e2, type: 3}
-  itemTypes: 09000000
+  itemName: Shield
+  itemIcon: {fileID: 21300000, guid: 094c63c6e82e25349abdc46f109f1e5f, type: 3}
+  itemTypes: 07000000
   affectedRaces: []
-  affectedStats: 
-  statModifier: 0
+  affectedStats: 01000000
+  statModifier: 3
   itemDescr: 

@@ -1,24 +1,24 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class DragUnit : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler {
+public class DragItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler {
     public GameObject originalGO;
     public static GameObject copyObject;
-    public static UnitItem copyUnit;
+    public static ItemSlot copyItem;
 
     private static Canvas canvas;
-    private RectTransform rectTransform;
     private RectTransform parentTR;
+    private RectTransform rectTransform;
     private CanvasGroup canvasGroup;
 
     public void OnBeginDrag(PointerEventData eventData) {
         copyObject = Instantiate(originalGO);
-        copyUnit = originalGO.GetComponentInParent<UnitItem>();
+        copyItem = originalGO.GetComponentInParent<ItemSlot>();
         copyObject.transform.SetParent(parentTR, false);
         copyObject.transform.position = new Vector3(originalGO.transform.position.x, originalGO.transform.position.y);
 
-        if (copyObject.GetComponent<TeamSlotDisplay>() != null) {
-            copyObject.GetComponent<TeamSlotDisplay>().SetMemberDisplay(copyUnit.unit);
+        if (copyObject.GetComponent<EquipmentDisplay>() != null) {
+            copyObject.GetComponent<EquipmentDisplay>().SetEquipmentDisplay(copyItem.item);
         }
 
         rectTransform = copyObject.GetComponent<RectTransform>();
@@ -37,7 +37,7 @@ public class DragUnit : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
         canvasGroup.alpha = 1f;
         canvasGroup.blocksRaycasts = true;
 
-        copyUnit = null;
+        copyItem = null;
         Destroy(copyObject);
     }
 

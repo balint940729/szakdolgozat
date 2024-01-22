@@ -54,12 +54,14 @@ public class InventoryUI : MonoBehaviour {
                 }
             }
             else if (activeTitle.name.Contains("Items")) {
-                List<GameObject> inactive = inventoryContainers.FindAll(cont => !cont.name.Contains("Items"));
+                List<GameObject> inactive = inventoryContainers.FindAll(cont => !cont.name.Contains("Items") || cont.name.Contains("Equipments"));
                 foreach (GameObject inact in inactive) {
                     inact.SetActive(false);
                 }
-                GameObject container = inventoryContainers.Find(cont => cont.name.Contains("Items"));
-                container.SetActive(true);
+                List<GameObject> containers = inventoryContainers.FindAll(cont => cont.name.Contains("Items") || cont.name.Contains("Equipments"));
+                foreach (GameObject container in containers) {
+                    container.SetActive(true);
+                }
             }
         }
     }
