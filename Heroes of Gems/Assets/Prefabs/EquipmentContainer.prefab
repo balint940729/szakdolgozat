@@ -328,6 +328,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: GlovesSlot
       objectReference: {fileID: 0}
+    - target: {fileID: 5472323339300842460, guid: 865a40d1512fe184cada4375f9290e44,
+        type: 3}
+      propertyPath: m_TagString
+      value: Equipment
+      objectReference: {fileID: 0}
     - target: {fileID: 8181139794888106261, guid: 865a40d1512fe184cada4375f9290e44,
         type: 3}
       propertyPath: itemType
@@ -473,6 +478,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: HelmetSlot
+      objectReference: {fileID: 0}
+    - target: {fileID: 5472323339300842460, guid: 865a40d1512fe184cada4375f9290e44,
+        type: 3}
+      propertyPath: m_TagString
+      value: Equipment
       objectReference: {fileID: 0}
     - target: {fileID: 8181139794888106261, guid: 865a40d1512fe184cada4375f9290e44,
         type: 3}
@@ -626,6 +636,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: BootsSlot
       objectReference: {fileID: 0}
+    - target: {fileID: 5472323339300842460, guid: 865a40d1512fe184cada4375f9290e44,
+        type: 3}
+      propertyPath: m_TagString
+      value: Equipment
+      objectReference: {fileID: 0}
     - target: {fileID: 8181139794888106261, guid: 865a40d1512fe184cada4375f9290e44,
         type: 3}
       propertyPath: itemType
@@ -777,6 +792,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: OffHandSlot
+      objectReference: {fileID: 0}
+    - target: {fileID: 5472323339300842460, guid: 865a40d1512fe184cada4375f9290e44,
+        type: 3}
+      propertyPath: m_TagString
+      value: Equipment
       objectReference: {fileID: 0}
     - target: {fileID: 8181139794888106261, guid: 865a40d1512fe184cada4375f9290e44,
         type: 3}
@@ -930,6 +950,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: WeaponSlot
       objectReference: {fileID: 0}
+    - target: {fileID: 5472323339300842460, guid: 865a40d1512fe184cada4375f9290e44,
+        type: 3}
+      propertyPath: m_TagString
+      value: Equipment
+      objectReference: {fileID: 0}
     - target: {fileID: 8181139794888106261, guid: 865a40d1512fe184cada4375f9290e44,
         type: 3}
       propertyPath: equipmentSlotGO
@@ -1071,6 +1096,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: CapeSlot
+      objectReference: {fileID: 0}
+    - target: {fileID: 5472323339300842460, guid: 865a40d1512fe184cada4375f9290e44,
+        type: 3}
+      propertyPath: m_TagString
+      value: Equipment
       objectReference: {fileID: 0}
     - target: {fileID: 8181139794888106261, guid: 865a40d1512fe184cada4375f9290e44,
         type: 3}
@@ -1224,6 +1254,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PantsSlot
       objectReference: {fileID: 0}
+    - target: {fileID: 5472323339300842460, guid: 865a40d1512fe184cada4375f9290e44,
+        type: 3}
+      propertyPath: m_TagString
+      value: Equipment
+      objectReference: {fileID: 0}
     - target: {fileID: 8181139794888106261, guid: 865a40d1512fe184cada4375f9290e44,
         type: 3}
       propertyPath: itemType
@@ -1376,6 +1411,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: BodyArmorSlot
       objectReference: {fileID: 0}
+    - target: {fileID: 5472323339300842460, guid: 865a40d1512fe184cada4375f9290e44,
+        type: 3}
+      propertyPath: m_TagString
+      value: Equipment
+      objectReference: {fileID: 0}
     - target: {fileID: 8181139794888106261, guid: 865a40d1512fe184cada4375f9290e44,
         type: 3}
       propertyPath: itemType
@@ -1527,6 +1567,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: TrinketsSlot
+      objectReference: {fileID: 0}
+    - target: {fileID: 5472323339300842460, guid: 865a40d1512fe184cada4375f9290e44,
+        type: 3}
+      propertyPath: m_TagString
+      value: Equipment
       objectReference: {fileID: 0}
     - target: {fileID: 8181139794888106261, guid: 865a40d1512fe184cada4375f9290e44,
         type: 3}

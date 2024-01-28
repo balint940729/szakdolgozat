@@ -387,7 +387,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3086666681c7bba40a151a282eb55fcd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rayCastTarget: 1
   index: 3
   teamSlotGO: {fileID: 2115675447041432529}
 --- !u!114 &5621009339250607079
@@ -766,14 +765,14 @@ GameObject:
   - component: {fileID: 8060988251418314126}
   - component: {fileID: 2039286507148771973}
   - component: {fileID: 1264376385225563797}
-  - component: {fileID: 7167605369486973019}
+  - component: {fileID: 3264391652288416488}
   m_Layer: 0
-  m_Name: Button
-  m_TagString: Untagged
+  m_Name: SelectButton
+  m_TagString: TeamSelectButton
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &8060988251418314126
 RectTransform:
   m_ObjectHideFlags: 0
@@ -785,12 +784,12 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 6892392701700309562}
-  m_RootOrder: 2
+  m_Father: {fileID: 6546851807688644744}
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 26.318, y: -1.121}
+  m_AnchoredPosition: {x: 45.8, y: 36}
   m_SizeDelta: {x: 15, y: 15}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2039286507148771973
@@ -820,8 +819,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: 709c733fbc0560e76af00f5c4fe3d1b8, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -830,7 +829,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &7167605369486973019
+--- !u!114 &3264391652288416488
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -839,7 +838,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4577456711943808222}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Script: {fileID: 11500000, guid: 9085046f02f69544eb97fd06b6048fe2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
@@ -848,7 +847,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 2
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -858,10 +857,11 @@ MonoBehaviour:
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
+    m_HighlightedSprite: {fileID: 21300000, guid: 14a90a4efdd832546ad74b31ebe44cd7,
+      type: 3}
+    m_PressedSprite: {fileID: 21300000, guid: 6bc67af941a954bb1ba8c1b8dca4b0a1, type: 3}
+    m_SelectedSprite: {fileID: 21300000, guid: 6bc67af941a954bb1ba8c1b8dca4b0a1, type: 3}
+    m_DisabledSprite: {fileID: 21300000, guid: 709c733fbc0560e76af00f5c4fe3d1b8, type: 3}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
     m_HighlightedTrigger: Highlighted
@@ -870,9 +870,13 @@ MonoBehaviour:
     m_DisabledTrigger: Disabled
   m_Interactable: 1
   m_TargetGraphic: {fileID: 1264376385225563797}
-  m_OnClick:
+  toggleTransition: 1
+  graphic: {fileID: 0}
+  m_Group: {fileID: 0}
+  onValueChanged:
     m_PersistentCalls:
       m_Calls: []
+  m_IsOn: 0
 --- !u!1 &5417976270197005433
 GameObject:
   m_ObjectHideFlags: 0
@@ -1043,6 +1047,7 @@ RectTransform:
   - {fileID: 6556682665427169633}
   - {fileID: 8092291706332604605}
   - {fileID: 7807552771952652586}
+  - {fileID: 8060988251418314126}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1415,7 +1420,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3086666681c7bba40a151a282eb55fcd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rayCastTarget: 1
   index: 1
   teamSlotGO: {fileID: 8260623674819515757}
 --- !u!114 &8121794330209892767
@@ -1478,7 +1482,6 @@ RectTransform:
   m_Children:
   - {fileID: 6911077010515052134}
   - {fileID: 2642788780893315109}
-  - {fileID: 8060988251418314126}
   m_Father: {fileID: 6546851807688644744}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1550,7 +1553,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3086666681c7bba40a151a282eb55fcd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rayCastTarget: 1
   index: 0
   teamSlotGO: {fileID: 8457253927125617707}
 --- !u!225 &267846968611480630
@@ -1684,7 +1686,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3086666681c7bba40a151a282eb55fcd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rayCastTarget: 1
   index: 2
   teamSlotGO: {fileID: 9048108710174315907}
 --- !u!114 &573906686399852364

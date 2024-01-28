@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35aa30aecd03da24d8b3634c1287c97d, type: 3}
+  m_Name: MageTower
+  m_EditorClassIdentifier: 
+  buildingName: Mage Tower
+  images:
+  - {fileID: 21300000, guid: bc1eb52fdee4ae74e93b955895457bea, type: 3}
+  - {fileID: 21300000, guid: 2c673dedde12e9843a7d8816c6bd6871, type: 3}
+  - {fileID: 21300000, guid: 39aa22c15fe3e3241885b872e92ba216, type: 3}
+  bonusStats: 03000000
+  bonusModifier: 3
+  buildingLevel: 0
+  buildingMaxLevel: 3

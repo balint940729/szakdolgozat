@@ -22,6 +22,8 @@ public class Inventory : MonoBehaviour {
         InstantiateContainer("Items", "Assets/Sprites/Items/ItemsInventory", Type.GetType("ItemsInventory"), true);
         InstantiateContainer("Equipments", equipmentSlotPrefab, Type.GetType("EquipmentsInventory"), false, equipmentPrefab);
         InstantiateContainer("Teams", teamsPrefab, Type.GetType("TeamsInventory"), false);
+
+        GetComponentInParent<InventoryUI>().InitialTitles();
     }
 
     private void InstantiateContainer(string containerName, GameObject prefab, Type componentName, bool leftSide, GameObject containerPrefab) {

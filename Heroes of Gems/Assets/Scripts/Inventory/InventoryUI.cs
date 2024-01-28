@@ -5,35 +5,59 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class InventoryUI : MonoBehaviour {
-    public static bool gameIsPaused = false;
     [SerializeField] private GameObject inventoryMenuUI = default;
     [SerializeField] private GameObject titlePrefab = default;
+    [SerializeField] private GameObject closeButton = default;
     [SerializeField] private GameObject playerChar = default;
     public List<GameObject> inventoryContainers;
 
+    private List<GameObject> titlesGO = new List<GameObject>();
+    private Team selectedTeam;
+
     private void Start() {
-        //EventSystem.current.currentInputModule.de
-
-        CreateTitle("Units", 1);
-        CreateTitle("Items", 2);
-        CreateTitle("Cities", 3);
-
-        Toggle initialTitle = GameObject.Find("UnitsTitle").GetComponent<Toggle>();
-        initialTitle.Select();
-        initialTitle.isOn = true;
+        closeButton.GetComponentInChildren<Button>().onClick.AddListener(ShowInventory);
     }
 
-    // Update is called once per frame
     private void Update() {
         if (Input.GetKeyDown(KeyCode.I)) {
-            if (gameIsPaused) {
-                playerChar.GetComponent<Team>().team = GetComponentInChildren<Teams>().teams.First().team;
-                Resume();
+            ShowInventory();
+        }
+    }
+
+    private void LateUpdate() {
+        //if (Input.GetMouseButtonUp(0)) {
+        foreach (GameObject title in titlesGO) {
+            if (title.GetComponent<Toggle>().isOn) {
+                //if (selectedTeamButton != null) {
+                //    selectedTeamButton.GetComponent<Toggle>().image.sprite = selectedTeamButton.GetComponent<Toggle>().spriteState.selectedSprite
+                //}
+
+                title.GetComponent<Toggle>().image.sprite = title.GetComponent<Toggle>().spriteState.selectedSprite;
             }
             else {
-                Pause();
+                title.GetComponent<Toggle>().image.sprite = title.GetComponent<Toggle>().spriteState.disabledSprite;
             }
         }
+        //}
+    }
+
+    private void ShowInventory() {
+        if (PauseStateHandler.IsGamePaused()) {
+            playerChar.GetComponent<Team>().team = selectedTeam.team;
+            Resume();
+        }
+        else {
+            Pause();
+        }
+    }
+
+    public void InitialTitles() {
+        titlesGO.Add(CreateTitle("Units", 1));
+        titlesGO.Add(CreateTitle("Items", 2));
+        titlesGO.Add(CreateTitle("Cities", 3));
+
+        InitialSelection();
+        OnTitleSelected();
     }
 
     public void AddInvContainer(GameObject invContainer) {
@@ -66,7 +90,7 @@ public class InventoryUI : MonoBehaviour {
         }
     }
 
-    private void CreateTitle(string titleName, int titleCount) {
+    private GameObject CreateTitle(string titleName, int titleCount) {
         GameObject title = Instantiate(titlePrefab);
         title.name = titleName + "Title";
         title.transform.SetParent(inventoryMenuUI.transform, false);
@@ -83,21 +107,34 @@ public class InventoryUI : MonoBehaviour {
             OnTitleSelected();
         });
 
+        return title;
         //if (titleName == "Units") {
         //    title.GetComponent<Toggle>().Select();
         //    title.GetComponent<Toggle>().isOn = true;
         //}
     }
 
-    public void Resume() {
+    public void InitialSelection() {
+        Toggle initialTitle = titlesGO.Find(title => title.name.Contains("Units")).GetComponent<Toggle>();
+        initialTitle.Select();
+        initialTitle.isOn = true;
+    }
+
+    public void AddSelectedTeamButton(Team team) {
+        selectedTeam = team;
+    }
+
+    private void Resume() {
         inventoryMenuUI.SetActive(false);
+        closeButton.SetActive(false);
         Time.timeScale = 1f;
-        gameIsPaused = false;
+        PauseStateHandler.SetGamePause(false);
     }
 
     private void Pause() {
         inventoryMenuUI.SetActive(true);
+        closeButton.SetActive(true);
         Time.timeScale = 0f;
-        gameIsPaused = true;
+        PauseStateHandler.SetGamePause(true);
     }
 }

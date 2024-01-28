@@ -11,6 +11,7 @@ public class DropItem : MonoBehaviour, IDropHandler {
 
             if (itemSlot.item != DragItem.copyItem.item && DragItem.copyItem.item.itemTypes.Contains(equipmentType)) {
                 if (itemSlot.item != null) {
+                    GetComponentInParent<EquipmentsInventory>().RemoveEquipment(itemSlot.item);
                     eventData.pointerDrag.GetComponentInParent<ItemsInventory>().AddItem(itemSlot.item);
                 }
 
@@ -18,10 +19,12 @@ public class DropItem : MonoBehaviour, IDropHandler {
 
                 GetComponent<EquipmentDisplay>().SetEquipmentDisplay(itemSlot.item);
 
-                equipmentSlotGO.AddComponent<DragItem>();
-                equipmentSlotGO.GetComponent<DragItem>().originalGO = equipmentSlotGO;
-                RectTransform parent = (RectTransform)GameObject.Find("Inventory").transform;
-                equipmentSlotGO.GetComponent<DragItem>().SetParent(parent);
+                if (equipmentSlotGO.GetComponent<DragItem>() == null) {
+                    equipmentSlotGO.AddComponent<DragItem>();
+                    equipmentSlotGO.GetComponent<DragItem>().originalGO = equipmentSlotGO;
+                    RectTransform parent = (RectTransform)GameObject.Find("Inventory").transform;
+                    equipmentSlotGO.GetComponent<DragItem>().SetParent(parent);
+                }
 
                 if (eventData.pointerDrag.GetComponentInParent<ItemsInventory>().ItemCount(itemSlot.item) == 1) {
                     eventData.pointerDrag.GetComponent<DragItem>().OnEndDrag(eventData);

@@ -1,9 +1,23 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class InventoryDrop : MonoBehaviour, IDropHandler {
+public class DropInventory : MonoBehaviour, IDropHandler {
 
     public void OnDrop(PointerEventData eventData) {
+        if (eventData.pointerDrag.CompareTag("Equipment")) {
+            //Add back to the inventory
+            GameObject invCanvas = eventData.pointerDrag.GetComponentInParent<EquipmentsInventory>().inventoryCanvas;
+            GameObject itemCont = invCanvas.GetComponent<InventoryUI>().inventoryContainers.Find(cont => cont.name.Contains("Items"));
+            itemCont.GetComponentInChildren<ItemsInventory>().AddItem(DragItem.copyItem.item);
+            eventData.pointerDrag.GetComponentInParent<EquipmentsInventory>().RemoveEquipment(DragItem.copyItem.item);
+
+            eventData.pointerDrag.GetComponent<EquipmentDisplay>().ResetEquipmentDisplay();
+            eventData.pointerDrag.GetComponent<ItemSlot>().item = null;
+
+            eventData.pointerDrag.GetComponent<DragItem>().OnEndDrag(eventData);
+            Destroy(eventData.pointerDrag.GetComponent<DragItem>());
+        }
+
         if (eventData.pointerDrag.name.Contains("Teamslot")) {
             Unit[] team = eventData.pointerDrag.GetComponentInParent<Team>().team;
 

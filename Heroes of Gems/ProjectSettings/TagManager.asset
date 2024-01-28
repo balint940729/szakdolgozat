@@ -7,6 +7,8 @@ TagManager:
   - Teleporters
   - Chests
   - Race
+  - Equipment
+  - TeamSelectButton
   layers:
   - Default
   - TransparentFX
@@ -19,7 +21,7 @@ TagManager:
   - Trees
   - Chest
   - Enemies
-  - 
+  - Cities
   - 
   - 
   - 

@@ -17,6 +17,7 @@ public class DropUnit : MonoBehaviour, IDropHandler {
                 Unit[] team = GetComponentInParent<Team>().team;
                 if (team[index] != null) {
                     eventData.pointerDrag.GetComponentInParent<UnitsInventory>().AddUnit(unitItem.unit);
+                    //eventData.pointerDrag.GetComponentInParent<UnitsInventory>().RemoveUnit(team[index]);
                 }
 
                 unitItem.unit = DragUnit.copyUnit.unit;
@@ -55,22 +56,23 @@ public class DropUnit : MonoBehaviour, IDropHandler {
 
             unitItem.unit = DragUnit.copyUnit.unit;
 
-            Unit[] team = GetComponentInParent<Team>().team;
+            Team teamGO = GetComponentInParent<Team>();
+            Team fromTeamGO = eventData.pointerDrag.GetComponentInParent<Team>();
             GetComponent<TeamSlotDisplay>().SetMemberDisplay(unitItem.unit);
-            team[index] = unitItem.unit;
+            teamGO.team[index] = unitItem.unit;
 
             //Switch places
             if (tempUnit != null) {
                 eventData.pointerDrag.GetComponent<TeamSlotDisplay>().SetMemberDisplay(tempUnit);
                 eventData.pointerDrag.GetComponent<UnitItem>().unit = tempUnit;
-                team[eventData.pointerDrag.GetComponent<DropUnit>().index] = tempUnit;
-                team[index] = unitItem.unit;
+                fromTeamGO.team[eventData.pointerDrag.GetComponent<DropUnit>().index] = tempUnit;
+                teamGO.team[index] = unitItem.unit;
             }
             //Move to empty place
             else {
                 eventData.pointerDrag.GetComponent<TeamSlotDisplay>().ResetTeamSlotDisplay();
                 eventData.pointerDrag.GetComponent<UnitItem>().unit = null;
-                team[eventData.pointerDrag.GetComponent<DropUnit>().index] = null;
+                fromTeamGO.team[eventData.pointerDrag.GetComponent<DropUnit>().index] = null;
                 eventData.pointerDrag.GetComponent<DragUnit>().OnEndDrag(eventData);
                 Destroy(eventData.pointerDrag.GetComponent<DragUnit>());
 

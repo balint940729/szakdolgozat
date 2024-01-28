@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public static class EnemyTeamHandler {
+﻿public static class EnemyTeamHandler {
     private static Unit[] team;
 
     public static Unit[] GetTeam() {

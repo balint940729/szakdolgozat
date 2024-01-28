@@ -36,7 +36,6 @@ public class ItemsInventory : BaseInventory {
             if (i == 1 || i == 5) {
                 items.Add(item);
                 items.Add(item);
-                items.Add(item);
             }
 
             //int itemCount = items.Count(it => it.Name == item.Name);
