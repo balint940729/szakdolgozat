@@ -16,7 +16,8 @@ public class DropUnit : MonoBehaviour, IDropHandler {
             if (unitItem.unit != DragUnit.copyUnit.unit) {
                 Unit[] team = GetComponentInParent<Team>().team;
                 if (team[index] != null) {
-                    eventData.pointerDrag.GetComponentInParent<UnitsInventory>().AddUnit(unitItem.unit);
+                    //eventData.pointerDrag.GetComponentInParent<UnitsInventory>().AddUnit(unitItem.unit);
+                    UnitsInventory.AddUnit(unitItem.unit);
                     //eventData.pointerDrag.GetComponentInParent<UnitsInventory>().RemoveUnit(team[index]);
                 }
 

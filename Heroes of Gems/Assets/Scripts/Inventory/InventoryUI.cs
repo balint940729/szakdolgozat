@@ -9,6 +9,7 @@ public class InventoryUI : MonoBehaviour {
     [SerializeField] private GameObject titlePrefab = default;
     [SerializeField] private GameObject closeButton = default;
     [SerializeField] private GameObject playerChar = default;
+    [SerializeField] private GameObject gold = default;
     public List<GameObject> inventoryContainers;
 
     private List<GameObject> titlesGO = new List<GameObject>();
@@ -53,8 +54,9 @@ public class InventoryUI : MonoBehaviour {
 
     public void InitialTitles() {
         titlesGO.Add(CreateTitle("Units", 1));
-        titlesGO.Add(CreateTitle("Items", 2));
-        titlesGO.Add(CreateTitle("Cities", 3));
+        //CreateGoldCounter(2);
+        titlesGO.Add(CreateTitle("Items", 3));
+        //titlesGO.Add(CreateTitle("Cities", 3));
 
         InitialSelection();
         OnTitleSelected();
@@ -108,10 +110,6 @@ public class InventoryUI : MonoBehaviour {
         });
 
         return title;
-        //if (titleName == "Units") {
-        //    title.GetComponent<Toggle>().Select();
-        //    title.GetComponent<Toggle>().isOn = true;
-        //}
     }
 
     public void InitialSelection() {
@@ -127,6 +125,7 @@ public class InventoryUI : MonoBehaviour {
     private void Resume() {
         inventoryMenuUI.SetActive(false);
         closeButton.SetActive(false);
+        gold.SetActive(false);
         Time.timeScale = 1f;
         PauseStateHandler.SetGamePause(false);
     }
@@ -134,6 +133,7 @@ public class InventoryUI : MonoBehaviour {
     private void Pause() {
         inventoryMenuUI.SetActive(true);
         closeButton.SetActive(true);
+        gold.SetActive(true);
         Time.timeScale = 0f;
         PauseStateHandler.SetGamePause(true);
     }

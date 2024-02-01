@@ -53,8 +53,8 @@ public class TurnBase : MonoBehaviour {
         SetUpTeam(true);
         SetUpTeam(false);
 
-        CheckStatBonuses(playerTeam);
-        CheckStatBonuses(enemyTeam);
+        CheckStatBonuses(playerTeam, true);
+        CheckStatBonuses(enemyTeam, false);
 
         SetUpBoard();
     }
@@ -64,12 +64,23 @@ public class TurnBase : MonoBehaviour {
     //    }
     //}
 
-    private void CheckStatBonuses(List<GameObject> team) {
-        foreach (GameObject unitGO in team) {
-            UnitController unit = unitGO.GetComponent<UnitController>();
+    private void CheckStatBonuses(List<GameObject> team, bool isPlayer) {
+        BaseBonus.InitializeBonus2(team);
 
-            unit.GetRace().raceBonus.InitializeRaceBonus(team, unit);
-        }
+        //foreach (GameObject unitGO in team) {
+        //    UnitController unit = unitGO.GetComponent<UnitController>();
+
+        //    unit.GetRace().raceBonus.InitializeBonus(team);
+
+        //    if (isPlayer) {
+        //        //foreach (Item item in Equipments.GetEquipments()) {
+        //        //    if (item.affectedRaces.Find(r => r == unit.GetRace()) != null) {
+        //        //        foreach (RaceStats stats in item.affectedStats) {
+        //        //        }
+        //        //    }
+        //        //}
+        //    }
+        //}
     }
 
     private void SpellDisplay(string spellName) {

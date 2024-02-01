@@ -289,6 +289,7 @@ MonoBehaviour:
   building: {fileID: 0}
   image: {fileID: 5934744995176444060}
   buildingText: {fileID: 3686587988182182739}
+  upgradeText: {fileID: 5303060772600254794}
 --- !u!114 &6637717222946028640
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -314,7 +315,7 @@ GameObject:
   - component: {fileID: 7274647899480542762}
   - component: {fileID: 5934744995176444060}
   m_Layer: 0
-  m_Name: BuildingUI
+  m_Name: BuildingImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -383,6 +384,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1830849512416351580}
     m_Modifications:
+    - target: {fileID: 434108041504244656, guid: 85eaf508c69070844a4abdeac4adf255,
+        type: 3}
+      propertyPath: m_Name
+      value: UpgradeButtonText
+      objectReference: {fileID: 0}
     - target: {fileID: 1848973738681937519, guid: 85eaf508c69070844a4abdeac4adf255,
         type: 3}
       propertyPath: m_text
@@ -522,3 +528,15 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 5778292580148854565}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &5303060772600254794 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1848973738681937519, guid: 85eaf508c69070844a4abdeac4adf255,
+    type: 3}
+  m_PrefabInstance: {fileID: 5778292580148854565}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

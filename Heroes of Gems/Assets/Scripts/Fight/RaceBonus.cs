@@ -1,50 +1,46 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
-public enum RaceStats { Attack, Armor, Health, SpellDamage, Mana };
-
 [System.Serializable]
-[CreateAssetMenu(fileName = "RaceBonus", menuName = "RaceBonus")]
-public class RaceBonus : ScriptableObject {
+public class RaceBonus : BaseBonus {
+    private Dictionary<Race, int> raceNumber = new Dictionary<Race, int>();
 
-    [HideInInspector]
-    public string raceBonusDescription;
-
-    public List<RaceStats> raceBonusStat;
-    public int raceBonusModifier;
-    public Race race;
-
-    public RaceBonus(List<RaceStats> raceBonusStat, int raceBonusModifier, Race race) {
-        this.raceBonusStat = raceBonusStat;
-        this.raceBonusModifier = raceBonusModifier;
-        this.race = race;
-        raceBonusDescription = SetRaceBonusDescription();
+    public override void InitializeBonus(List<GameObject> team) {
+        CountRaceMembers(team);
+        foreach (GameObject memberGO in team) {
+            UnitController unit = memberGO.GetComponent<UnitController>();
+            ModifyStat(unit);
+        }
     }
 
-    public virtual void InitializeRaceBonus(List<GameObject> team, UnitController unit) {
-        int unitsNumber = CountRaceMembers(team);
+    protected override void BonusDescription() {
+        base.BonusDescription();
+        bonusDescription += " The bonus is stronger when more members share the same Race.";
+    }
 
-        foreach (RaceStats raceStat in raceBonusStat) {
-            switch (raceStat) {
-                case RaceStats.Attack:
-                    unit.ModifyAttack(raceBonusModifier * unitsNumber);
+    protected override void ModifyStat(UnitController unit) {
+        Race race = unit.GetRace();
+
+        foreach (ModifStats stat in bonusStats) {
+            switch (stat) {
+                case ModifStats.Attack:
+                    unit.ModifyAttack(bonusModifier * raceNumber[race]);
                     break;
 
-                case RaceStats.Armor:
-                    unit.ModifyArmor(raceBonusModifier * unitsNumber);
+                case ModifStats.Armor:
+                    unit.ModifyArmor(bonusModifier * raceNumber[race]);
                     break;
 
-                case RaceStats.Health:
-                    unit.ModifyHealth(raceBonusModifier * unitsNumber);
+                case ModifStats.Health:
+                    unit.ModifyHealth(bonusModifier * raceNumber[race]);
                     break;
 
-                case RaceStats.SpellDamage:
-                    unit.ModifySpellDamage(raceBonusModifier * unitsNumber);
+                case ModifStats.SpellDamage:
+                    unit.ModifySpellDamage(bonusModifier * raceNumber[race]);
                     break;
 
-                case RaceStats.Mana:
-                    unit.GainMana(raceBonusModifier * unitsNumber);
+                case ModifStats.Mana:
+                    unit.GainMana(bonusModifier * raceNumber[race]);
                     break;
 
                 default:
@@ -53,33 +49,85 @@ public class RaceBonus : ScriptableObject {
         }
     }
 
-    private int CountRaceMembers(List<GameObject> team) {
-        int count = 0;
-
+    private void CountRaceMembers(List<GameObject> team) {
         foreach (GameObject memberGO in team) {
             UnitController member = memberGO.GetComponent<UnitController>();
 
-            if (member.GetRace() == race) {
-                count++;
-            }
-        }
+            AddRaceMember(member.GetRace());
 
-        return count;
+            //if (member.GetRace() == race) {
+            //    count++;
+            //}
+        }
     }
 
-    private string SetRaceBonusDescription() {
-        raceBonusDescription = "All " + race + " gain: ";
-        foreach (RaceStats stats in raceBonusStat) {
-            raceBonusDescription += "+" + raceBonusModifier + " " + stats;
-
-            if (stats == raceBonusStat.Last()) {
-                raceBonusDescription += ".";
-                return raceBonusDescription;
-            }
-
-            raceBonusDescription += ", ";
+    private void AddRaceMember(Race race) {
+        if (raceNumber.ContainsKey(race)) {
+            raceNumber[race]++;
         }
-
-        return raceBonusDescription;
+        else {
+            raceNumber[race] = 1;
+        }
     }
+
+    //[HideInInspector]
+    //public string raceBonusDescription;
+
+    //public List<ModifStats> raceBonusStat;
+    //public int raceBonusModifier;
+    //public Race race;
+
+    //public RaceBonus(List<ModifStats> raceBonusStat, int raceBonusModifier, Race race) {
+    //    this.raceBonusStat = raceBonusStat;
+    //    this.raceBonusModifier = raceBonusModifier;
+    //    this.race = race;
+    //    raceBonusDescription = SetRaceBonusDescription();
+    //}
+
+    //public virtual void InitializeRaceBonus(List<GameObject> team, UnitController unit) {
+    //    int unitsNumber = CountRaceMembers(team);
+
+    //    foreach (ModifStats raceStat in raceBonusStat) {
+    //        switch (raceStat) {
+    //            case ModifStats.Attack:
+    //                unit.ModifyAttack(raceBonusModifier * unitsNumber);
+    //                break;
+
+    //            case ModifStats.Armor:
+    //                unit.ModifyArmor(raceBonusModifier * unitsNumber);
+    //                break;
+
+    //            case ModifStats.Health:
+    //                unit.ModifyHealth(raceBonusModifier * unitsNumber);
+    //                break;
+
+    //            case ModifStats.SpellDamage:
+    //                unit.ModifySpellDamage(raceBonusModifier * unitsNumber);
+    //                break;
+
+    //            case ModifStats.Mana:
+    //                unit.GainMana(raceBonusModifier * unitsNumber);
+    //                break;
+
+    //            default:
+    //                break;
+    //        }
+    //    }
+    //}
+
+    //private string SetRaceBonusDescription() {
+    //    raceBonusDescription = "All " + race + " gain: ";
+    //    foreach (ModifStats stats in raceBonusStat) {
+    //        raceBonusDescription += "+" + raceBonusModifier + " " + stats;
+
+    //        if (stats == raceBonusStat.Last()) {
+    //            raceBonusDescription += ".";
+    //            return raceBonusDescription;
+    //        }
+
+    //        raceBonusDescription += ", ";
+    //    }
+
+    //    return raceBonusDescription;
+    //}
 }

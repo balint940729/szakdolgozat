@@ -49,9 +49,9 @@ public abstract class BaseInventory : MonoBehaviour {
     //    return true;
     //}
 
-    public virtual void AddUnit(Unit unit) {
-        // Implement
-    }
+    //public virtual void AddUnit(Unit unit) {
+    //    // Implement
+    //}
 
     //public virtual bool RemoveItem(Item item) {
     //    //if (items.Remove(item)) {

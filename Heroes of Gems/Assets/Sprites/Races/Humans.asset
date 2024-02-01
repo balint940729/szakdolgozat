@@ -18,5 +18,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b0fc0009a36b7ad48a3521d8b2d97eaf, type: 2}
   weakAgainst:
   - {fileID: 11400000, guid: e9baf0da65d4c164ab20839640f67ed9, type: 2}
-  raceBonus: {fileID: 11400000, guid: bb0ab771007428c41995580218212a40, type: 2}
+  raceBonus:
+    bonusDescription: 
+    affectedRaces:
+    - {fileID: 11400000}
+    bonusStats: 000000000100000002000000
+    bonusModifier: 2
   raceImage: {fileID: 21300000, guid: f3864ba3eb12adf43ae3f32c402b6b28, type: 3}

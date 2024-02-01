@@ -78,7 +78,7 @@ public class TeamsInventory : BaseInventory {
         buttonGO.GetComponentInChildren<TMP_Text>().enableWordWrapping = false;
         buttonGO.GetComponentInChildren<TMP_Text>().fontSizeMin = 18;
         buttonGO.GetComponentInChildren<TMP_Text>().fontSizeMax = 28;
-        buttonGO.GetComponentInChildren<TMP_Text>().text = "Buy Teamslot (200g)";
+        buttonGO.GetComponentInChildren<TMP_Text>().text = "Buy Teamslot (50g)";
     }
 
     private IEnumerator ChangeTeamSlotLayoutGroup(GameObject content) {
@@ -112,23 +112,26 @@ public class TeamsInventory : BaseInventory {
     }
 
     private void AddTeamSlot() {
-        GameObject itemGO = Instantiate(emptyItemPrefab);
+        if (GoldController.HasEnoughGold(50)) {
+            GoldController.SpendGold(50);
 
-        itemGO.name = "Team" + teamSlotsGO.transform.childCount;
-        itemGO.transform.SetParent(teamSlotsGO.transform, false);
-        itemGO.GetComponent<Toggle>().group = GetComponent<ToggleGroup>();
-        itemGO.transform.localScale = new Vector3(3.0f, 3.0f, 3.0f);
-        teamSlotsGO.GetComponent<Teams>().teams.Add(itemGO.GetComponent<Team>());
-        foreach (Transform childTR in itemGO.transform) {
-            if (childTR.tag == "TeamSelectButton") {
-                childTR.gameObject.name += teamSlotsGO.transform.childCount;
-                childTR.gameObject.GetComponent<Toggle>().group = teamSlotsGO.GetComponent<ToggleGroup>();
+            GameObject itemGO = Instantiate(emptyItemPrefab);
 
-                teamSlotsSelection.Add(childTR.gameObject);
-                break;
+            itemGO.name = "Team" + teamSlotsGO.transform.childCount;
+            itemGO.transform.SetParent(teamSlotsGO.transform, false);
+            itemGO.GetComponent<Toggle>().group = GetComponent<ToggleGroup>();
+            itemGO.transform.localScale = new Vector3(3.0f, 3.0f, 3.0f);
+            teamSlotsGO.GetComponent<Teams>().teams.Add(itemGO.GetComponent<Team>());
+            foreach (Transform childTR in itemGO.transform) {
+                if (childTR.tag == "TeamSelectButton") {
+                    childTR.gameObject.name += teamSlotsGO.transform.childCount;
+                    childTR.gameObject.GetComponent<Toggle>().group = teamSlotsGO.GetComponent<ToggleGroup>();
+
+                    teamSlotsSelection.Add(childTR.gameObject);
+                    break;
+                }
             }
         }
-
         //GetComponentInParent<ScrollRect>().normalizedPosition = new Vector2(buttonsContentGO.transform.position.x, buttonsContentGO.transform.position.y);
     }
 

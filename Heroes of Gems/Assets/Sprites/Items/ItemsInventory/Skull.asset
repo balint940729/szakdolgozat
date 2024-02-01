@@ -12,11 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5c60185e56f7fc44b3e9dd6bf5468fd, type: 3}
   m_Name: Skull
   m_EditorClassIdentifier: 
+  dropChance: 50
   itemName: Skull
   itemIcon: {fileID: 21300000, guid: c6ce6168db721c14892730cc8e7628c7, type: 3}
   itemTypes: 0800000007000000
-  affectedRaces:
-  - {fileID: 11400000, guid: e9baf0da65d4c164ab20839640f67ed9, type: 2}
-  affectedStats: 000000000300000001000000
-  statModifier: 5
-  itemDescr: 
+  bonus:
+    bonusDescription: 
+    affectedRaces:
+    - {fileID: 11400000, guid: e9baf0da65d4c164ab20839640f67ed9, type: 2}
+    bonusStats: 0200000003000000
+    bonusModifier: 5

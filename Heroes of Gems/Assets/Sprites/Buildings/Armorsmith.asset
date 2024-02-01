@@ -20,4 +20,5 @@ MonoBehaviour:
   bonusStats: 01000000
   bonusModifier: 5
   buildingLevel: 0
-  buildingMaxLevel: 0
+  buildingMaxLevel: 3
+  upgradeCost: 20

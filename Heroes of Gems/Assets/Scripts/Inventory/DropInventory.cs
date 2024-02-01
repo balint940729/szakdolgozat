@@ -9,7 +9,8 @@ public class DropInventory : MonoBehaviour, IDropHandler {
             GameObject invCanvas = eventData.pointerDrag.GetComponentInParent<EquipmentsInventory>().inventoryCanvas;
             GameObject itemCont = invCanvas.GetComponent<InventoryUI>().inventoryContainers.Find(cont => cont.name.Contains("Items"));
             itemCont.GetComponentInChildren<ItemsInventory>().AddItem(DragItem.copyItem.item);
-            eventData.pointerDrag.GetComponentInParent<EquipmentsInventory>().RemoveEquipment(DragItem.copyItem.item);
+            Equipments.RemoveEquipment(DragItem.copyItem.item);
+            //eventData.pointerDrag.GetComponentInParent<EquipmentsInventory>().RemoveEquipment(DragItem.copyItem.item);
 
             eventData.pointerDrag.GetComponent<EquipmentDisplay>().ResetEquipmentDisplay();
             eventData.pointerDrag.GetComponent<ItemSlot>().item = null;
@@ -24,8 +25,8 @@ public class DropInventory : MonoBehaviour, IDropHandler {
             //Add back to the inventory
             GameObject invCanvas = eventData.pointerDrag.GetComponentInParent<TeamsInventory>().inventoryCanvas;
             GameObject unitCont = invCanvas.GetComponent<InventoryUI>().inventoryContainers.Find(cont => cont.name.Contains("Units"));
-            unitCont.GetComponentInChildren<UnitsInventory>().AddUnit(DragUnit.copyUnit.unit);
-
+            //unitCont.GetComponentInChildren<UnitsInventory>().AddUnit(DragUnit.copyUnit.unit);
+            UnitsInventory.AddUnit(DragUnit.copyUnit.unit);
             //Reset teamslot
             eventData.pointerDrag.GetComponent<TeamSlotDisplay>().ResetTeamSlotDisplay();
             eventData.pointerDrag.GetComponent<UnitItem>().unit = null;

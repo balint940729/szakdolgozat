@@ -6,12 +6,20 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class UnitsInventory : BaseInventory {
-    [SerializeField] private List<Unit> units = new List<Unit>();
+    [SerializeField] private static List<Unit> units = new List<Unit>();
     [SerializeField] private List<GameObject> unitsGO = new List<GameObject>();
     private List<Unit> testunits = new List<Unit>();
+    private static bool invChanged = false;
 
     private void Start() {
         FillInventory();
+    }
+
+    private void Update() {
+        if (invChanged) {
+            RefreshUI();
+            invChanged = false;
+        }
     }
 
     protected override void FillInventory() {
@@ -84,9 +92,10 @@ public class UnitsInventory : BaseInventory {
         RefreshUI();
     }
 
-    public override void AddUnit(Unit unit) {
+    public static void AddUnit(Unit unit) {
         units.Add(unit);
-        RefreshUI();
+        invChanged = true;
+        //RefreshUI();
     }
 
     public void RemoveUnit(Unit unit) {

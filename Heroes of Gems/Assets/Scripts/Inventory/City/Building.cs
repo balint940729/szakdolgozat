@@ -6,11 +6,12 @@ using UnityEngine;
 public class Building : ScriptableObject {
     public string buildingName;
     public Sprite[] images = new Sprite[0];
-    public List<RaceStats> bonusStats;
+    public List<ModifStats> bonusStats;
     public int bonusModifier;
 
     [HideInInspector]
     public int buildingLevel = 0;
 
     public int buildingMaxLevel;
+    public int upgradeCost;
 }

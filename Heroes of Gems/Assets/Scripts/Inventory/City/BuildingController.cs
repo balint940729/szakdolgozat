@@ -14,8 +14,9 @@ public class BuildingController : MonoBehaviour {
 
     private int maxLevel;
     private Sprite[] images;
-    private List<RaceStats> bonusStats;
+    private List<ModifStats> bonusStats;
     private int bonusModifier;
+    private int upgradeCost;
 
     private void Awake() {
         buildingUI = GetComponent<BuildingDisplay>();
@@ -40,23 +41,16 @@ public class BuildingController : MonoBehaviour {
         images = buildingUI.building.images;
         bonusStats = buildingUI.building.bonusStats;
         bonusModifier = buildingUI.building.bonusModifier;
+        upgradeCost = buildingUI.building.upgradeCost;
 
-        upgradeButton.GetComponent<Button>().onClick.AddListener(UpgradeBuilding);
-    }
-
-    public void SetUpUpgradeButton(GameObject buttonGO) {
-        upgradeButton = buttonGO;
-        upgradeButton.GetComponent<Button>().onClick.AddListener(UpgradeBuilding);
-    }
-
-    public void SetUpUpgradeButton() {
         upgradeButton.GetComponent<Button>().onClick.AddListener(UpgradeBuilding);
     }
 
     private void UpgradeBuilding() {
-        if (level < maxLevel) {
+        if (level < maxLevel && GoldController.HasEnoughGold(upgradeCost)) {
             level++;
             buildingUI.ChangeImage(images[level]);
+            GoldController.SpendGold(upgradeCost);
 
             if ((level + 1) == maxLevel) {
                 SetUpgradeButtonActive(false);
@@ -72,7 +66,7 @@ public class BuildingController : MonoBehaviour {
         return (level == 0 ? 1 : level) * bonusModifier;
     }
 
-    public List<RaceStats> GetBonusStats() {
+    public List<ModifStats> GetBonusStats() {
         return bonusStats;
     }
 }

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9dd202b8275d37346a7567bada9d8aae, type: 3}
   m_Name: Ghost
   m_EditorClassIdentifier: 
+  dropChance: 25
   baseName: Ghost
   baseHealth: 15
   baseAttack: 19

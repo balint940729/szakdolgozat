@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9dd202b8275d37346a7567bada9d8aae, type: 3}
   m_Name: Warlord
   m_EditorClassIdentifier: 
+  dropChance: 25
   baseName: Warflord
   baseHealth: 26
   baseAttack: 26

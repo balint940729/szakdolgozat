@@ -12,10 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5c60185e56f7fc44b3e9dd6bf5468fd, type: 3}
   m_Name: SilverKey
   m_EditorClassIdentifier: 
+  dropChance: 100
   itemName: Silver Key
   itemIcon: {fileID: 21300000, guid: 1ecbce95455320d46960d7ec1bd78fc9, type: 3}
   itemTypes: 09000000
-  affectedRaces: []
-  affectedStats: 
-  statModifier: 0
-  itemDescr: 
+  bonus:
+    bonusDescription: 
+    affectedRaces: []
+    bonusStats: 
+    bonusModifier: 0

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9dd202b8275d37346a7567bada9d8aae, type: 3}
   m_Name: Salamander
   m_EditorClassIdentifier: 
+  dropChance: 33
   baseName: Salamander
   baseHealth: 25
   baseAttack: 19

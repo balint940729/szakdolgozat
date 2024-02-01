@@ -1,8 +1,5 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
-
-public class EquipmentsInventory : BaseInventory {
-    [SerializeField] private List<Item> equipments = new List<Item>();
+﻿public class EquipmentsInventory : BaseInventory {
+    //private static List<Item> equipments;
 
     private void Start() {
         FillInventory();
@@ -12,11 +9,11 @@ public class EquipmentsInventory : BaseInventory {
         //throw new System.NotImplementedException();
     }
 
-    public void AddEquipment(Item item) {
-        equipments.Add(item);
-    }
+    //public void AddEquipment(Item item) {
+    //    equipments.Add(item);
+    //}
 
-    public void RemoveEquipment(Item item) {
-        equipments.Remove(item);
-    }
+    //public void RemoveEquipment(Item item) {
+    //    equipments.Remove(item);
+    //}
 }

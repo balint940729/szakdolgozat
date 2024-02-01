@@ -5,7 +5,7 @@ using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Card", menuName = "Card")]
 [System.Serializable]
-public class Unit : ScriptableObject {
+public class Unit : Dropable {
     public string baseName;
 
     public int baseHealth;
