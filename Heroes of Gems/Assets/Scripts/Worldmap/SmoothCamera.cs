@@ -6,10 +6,9 @@ public class SmoothCamera : MonoBehaviour {
     [SerializeField] private Vector3 offset = default;
 
     private void Start() {
-        offset = target.position - transform.position;
+        transform.position = target.position;
     }
 
-    // Update is called once per frame
     private void Update() {
         if (target) {
             Vector3 anchorPos = transform.position + offset;

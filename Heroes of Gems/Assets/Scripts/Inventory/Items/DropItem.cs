@@ -12,7 +12,6 @@ public class DropItem : MonoBehaviour, IDropHandler {
             if (itemSlot.item != DragItem.copyItem.item && DragItem.copyItem.item.itemTypes.Contains(equipmentType)) {
                 if (itemSlot.item != null) {
                     Equipments.RemoveEquipment(itemSlot.item);
-                    //GetComponentInParent<EquipmentsInventory>().RemoveEquipment(itemSlot.item);
                     eventData.pointerDrag.GetComponentInParent<ItemsInventory>().AddItem(itemSlot.item);
                 }
 
@@ -35,8 +34,6 @@ public class DropItem : MonoBehaviour, IDropHandler {
                     eventData.pointerDrag.GetComponentInParent<ItemsInventory>().RemoveItem(itemSlot.item);
 
                 Equipments.AddEquipment(itemSlot.item);
-
-                //GetComponentInParent<EquipmentsInventory>().AddEquipment(itemSlot.item);
             }
         }
     }

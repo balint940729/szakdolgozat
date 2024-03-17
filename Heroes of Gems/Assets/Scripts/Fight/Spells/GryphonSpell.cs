@@ -6,8 +6,8 @@ using UnityEngine;
 public class GryphonSpell : SpellBaseClass {
 
     public override void InitializeSpell() {
-        List<GameObject> targetsGO = GetOppenentTeam();
-        List<GameObject> alliesGO = GetOppenentTeam();
+        List<GameObject> targetsGO = GetOpponentTeam();
+        List<GameObject> alliesGO = GetOpponentTeam();
 
         int blueYellowAllies = CountBlueAndYellowUnits(alliesGO);
 

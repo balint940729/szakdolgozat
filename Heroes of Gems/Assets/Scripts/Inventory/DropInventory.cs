@@ -10,7 +10,6 @@ public class DropInventory : MonoBehaviour, IDropHandler {
             GameObject itemCont = invCanvas.GetComponent<InventoryUI>().inventoryContainers.Find(cont => cont.name.Contains("Items"));
             itemCont.GetComponentInChildren<ItemsInventory>().AddItem(DragItem.copyItem.item);
             Equipments.RemoveEquipment(DragItem.copyItem.item);
-            //eventData.pointerDrag.GetComponentInParent<EquipmentsInventory>().RemoveEquipment(DragItem.copyItem.item);
 
             eventData.pointerDrag.GetComponent<EquipmentDisplay>().ResetEquipmentDisplay();
             eventData.pointerDrag.GetComponent<ItemSlot>().item = null;
@@ -25,13 +24,13 @@ public class DropInventory : MonoBehaviour, IDropHandler {
             //Add back to the inventory
             GameObject invCanvas = eventData.pointerDrag.GetComponentInParent<TeamsInventory>().inventoryCanvas;
             GameObject unitCont = invCanvas.GetComponent<InventoryUI>().inventoryContainers.Find(cont => cont.name.Contains("Units"));
-            //unitCont.GetComponentInChildren<UnitsInventory>().AddUnit(DragUnit.copyUnit.unit);
             UnitsInventory.AddUnit(DragUnit.copyUnit.unit);
+
             //Reset teamslot
             eventData.pointerDrag.GetComponent<TeamSlotDisplay>().ResetTeamSlotDisplay();
             eventData.pointerDrag.GetComponent<UnitItem>().unit = null;
 
-            int.TryParse(eventData.pointerDrag.name.Substring(eventData.pointerDrag.name.Length), out int index);
+            int.TryParse(eventData.pointerDrag.name.Substring(eventData.pointerDrag.name.Length - 1), out int index);
             team[index] = null;
             eventData.pointerDrag.GetComponent<DragUnit>().OnEndDrag(eventData);
             Destroy(eventData.pointerDrag.GetComponent<DragUnit>());

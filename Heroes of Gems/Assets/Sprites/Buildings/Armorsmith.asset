@@ -14,11 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buildingName: Armorsmith
   images:
-  - {fileID: 21300000, guid: ee22b4bc68059ea4da6eadc9ddf74b99, type: 3}
-  - {fileID: 21300000, guid: 4d5cc1ddc6ff9834f9e1e22b026b3912, type: 3}
-  - {fileID: 21300000, guid: cdc7689ef3a56da4aa100b936fd6250a, type: 3}
-  bonusStats: 01000000
-  bonusModifier: 5
+  - {fileID: 21300000, guid: fe04af8ca101c074f946bcc1d5b2d192, type: 3}
+  - {fileID: 21300000, guid: d0826588c25e1c2468700b01a3f3d16e, type: 3}
+  - {fileID: 21300000, guid: e153071e025ff2c44af90144c53379cb, type: 3}
+  - {fileID: 21300000, guid: 44cb821d54f62a846ba065593a4a1005, type: 3}
+  buildingBonus:
+    bonusDescription: 
+    affectedRaces: []
+    bonusStats: 01000000
+    bonusModifier: 10
   buildingLevel: 0
-  buildingMaxLevel: 3
-  upgradeCost: 20
+  upgradeCost: 25

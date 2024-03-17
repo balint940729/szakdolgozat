@@ -6,7 +6,7 @@ using UnityEngine;
 public class TreefolkSpell : SpellBaseClass {
 
     public override void InitializeSpell() {
-        List<GameObject> targetsGO = GetOppenentTeam();
+        List<GameObject> targetsGO = GetOpponentTeam();
 
         UnitController target = targetsGO.Last().GetComponent<UnitController>();
         caster.ModifyHealth(caster.GetSpellDamage());

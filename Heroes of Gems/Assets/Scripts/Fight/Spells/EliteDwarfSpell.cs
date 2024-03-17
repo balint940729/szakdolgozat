@@ -5,7 +5,7 @@ using UnityEngine;
 public class EliteDwarfSpell : SpellBaseClass {
 
     public override void InitializeSpell() {
-        List<GameObject> targetsGO = GetOppenentTeam();
+        List<GameObject> targetsGO = GetOpponentTeam();
 
         UnitController strongestTarget = targetsGO[0].GetComponent<UnitController>();
         int strongestStat = strongestTarget.GetArmor() + strongestTarget.GetHealth();

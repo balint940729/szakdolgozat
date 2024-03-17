@@ -6,7 +6,7 @@ using UnityEngine;
 public class DarkElfSpell : SpellBaseClass {
 
     public override void InitializeSpell() {
-        List<GameObject> targetsGO = GetOppenentTeam();
+        List<GameObject> targetsGO = GetOpponentTeam();
 
         UnitController target = targetsGO.First().GetComponent<UnitController>();
         if (target.GetColors().Find(color => color.colorName == "Yellow") != null) {

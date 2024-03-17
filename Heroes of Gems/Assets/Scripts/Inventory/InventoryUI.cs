@@ -26,25 +26,19 @@ public class InventoryUI : MonoBehaviour {
     }
 
     private void LateUpdate() {
-        //if (Input.GetMouseButtonUp(0)) {
         foreach (GameObject title in titlesGO) {
             if (title.GetComponent<Toggle>().isOn) {
-                //if (selectedTeamButton != null) {
-                //    selectedTeamButton.GetComponent<Toggle>().image.sprite = selectedTeamButton.GetComponent<Toggle>().spriteState.selectedSprite
-                //}
-
                 title.GetComponent<Toggle>().image.sprite = title.GetComponent<Toggle>().spriteState.selectedSprite;
             }
             else {
                 title.GetComponent<Toggle>().image.sprite = title.GetComponent<Toggle>().spriteState.disabledSprite;
             }
         }
-        //}
     }
 
     private void ShowInventory() {
         if (PauseStateHandler.IsGamePaused()) {
-            playerChar.GetComponent<Team>().team = selectedTeam.team;
+            PlayerTeamHandler.SetTeam(selectedTeam.team);
             Resume();
         }
         else {
@@ -54,9 +48,7 @@ public class InventoryUI : MonoBehaviour {
 
     public void InitialTitles() {
         titlesGO.Add(CreateTitle("Units", 1));
-        //CreateGoldCounter(2);
         titlesGO.Add(CreateTitle("Items", 3));
-        //titlesGO.Add(CreateTitle("Cities", 3));
 
         InitialSelection();
         OnTitleSelected();
@@ -119,6 +111,7 @@ public class InventoryUI : MonoBehaviour {
     }
 
     public void AddSelectedTeamButton(Team team) {
+        PlayerTeamHandler.SetTeam(team.team);
         selectedTeam = team;
     }
 

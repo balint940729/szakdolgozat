@@ -3,18 +3,7 @@ using UnityEngine;
 
 [System.Serializable]
 public abstract class SpellBaseClass : ScriptableObject {
-    protected List<UnitController> targets;
     protected UnitController caster;
-
-    public virtual void SetTargets(List<UnitController> units) {
-        //public virtual void setEnemyTargets(List<UnitController> units) {
-        targets = units;
-        //enemyTargets = units;
-    }
-
-    //public virtual void setPlayerTargets(List<UnitController> units) {
-    //    allyTargets = units;
-    //}
 
     public virtual void SetCaster(UnitController caster) {
         this.caster = caster;
@@ -26,7 +15,7 @@ public abstract class SpellBaseClass : ScriptableObject {
         return false;
     }
 
-    public virtual List<GameObject> GetOppenentTeam() {
+    public virtual List<GameObject> GetOpponentTeam() {
         List<GameObject> targetsGO = new List<GameObject>();
         if (BattleStateHandler.GetState() == BattleState.PlayerTurn) {
             targetsGO = TurnBase.GetInstance().GetEnemyTeam();

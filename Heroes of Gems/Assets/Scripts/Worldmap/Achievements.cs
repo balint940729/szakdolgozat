@@ -18,7 +18,6 @@ public class Achievements : MonoBehaviour {
         PlayerPrefs.SetInt("Ach01", 0);
     }
 
-    // Update is called once per frame
     private void Update() {
         ach01Code = PlayerPrefs.GetInt("Ach01");
         if (ach01Count == ach01Trigger && ach01Code != 12345) {
@@ -36,7 +35,7 @@ public class Achievements : MonoBehaviour {
         achNote.SetActive(true);
         yield return new WaitForSeconds(7);
 
-        // Resetting
+        // Reseting
         achNote.SetActive(false);
         ach01Image.SetActive(false);
         achTitle.GetComponent<Text>().text = "";

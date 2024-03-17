@@ -17,9 +17,6 @@ public class ItemsInventory : BaseInventory {
             GameObject itemGO = Instantiate(emptyItemPrefab);
             itemGO.name = "ItemSlot" + i;
             itemGO.transform.SetParent(transform, false);
-            //itemGO.GetComponent<Toggle>().group = GetComponent<ToggleGroup>();
-            //itemGO.GetComponentInChildren<DragItem>().SetCanvas(inventoryCanvas.GetComponent<Canvas>());
-            //itemGO.GetComponentInChildren<DragItem>().SetParent(container);
 
             GameObject grayScaleGO = GameObject.Find("GrayScale");
             grayScaleGO.name += i;
@@ -33,12 +30,10 @@ public class ItemsInventory : BaseInventory {
 
             itemUI.grayScale = grayScaleGO;
 
-            if (i == 1 || i == 5) {
+            if (i == 3 || i == 6) {
                 items.Add(item);
                 items.Add(item);
             }
-
-            //int itemCount = items.Count(it => it.Name == item.Name);
 
             int itemCount = items.Count(it => it.itemName == item.itemName);
 

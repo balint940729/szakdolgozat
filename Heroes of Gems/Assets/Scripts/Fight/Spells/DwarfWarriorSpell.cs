@@ -6,7 +6,7 @@ using UnityEngine;
 public class DwarfWarriorSpell : SpellBaseClass {
 
     public override void InitializeSpell() {
-        List<GameObject> targetsGO = GetOppenentTeam();
+        List<GameObject> targetsGO = GetOpponentTeam();
 
         caster.ModifyArmor(caster.GetSpellDamage());
 

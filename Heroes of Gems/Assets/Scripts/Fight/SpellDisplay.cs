@@ -24,7 +24,5 @@ public class SpellDisplay : MonoBehaviour {
         }
 
         spellDescription.text = originalDesc.Replace("&X", spellDamage.ToString());
-        //spell.ChangeSpellDescription(spellDescription.text);
-        //this.spellDescription.text = spellDescription.ToString();
     }
 }

@@ -6,8 +6,8 @@ using UnityEngine;
 public class SorcererSpell : SpellBaseClass {
 
     public override void InitializeSpell() {
-        List<GameObject> targetsGO = GetOppenentTeam();
-        List<GameObject> alliesGO = GetOppenentTeam();
+        List<GameObject> targetsGO = GetOpponentTeam();
+        List<GameObject> alliesGO = GetOpponentTeam();
 
         UnitController target = targetsGO.First().GetComponent<UnitController>();
         UnitController firstAlly = alliesGO.First().GetComponent<UnitController>();

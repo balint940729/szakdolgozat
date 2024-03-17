@@ -12,9 +12,6 @@ public class CityContainer : MonoBehaviour {
             buildingGO.GetComponent<BuildingController>().SetUpBuilding(building);
 
             buildingControllers.Add(buildingGO.GetComponent<BuildingController>());
-
-            //GameObject buildingButtonGO = buildingGO.GetComponentInChildren<Button>().gameObject;
-            //buildingController.SetUpUpgradeButton(buildingButtonGO);
         }
     }
 }

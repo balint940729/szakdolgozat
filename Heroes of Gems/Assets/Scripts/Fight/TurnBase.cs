@@ -2,6 +2,7 @@
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class TurnBase : MonoBehaviour {
@@ -22,7 +23,6 @@ public class TurnBase : MonoBehaviour {
     private List<GameObject> enemyTeam = new List<GameObject>();
     private List<GameObject> enemyTeamSpells = new List<GameObject>();
     private List<GameObject> castButtons = new List<GameObject>();
-    private List<UnitController> spellTargets = new List<UnitController>();
     private static TurnBase instance;
 
     private BattleState state;
@@ -41,7 +41,6 @@ public class TurnBase : MonoBehaviour {
         instance = this;
     }
 
-    // Start is called before the first frame update
     private void Start() {
         FindObjectOfType<Match3>().attackTriggered += Combat;
         FindObjectOfType<Match3>().gainManaTriggered += GainMana;
@@ -59,28 +58,13 @@ public class TurnBase : MonoBehaviour {
         SetUpBoard();
     }
 
-    //private void Update() {
-    //    if (Input.GetKeyDown(KeyCode.Space)) {
-    //    }
-    //}
-
     private void CheckStatBonuses(List<GameObject> team, bool isPlayer) {
-        BaseBonus.InitializeBonus2(team);
+        RaceBonus.InitializeBonus(team);
 
-        //foreach (GameObject unitGO in team) {
-        //    UnitController unit = unitGO.GetComponent<UnitController>();
-
-        //    unit.GetRace().raceBonus.InitializeBonus(team);
-
-        //    if (isPlayer) {
-        //        //foreach (Item item in Equipments.GetEquipments()) {
-        //        //    if (item.affectedRaces.Find(r => r == unit.GetRace()) != null) {
-        //        //        foreach (RaceStats stats in item.affectedStats) {
-        //        //        }
-        //        //    }
-        //        //}
-        //    }
-        //}
+        if (isPlayer) {
+            EquipmentBonus.InitializeBonus(team);
+            BuildignBonus.InitializeBonus(team);
+        }
     }
 
     private void SpellDisplay(string spellName) {
@@ -115,28 +99,7 @@ public class TurnBase : MonoBehaviour {
 
     public void CastSpell(UnitController player) {
         if (BattleStateHandler.GetState() != BattleState.Won && BattleStateHandler.GetState() != BattleState.Lost) {
-            //List<UnitController> targets = SelectTarget(player.name);
-            //List<UnitController> allyTargets = SelectTarget(player.name);
-            //if (player.name.Contains(ally)) {
-            //    foreach (GameObject gameObject in playerTeam) {
-            //        allyTargets.Add(gameObject.GetComponent<UnitController>());
-            //    }
-
-            //    foreach (GameObject gameObject in enemyTeam) {
-            //        targets.Add(gameObject.GetComponent<UnitController>());
-            //    }
-            //}
-            //else if (player.name.Contains(enemy)) {
-            //    foreach (GameObject gameObject in enemyTeam) {
-            //        allyTargets.Add(gameObject.GetComponent<UnitController>());
-            //    }
-
-            //    foreach (GameObject gameObject in playerTeam) {
-            //        targets.Add(gameObject.GetComponent<UnitController>());
-            //    }
-            //}
-
-            bool isSpellCasted = player.CastSpell(spellTargets);
+            bool isSpellCasted = player.CastSpell();
             if (isSpellCasted) {
                 if (BattleStateHandler.GetState() == BattleState.PlayerTurn) {
                     BattleStateHandler.SetState(BattleState.WaitingForEnemy);
@@ -149,12 +112,6 @@ public class TurnBase : MonoBehaviour {
             RemoveOnZero();
         }
     }
-
-    //public void SelectTarget() {
-    //Debug.Log("Select Target");
-    //spellTargets.Add(selectedUnit);
-    //yield return new WaitUntil(spellTargets.Add(selectedUnit));
-    //}
 
     private void TurnChange() {
         state = BattleStateHandler.GetState();
@@ -240,11 +197,9 @@ public class TurnBase : MonoBehaviour {
         parentSceneTR = parentScene.transform;
 
         if (isPlayerTeam) {
-            //tempTeamList = new int[] { 1, 2, 3, 4 };
             tempTeamList = PlayerTeamHandler.GetTeam();
         }
         else {
-            //tempTeamList = new int[] { 8, 9, 10, 0 };
             tempTeamList = EnemyTeamHandler.GetTeam();
         }
 
@@ -253,15 +208,6 @@ public class TurnBase : MonoBehaviour {
                 SetUpUnit(isPlayerTeam, i, tempTeamList[i]);
             }
         }
-
-        //int i = 0;
-        //foreach (Unit unit in tempTeamList) {
-        //    if (unit != null) {
-        //        SetUpUnit(isPlayerTeam, i, unit);
-        //    }
-
-        //    i++;
-        //}
     }
 
     private void SetUpUnit(bool isPlayerTeam, int index, Unit card) {
@@ -314,7 +260,6 @@ public class TurnBase : MonoBehaviour {
 
         spellGO.SetActive(false);
         FindObjectOfType<UnitController>().OnSpellDisplay += SpellDisplay;
-        //FindObjectOfType<UnitController>().onTargetSelection += SelectTarget;
     }
 
     private GameObject CreateButton(string buttonName, string buttonText, GameObject parent, Vector3 position) {
@@ -406,12 +351,29 @@ public class TurnBase : MonoBehaviour {
         CheckGameResult();
     }
 
+    private void Update() {
+        if (Input.GetKeyDown(KeyCode.V)) {
+            BattleStateHandler.SetState(BattleState.Won);
+            SceneManager.UnloadSceneAsync(1);
+            PauseStateHandler.SetGamePause(false);
+            AudioManager.instance.ChangeMusic("Fight", "Theme");
+        }
+        else if (Input.GetKeyDown(KeyCode.L)) {
+            BattleStateHandler.SetState(BattleState.Lost);
+            SceneManager.UnloadSceneAsync(1);
+            PauseStateHandler.SetGamePause(false);
+            AudioManager.instance.ChangeMusic("Fight", "Theme");
+        }
+    }
+
     private void CheckGameResult() {
         if (enemyTeam.Count == 0) {
             BattleStateHandler.SetState(BattleState.Won);
+            SceneManager.LoadScene(0, LoadSceneMode.Additive);
         }
         else if (playerTeam.Count == 0) {
             BattleStateHandler.SetState(BattleState.Lost);
+            SceneManager.LoadScene(0, LoadSceneMode.Additive);
         }
     }
 

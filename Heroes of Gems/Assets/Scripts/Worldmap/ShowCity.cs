@@ -14,13 +14,15 @@ public class ShowCity : MonoBehaviour {
     private static List<GameObject> cityContainers = new List<GameObject>();
 
     private void Awake() {
+        listenerIsAdded = false;
+    }
+
+    private void Start() {
         if (!listenerIsAdded) {
             closeButton.GetComponentInChildren<Button>().onClick.AddListener(ShowCityCont);
             listenerIsAdded = true;
         }
-    }
-
-    private void Start() {
+        cityContainers = new List<GameObject>();
         city = GetComponent<CityController>().city;
     }
 
@@ -50,6 +52,7 @@ public class ShowCity : MonoBehaviour {
                 cityCont.transform.SetParent(cityUI.transform, false);
                 cityCont.GetComponent<CityContainer>().InitializeCityCont(city, buildingsCtrl);
                 cityContainers.Add(cityCont);
+                CityController.AddActiveCity(GetComponent<CityController>());
             }
             else {
                 if (activeCont != null)
@@ -77,6 +80,7 @@ public class ShowCity : MonoBehaviour {
         cityUI.SetActive(true);
         closeButton.SetActive(true);
         gold.SetActive(true);
+
         Time.timeScale = 0f;
         PauseStateHandler.SetGamePause(true);
     }

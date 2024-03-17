@@ -14,11 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buildingName: Weaponsmith
   images:
-  - {fileID: 21300000, guid: 592bb11339b0afd4a8bc3386a3287cda, type: 3}
-  - {fileID: 21300000, guid: ddf2d38fca8433b4f88abd66278dcc24, type: 3}
-  - {fileID: 21300000, guid: 449147f8b625a3c41b2b7b76c1d2e128, type: 3}
-  bonusStats: 00000000
-  bonusModifier: 5
+  - {fileID: 21300000, guid: fe04af8ca101c074f946bcc1d5b2d192, type: 3}
+  - {fileID: 21300000, guid: 58656015183487f458599c68bc2b5f85, type: 3}
+  - {fileID: 21300000, guid: 3e0852df77fea994497dc17fc2bd6d0c, type: 3}
+  - {fileID: 21300000, guid: af0c26ac8119ac64eb736bef79036be9, type: 3}
+  buildingBonus:
+    bonusDescription: 
+    affectedRaces: []
+    bonusStats: 00000000
+    bonusModifier: 10
   buildingLevel: 0
-  buildingMaxLevel: 3
-  upgradeCost: 30
+  upgradeCost: 25

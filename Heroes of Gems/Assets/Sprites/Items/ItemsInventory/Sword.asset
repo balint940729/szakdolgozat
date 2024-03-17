@@ -20,4 +20,4 @@ MonoBehaviour:
     bonusDescription: 
     affectedRaces: []
     bonusStats: 00000000
-    bonusModifier: 5
+    bonusModifier: 10

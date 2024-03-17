@@ -2,7 +2,7 @@
 using UnityEngine;
 
 public static class Equipments {
-    [SerializeField] private static List<Item> equipments;
+    [SerializeField] private static List<Item> equipments = new List<Item>();
 
     public static List<Item> GetEquipments() {
         return equipments;

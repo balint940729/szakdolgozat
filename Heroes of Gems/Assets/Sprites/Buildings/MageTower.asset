@@ -14,11 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buildingName: Mage Tower
   images:
-  - {fileID: 21300000, guid: bc1eb52fdee4ae74e93b955895457bea, type: 3}
-  - {fileID: 21300000, guid: 2c673dedde12e9843a7d8816c6bd6871, type: 3}
-  - {fileID: 21300000, guid: 39aa22c15fe3e3241885b872e92ba216, type: 3}
-  bonusStats: 03000000
-  bonusModifier: 3
+  - {fileID: 21300000, guid: fe04af8ca101c074f946bcc1d5b2d192, type: 3}
+  - {fileID: 21300000, guid: b0291f17b6136974f9e8d05d555e34b5, type: 3}
+  - {fileID: 21300000, guid: 627e8d649b24f2e49ac9cfb4074d0207, type: 3}
+  - {fileID: 21300000, guid: a8e30aa6fd454a547bcaa29f3453d136, type: 3}
+  buildingBonus:
+    bonusDescription: 
+    affectedRaces: []
+    bonusStats: 03000000
+    bonusModifier: 10
   buildingLevel: 0
-  buildingMaxLevel: 3
   upgradeCost: 50

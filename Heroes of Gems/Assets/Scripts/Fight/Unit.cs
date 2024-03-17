@@ -1,11 +1,9 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-//public enum Race { Human, Dwarf, Beast };
-
 [CreateAssetMenu(fileName = "New Card", menuName = "Card")]
 [System.Serializable]
-public class Unit : Dropable {
+public class Unit : Lootable {
     public string baseName;
 
     public int baseHealth;

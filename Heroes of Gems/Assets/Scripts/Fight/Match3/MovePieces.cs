@@ -15,7 +15,6 @@ public class MovePieces : MonoBehaviour {
         game = GetComponent<Match3>();
     }
 
-    // Update is called once per frame
     private void Update() {
         if (BattleStateHandler.GetState() == BattleState.WaitingForPlayer) {
             PlayerMove();
@@ -30,7 +29,7 @@ public class MovePieces : MonoBehaviour {
 
             newIndex = Point.Clone(moving.index);
             Point add = Point.Zero;
-            if (dir.magnitude > 32) //Ha rákattintunk és 32pixellel arréb húzzuk az egerünket
+            if (dir.magnitude > 32) //When clicked and moved the mouse at least 32 pixel
             {
                 if (aDir.x > aDir.y)
                     add = (new Point((nDir.x > 0) ? 1 : -1, 0));
@@ -40,7 +39,7 @@ public class MovePieces : MonoBehaviour {
             newIndex.Add(add);
 
             Vector2 pos = game.GetPositionFromPoint(moving.index);
-            if (!newIndex.Equals(moving.index)) // az irányába a gem egy kicsit mozduljon meg
+            if (!newIndex.Equals(moving.index)) //Move the gem to that direction
                 pos += Point.Mul(new Point(add.x, -add.y), 64).ToVector();
             moving.MovePositionTo(pos);
         }
@@ -56,7 +55,7 @@ public class MovePieces : MonoBehaviour {
 
         newIndex = Point.Clone(moving.index);
         Point add = Point.Zero;
-        if (dir.magnitude > 32) //Ha rákattintunk és 32pixellel arréb húzzuk az egerünket
+        if (dir.magnitude > 32) //When clicked and moved the mouse at least 32 pixel
         {
             if (aDir.x > aDir.y)
                 add = (new Point((nDir.x > 0) ? 1 : -1, 0));
@@ -66,7 +65,7 @@ public class MovePieces : MonoBehaviour {
         newIndex.Add(add);
 
         Vector2 pos = game.GetPositionFromPoint(moving.index);
-        if (!newIndex.Equals(moving.index)) // az irányába a gem egy kicsit mozduljon meg
+        if (!newIndex.Equals(moving.index))  //Move the gem to that direction
             pos += Point.Mul(new Point(add.x, -add.y), 64).ToVector();
         moving.MovePositionTo(pos);
 

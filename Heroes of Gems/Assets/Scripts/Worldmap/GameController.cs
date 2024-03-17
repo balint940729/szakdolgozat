@@ -23,7 +23,6 @@ public class GameController : MonoBehaviour {
 
     private void Awake() {
         if (controller = null) {
-            //DontDestroyOnLoad(gameObject);
             controller = this;
         }
     }

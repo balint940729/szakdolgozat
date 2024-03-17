@@ -5,7 +5,7 @@ using UnityEngine;
 public class MerfolkSpell : SpellBaseClass {
 
     public override void InitializeSpell() {
-        List<GameObject> targetsGO = GetOppenentTeam();
+        List<GameObject> targetsGO = GetOpponentTeam();
         List<GameObject> alliesGO = GetAllyTeam();
 
         foreach (GameObject targetGO in targetsGO) {

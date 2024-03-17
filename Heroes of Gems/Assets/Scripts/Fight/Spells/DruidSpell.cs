@@ -6,7 +6,7 @@ using UnityEngine;
 public class DruidSpell : SpellBaseClass {
 
     public override void InitializeSpell() {
-        List<GameObject> targetsGO = GetOppenentTeam();
+        List<GameObject> targetsGO = GetOpponentTeam();
 
         caster.ModifyHealth(caster.GetSpellDamage());
         caster.ModifyArmor(caster.GetSpellDamage());

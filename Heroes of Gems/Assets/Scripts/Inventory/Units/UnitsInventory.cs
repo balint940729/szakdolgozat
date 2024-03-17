@@ -29,9 +29,6 @@ public class UnitsInventory : BaseInventory {
             itemGO.name = "ItemSlot" + i;
             itemGO.transform.SetParent(transform, false);
 
-            //itemGO.GetComponentInChildren<DragUnit>().SetCanvas(inventoryCanvas.GetComponent<Canvas>());
-            //itemGO.GetComponentInChildren<DragUnit>().SetParent(container);
-
             GameObject grayScaleGO = GameObject.Find("GrayScale");
 
             grayScaleGO.name += i;
@@ -46,8 +43,6 @@ public class UnitsInventory : BaseInventory {
             itemUI.grayScale = grayScaleGO;
 
             int itemCount = UnitCount(item);
-            //int itemCount = units.Count(it => it.baseName == item.baseName);
-            //int itemCount = 0;
 
             itemUI.ChangeGrayScale(itemCount > 0 ? false : true);
 
@@ -86,6 +81,7 @@ public class UnitsInventory : BaseInventory {
         foreach (Unit unit in testunits) {
             for (int i = 0; i < 1; i++) {
                 units.Add(unit);
+                UnitsHandler.AddUnit(unit);
             }
         }
 
@@ -94,8 +90,8 @@ public class UnitsInventory : BaseInventory {
 
     public static void AddUnit(Unit unit) {
         units.Add(unit);
+        UnitsHandler.AddUnit(unit);
         invChanged = true;
-        //RefreshUI();
     }
 
     public void RemoveUnit(Unit unit) {
@@ -107,7 +103,6 @@ public class UnitsInventory : BaseInventory {
         foreach (GameObject unitGO in unitsGO) {
             ItemDisplay itemUI = unitGO.GetComponent<ItemDisplay>();
 
-            //int itemCount = units.Count(it => it.baseName == unitGO.GetComponent<UnitItem>().unit.baseName);
             int itemCount = UnitCount(unitGO.GetComponent<UnitItem>().unit);
 
             itemUI.ChangeGrayScale(itemCount > 0 ? false : true);
@@ -131,6 +126,17 @@ public class UnitsInventory : BaseInventory {
     }
 
     public int UnitCount(Unit unit) {
-        return units.Count(it => it.baseName == unit.baseName);
+        List<Unit> copy = units;
+        int asd = units.Count(it => it.baseName == unit.baseName);
+        return asd; ;
     }
+
+    //public void LoadData(GameData gameData) {
+    //    units = gameData.units;
+    //}
+
+    //public void SaveData(ref GameData gameData) {
+    //    gameData.units = units;
+    //    gameData.units = testunits;
+    //}
 }

@@ -6,7 +6,7 @@ using UnityEngine;
 public class DwarfRangerSpell : SpellBaseClass {
 
     public override void InitializeSpell() {
-        List<GameObject> targetsGO = GetOppenentTeam();
+        List<GameObject> targetsGO = GetOpponentTeam();
 
         if (targetsGO.Count == 2) {
             foreach (GameObject targetGO in targetsGO) {

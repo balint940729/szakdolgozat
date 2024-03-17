@@ -7,7 +7,7 @@ public class DwarfMinerSpell : SpellBaseClass {
 
     public override void InitializeSpell() {
         int iterator = 0;
-        List<GameObject> targetsGO = GetOppenentTeam();
+        List<GameObject> targetsGO = GetOpponentTeam();
 
         if (targetsGO.Count == 2) {
             foreach (GameObject targetGO in targetsGO) {

@@ -5,7 +5,7 @@ using UnityEngine;
 public class EmeraldDragonSpell : SpellBaseClass {
 
     public override void InitializeSpell() {
-        List<GameObject> enemyTargetsGO = GetOppenentTeam();
+        List<GameObject> enemyTargetsGO = GetOpponentTeam();
         List<GameObject> alliesGO = GetAllyTeam();
 
         int spellDamage = caster.GetSpellDamage();

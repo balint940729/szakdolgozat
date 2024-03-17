@@ -1,29 +1,46 @@
 ﻿using UnityEngine;
 
-public class GoldController : MonoBehaviour {
+public class GoldController : MonoBehaviour, IDataPersistence {
     private static GoldController instance;
     private static int gold;
-    private int oldGoldValue;
+    private static int oldGoldValue;
     private GoldDisplay goldDisplay;
 
     private void Awake() {
         if (instance == null) {
             instance = this;
-            gold = 200;
-            oldGoldValue = gold;
+            //Add the persistance, because initially is not active
+            DataPersistenceManager.AddDataPersistence(this);
         }
     }
 
-    private void Start() {
-        goldDisplay = GetComponent<GoldDisplay>();
-        goldDisplay.ChangeGoldCounter();
+    //private void Start() {
+    //    goldDisplay = GetComponent<GoldDisplay>();
+    //    goldDisplay.ChangeGoldCounter();
+    //}
+
+    //public void Update() {
+    //    if (oldGoldValue != gold) {
+    //        goldDisplay.ChangeGoldCounter();
+    //        oldGoldValue = gold;
+    //    }
+    //}
+
+    public void LoadData(GameData gameData) {
+        gold = gameData.gold;
+        oldGoldValue = gold;
     }
 
-    public void Update() {
+    public void SaveData(ref GameData gameData) {
+        gameData.gold = GetGold();
+    }
+
+    public static bool IsGoldChanged() {
         if (oldGoldValue != gold) {
-            goldDisplay.ChangeGoldCounter();
             oldGoldValue = gold;
+            return true;
         }
+        return false;
     }
 
     public static int GetGold() {

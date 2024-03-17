@@ -15,12 +15,6 @@ MonoBehaviour:
   cityName: Durinton
   buildings:
   - {fileID: 11400000, guid: 5788056e52daef044b7357ec9462a9b8, type: 2}
-  - {fileID: 11400000, guid: 5788056e52daef044b7357ec9462a9b8, type: 2}
-  - {fileID: 11400000, guid: 5788056e52daef044b7357ec9462a9b8, type: 2}
-  - {fileID: 11400000, guid: 5788056e52daef044b7357ec9462a9b8, type: 2}
-  - {fileID: 11400000, guid: 5788056e52daef044b7357ec9462a9b8, type: 2}
-  - {fileID: 11400000, guid: 5788056e52daef044b7357ec9462a9b8, type: 2}
-  - {fileID: 11400000, guid: 5788056e52daef044b7357ec9462a9b8, type: 2}
-  - {fileID: 11400000, guid: 5788056e52daef044b7357ec9462a9b8, type: 2}
-  - {fileID: 11400000, guid: 5788056e52daef044b7357ec9462a9b8, type: 2}
-  - {fileID: 11400000, guid: 5788056e52daef044b7357ec9462a9b8, type: 2}
+  - {fileID: 11400000, guid: 79951e230abf65c40806dd2214a3eab7, type: 2}
+  - {fileID: 11400000, guid: f728d8dc0cc683b4da8caa60e48f03a0, type: 2}
+  - {fileID: 11400000, guid: 79951e230abf65c40806dd2214a3eab7, type: 2}

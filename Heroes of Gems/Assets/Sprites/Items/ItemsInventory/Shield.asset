@@ -17,7 +17,7 @@ MonoBehaviour:
   itemIcon: {fileID: 21300000, guid: 094c63c6e82e25349abdc46f109f1e5f, type: 3}
   itemTypes: 07000000
   bonus:
-    bonusDescription: 
+    bonusDescription: Everyone in your team gain +100 Armor
     affectedRaces: []
     bonusStats: 01000000
-    bonusModifier: 3
+    bonusModifier: 10

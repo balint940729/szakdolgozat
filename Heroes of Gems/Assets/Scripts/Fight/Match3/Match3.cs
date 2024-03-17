@@ -355,8 +355,7 @@ public class Match3 : MonoBehaviour {
             }
         }
 
-        if (main) // Check if there is more match can be
-    {
+        if (main) { // Check if there is more match can be
             for (int i = 0; i < connected.Count; i++) {
                 AddPoints(ref connected, IsConnected(connected[i], false));
             }
@@ -365,7 +364,7 @@ public class Match3 : MonoBehaviour {
         return connected;
     }
 
-    private void AddPoints(ref List<Point> points, List<Point> add) {
+    public void AddPoints(ref List<Point> points, List<Point> add) {
         foreach (Point p in add) {
             bool doAdd = true;
             for (int i = 0; i < points.Count; i++) {
@@ -409,7 +408,7 @@ public class Match3 : MonoBehaviour {
             connected = IsConnected(piece.index, true);
             bool wasFlipped = (flip != null);
 
-            if (wasFlipped) // ha felcseréltük akkor hívjuk meg az update-t
+            if (wasFlipped) // When we flipped, call the update
             {
                 flippedPiece = flip.GetOtherPiece(piece);
                 AddPoints(ref connected, IsConnected(flippedPiece.index, true));
@@ -458,12 +457,11 @@ public class Match3 : MonoBehaviour {
         if (isTurnEnd) {
             if (BattleStateHandler.GetState() == BattleState.PlayerTurn) {
                 BattleStateHandler.SetState(ExtraTurnHandler.IsExtraTurn() ? BattleState.WaitingForPlayer : BattleState.WaitingForEnemy);
-                //Debug.Log(BattleStateHandler.GetState());
             }
             else if (BattleStateHandler.GetState() == BattleState.EnemyTurn) {
                 BattleStateHandler.SetState(ExtraTurnHandler.IsExtraTurn() ? BattleState.WaitingForEnemy : BattleState.WaitingForPlayer);
-                //Debug.Log(BattleStateHandler.GetState());
             }
+
             turnChangeTriggered?.Invoke();
             ExtraTurnHandler.ResetExtraTurn();
             isTurnEnd = false;
@@ -593,8 +591,8 @@ public class Match3 : MonoBehaviour {
 [System.Serializable]
 public class Node {
 
-    //0 = üres, 1 = skull, 2 = amethyst, 3 = emerald, 4 = ruby, 5 = sapphire, 6 = topaz, 7 = turmaline, -1 = hole
-    public int value; //Az adott mezőn található Gem értéke
+    //0 = empty, 1 = skull, 2 = amethyst, 3 = emerald, 4 = ruby, 5 = sapphire, 6 = topaz, 7 = turmaline, -1 = hole
+    public int value; //The gem value in the cell
 
     public Point index;
     private NodePiece piece;

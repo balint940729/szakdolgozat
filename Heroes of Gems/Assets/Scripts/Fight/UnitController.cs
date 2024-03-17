@@ -11,8 +11,6 @@ public class UnitController : MonoBehaviour, IPointerClickHandler {
 
     public event Action<string> OnSpellDisplay;
 
-    //public event System.Action onTargetSelection;
-
     private string[] assetGuids;
 
     private int health;
@@ -71,13 +69,9 @@ public class UnitController : MonoBehaviour, IPointerClickHandler {
         if (BattleStateHandler.GetState() == BattleState.WaitingForPlayer || BattleStateHandler.GetState() == BattleState.WaitingForEnemy) {
             OnSpellDisplay?.Invoke(spellCard.name);
         }
-        //else if (BattleStateHandler.GetState() == BattleState.PlayerTurn || BattleStateHandler.GetState() == BattleState.EnemyTurn) {
-        //    onTargetSelection?.Invoke();
-        //}
     }
 
-    //public bool castSpell(List<UnitController> allyTargets, List<UnitController> targets) {
-    public bool CastSpell(List<UnitController> targets) {
+    public bool CastSpell() {
         if (mana == maxMana) {
             if (BattleStateHandler.GetState() == BattleState.WaitingForPlayer) {
                 BattleStateHandler.SetState(BattleState.PlayerTurn);
@@ -89,22 +83,11 @@ public class UnitController : MonoBehaviour, IPointerClickHandler {
             SpellBaseClass spellLogic = CreateSpell(spell);
 
             spellLogic.SetCaster(this);
-            spellLogic.SetTargets(targets);
 
-            //spell.spellLog.SetCaster(this);
-            //spell.spellLogic.SetTargets(targets);
-
-            //spell.setEnemyTargets(targets);
-            //spell.setPlayerTargets(allyTargets);
             mana = 0;
             unitCard.SetMana(mana);
             SpellController.CloseSpell();
 
-            //if (spell.isSpellTargets()) {
-            //    onTargetSelection?.Invoke();
-            //}
-
-            //spell.spellLogic.InitializeSpell();
             spellLogic.InitializeSpell();
 
             return true;
@@ -221,6 +204,14 @@ public class UnitController : MonoBehaviour, IPointerClickHandler {
         return race;
     }
 
+    public int GetMana() {
+        return mana;
+    }
+
+    public int GetMaxMana() {
+        return maxMana;
+    }
+
     public void ModifySpellDamage(int amount) {
         spellDamage += amount;
         spellDamage = spellDamage < 0 ? 0 : spellDamage;
@@ -267,5 +258,16 @@ public class UnitController : MonoBehaviour, IPointerClickHandler {
         armor += armorAmount;
 
         unitCard.SetStats(health, armor);
+    }
+
+    public void CopyUnitController(UnitController original) {
+        health = original.GetHealth();
+        armor = original.GetArmor();
+        attack = original.GetAttack();
+        spellDamage = original.GetSpellDamage();
+        race = original.GetRace();
+        mana = original.GetMana();
+        maxMana = original.GetMaxMana();
+        colors = original.GetColors();
     }
 }
