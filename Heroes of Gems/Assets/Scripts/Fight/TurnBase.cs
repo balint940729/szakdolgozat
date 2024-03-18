@@ -356,6 +356,8 @@ public class TurnBase : MonoBehaviour {
             BattleStateHandler.SetState(BattleState.Won);
             SceneManager.UnloadSceneAsync(1);
             PauseStateHandler.SetGamePause(false);
+            TriggerBattle.enemyGO.GetComponent<Rewards>().GainLoot();
+            TriggerBattle.enemyGO.SetActive(false);
             AudioManager.instance.ChangeMusic("Fight", "Theme");
         }
         else if (Input.GetKeyDown(KeyCode.L)) {

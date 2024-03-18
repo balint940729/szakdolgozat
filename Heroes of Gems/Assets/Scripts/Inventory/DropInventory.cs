@@ -8,7 +8,8 @@ public class DropInventory : MonoBehaviour, IDropHandler {
             //Add back to the inventory
             GameObject invCanvas = eventData.pointerDrag.GetComponentInParent<EquipmentsInventory>().inventoryCanvas;
             GameObject itemCont = invCanvas.GetComponent<InventoryUI>().inventoryContainers.Find(cont => cont.name.Contains("Items"));
-            itemCont.GetComponentInChildren<ItemsInventory>().AddItem(DragItem.copyItem.item);
+            //itemCont.GetComponentInChildren<ItemsInventory>().AddItem(DragItem.copyItem.item);
+            ItemsInventory.AddItem(DragItem.copyItem.item);
             Equipments.RemoveEquipment(DragItem.copyItem.item);
 
             eventData.pointerDrag.GetComponent<EquipmentDisplay>().ResetEquipmentDisplay();

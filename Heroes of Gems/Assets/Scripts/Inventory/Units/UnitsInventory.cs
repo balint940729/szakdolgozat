@@ -65,6 +65,13 @@ public class UnitsInventory : BaseInventory {
                 testunits.Add(item);
             }
 
+            if (item.baseName == "Dog") {
+                for (int j = 0; j < 4; j++) {
+                    units.Add(item);
+                    UnitsHandler.AddUnit(item);
+                }
+            }
+
             unitsGO.Add(itemGO);
         }
 

@@ -12,7 +12,8 @@ public class DropItem : MonoBehaviour, IDropHandler {
             if (itemSlot.item != DragItem.copyItem.item && DragItem.copyItem.item.itemTypes.Contains(equipmentType)) {
                 if (itemSlot.item != null) {
                     Equipments.RemoveEquipment(itemSlot.item);
-                    eventData.pointerDrag.GetComponentInParent<ItemsInventory>().AddItem(itemSlot.item);
+                    //eventData.pointerDrag.GetComponentInParent<ItemsInventory>().AddItem(itemSlot.item);
+                    ItemsInventory.AddItem(itemSlot.item);
                 }
 
                 itemSlot.item = DragItem.copyItem.item;

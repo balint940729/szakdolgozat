@@ -2,11 +2,14 @@
 using UnityEngine.SceneManagement;
 
 public class TriggerBattle : MonoBehaviour {
+    public static GameObject enemyGO;
 
     private void OnTriggerEnter2D(Collider2D other) {
         if (other.name == "Player" && TurnBase.GetInstance() == null) {
             if (HasTeam()) {
                 EnemyTeamHandler.SetTeam(GetComponent<Team>().team);
+
+                enemyGO = gameObject;
 
                 PauseStateHandler.SetGamePause(true);
 

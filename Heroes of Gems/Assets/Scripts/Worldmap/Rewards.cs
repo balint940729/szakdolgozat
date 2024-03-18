@@ -18,6 +18,22 @@ public class Rewards : MonoBehaviour {
     //    }
     //}
 
+    public void GainLoot() {
+        List<Lootable> rewards = GenerateRewards();
+
+        foreach (Lootable drop in rewards) {
+            if (drop.GetType() == typeof(Unit)) {
+                UnitsInventory.AddUnit(drop as Unit);
+            }
+
+            if (drop.GetType() == typeof(Item)) {
+                ItemsInventory.AddItem(drop as Item);
+            }
+        }
+
+        GoldController.AddGold(goldReward);
+    }
+
     public List<Lootable> GenerateRewards() {
         List<Lootable> rewards = new List<Lootable>();
 

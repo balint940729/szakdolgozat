@@ -4,11 +4,19 @@ using UnityEditor;
 using UnityEngine;
 
 public class ItemsInventory : BaseInventory {
-    [SerializeField] private List<Item> items = new List<Item>();
+    [SerializeField] private static List<Item> items = new List<Item>();
     [SerializeField] private List<GameObject> itemsGO = new List<GameObject>();
+    private static bool invChanged = false;
 
     private void Start() {
         FillInventory();
+    }
+
+    private void Update() {
+        if (invChanged) {
+            RefreshUI();
+            invChanged = false;
+        }
     }
 
     protected override void FillInventory() {
@@ -30,10 +38,10 @@ public class ItemsInventory : BaseInventory {
 
             itemUI.grayScale = grayScaleGO;
 
-            if (i == 3 || i == 6) {
-                items.Add(item);
-                items.Add(item);
-            }
+            //if (i == 3 || i == 6) {
+            //    items.Add(item);
+            //    items.Add(item);
+            //}
 
             int itemCount = items.Count(it => it.itemName == item.itemName);
 
@@ -60,9 +68,10 @@ public class ItemsInventory : BaseInventory {
         }
     }
 
-    public void AddItem(Item item) {
+    public static void AddItem(Item item) {
         items.Add(item);
-        RefreshUI();
+        ItemsHandler.AddItem(item);
+        invChanged = true;
     }
 
     public void RemoveItem(Item item) {

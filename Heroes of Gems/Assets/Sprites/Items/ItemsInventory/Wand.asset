@@ -10,14 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d5c60185e56f7fc44b3e9dd6bf5468fd, type: 3}
-  m_Name: Gold
+  m_Name: Wand
   m_EditorClassIdentifier: 
-  DropChance: 100
-  itemName: Gold
-  itemIcon: {fileID: 21300000, guid: 3577b55c46297da42b17fcc8a0d983e2, type: 3}
-  itemTypes: 09000000
+  dropChance: 80
+  itemName: Wand
+  itemIcon: {fileID: 21300000, guid: 85d1e41ef2cf4534c84edec689a80b7e, type: 3}
+  itemTypes: 0000000007000000
   bonus:
     bonusDescription: 
-    affectedRaces: []
-    bonusStats: 
-    bonusModifier: 0
+    affectedRaces:
+    - {fileID: 11400000, guid: 5c2b81a6cd2a5774ebfee15a2cabdf3f, type: 2}
+    - {fileID: 11400000, guid: 0a9f239c3cc90e341be1ee9d7cf4e4f8, type: 2}
+    bonusStats: 0300000004000000
+    bonusModifier: 2

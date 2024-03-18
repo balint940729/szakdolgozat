@@ -10,14 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d5c60185e56f7fc44b3e9dd6bf5468fd, type: 3}
-  m_Name: SilverKey
+  m_Name: BattleAxe
   m_EditorClassIdentifier: 
-  dropChance: 100
-  itemName: Silver Key
-  itemIcon: {fileID: 21300000, guid: 1ecbce95455320d46960d7ec1bd78fc9, type: 3}
-  itemTypes: 09000000
+  dropChance: 80
+  itemName: Battle Axe
+  itemIcon: {fileID: 21300000, guid: 7e82044eec7fc4a4a96b43ecb8cfe524, type: 3}
+  itemTypes: 00000000
   bonus:
     bonusDescription: 
-    affectedRaces: []
-    bonusStats: 
-    bonusModifier: 0
+    affectedRaces:
+    - {fileID: 11400000, guid: b0fc0009a36b7ad48a3521d8b2d97eaf, type: 2}
+    - {fileID: 11400000, guid: 0092d8bcb74e2564b810b7337fd76a90, type: 2}
+    bonusStats: 0000000001000000
+    bonusModifier: 5
