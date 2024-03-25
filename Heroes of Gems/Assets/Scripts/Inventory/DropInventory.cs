@@ -20,7 +20,7 @@ public class DropInventory : MonoBehaviour, IDropHandler {
         }
 
         if (eventData.pointerDrag.name.Contains("Teamslot")) {
-            Unit[] team = eventData.pointerDrag.GetComponentInParent<Team>().team;
+            Unit[] team = eventData.pointerDrag.GetComponentInParent<Team>().GetTeam();
 
             //Add back to the inventory
             GameObject invCanvas = eventData.pointerDrag.GetComponentInParent<TeamsInventory>().inventoryCanvas;

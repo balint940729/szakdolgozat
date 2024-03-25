@@ -9,6 +9,8 @@ TagManager:
   - Race
   - Equipment
   - TeamSelectButton
+  - Enemies
+  - City
   layers:
   - Default
   - TransparentFX

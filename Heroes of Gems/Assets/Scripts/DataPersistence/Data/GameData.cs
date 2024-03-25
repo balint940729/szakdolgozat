@@ -8,9 +8,12 @@ public class GameData {
     public Vector3 playerPos;
 
     public Unit[] playerTeam;
-    public List<Unit[]> teams;
+    public List<TeamObjectData> teams;
+
     public List<Unit> units;
+
     public List<Item> items;
+    public List<EnemyAlive> enemies;
 
     public GameData() {
         if (MainMenuScript.isNewGame) {
@@ -19,10 +22,9 @@ public class GameData {
             units = new List<Unit>();
             items = new List<Item>();
         }
-
+        //enemies = new List<EnemyAlive>();
         GoldController.SetGold(gold);
         playerPos = Vector3.zero;
-        teams = new List<Unit[]>();
-        //teams = new List<Team>();
+        teams = new List<TeamObjectData>();
     }
 }

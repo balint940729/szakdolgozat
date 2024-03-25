@@ -1020,9 +1020,9 @@ GameObject:
   - component: {fileID: 6546851807688644744}
   - component: {fileID: 8393026820890570387}
   - component: {fileID: -5225843637455858810}
-  - component: {fileID: 3372141925526816055}
   - component: {fileID: 3134919375928001308}
   - component: {fileID: 599670959359655707}
+  - component: {fileID: 8398553787413274198}
   m_Layer: 0
   m_Name: TeamsPrefab
   m_TagString: Untagged
@@ -1110,23 +1110,6 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_IsOn: 0
---- !u!114 &3372141925526816055
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5971086869362954400}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5750d4ddb0876994f8273e48b9dcb278, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  team:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
 --- !u!223 &3134919375928001308
 Canvas:
   m_ObjectHideFlags: 0
@@ -1165,6 +1148,23 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &8398553787413274198
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5971086869362954400}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1869cd332868ac74585769dbd724d8f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  team:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!1 &6954719449905232671
 GameObject:
   m_ObjectHideFlags: 0

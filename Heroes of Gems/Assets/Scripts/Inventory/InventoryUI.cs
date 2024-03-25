@@ -38,7 +38,7 @@ public class InventoryUI : MonoBehaviour {
 
     private void ShowInventory() {
         if (PauseStateHandler.IsGamePaused()) {
-            PlayerTeamHandler.SetTeam(selectedTeam.team);
+            //PlayerTeamHandler.SetTeam(selectedTeam.GetTeam());
             Resume();
         }
         else {
@@ -111,9 +111,13 @@ public class InventoryUI : MonoBehaviour {
     }
 
     public void AddSelectedTeamButton(Team team) {
-        PlayerTeamHandler.SetTeam(team.team);
-        selectedTeam = team;
+        PlayerTeamHandler.SetTeam(team.GetTeam());
+        //selectedTeam = team;
     }
+
+    //public Team GetSelectedTeam() {
+    //    return selectedTeam;
+    //}
 
     private void Resume() {
         inventoryMenuUI.SetActive(false);

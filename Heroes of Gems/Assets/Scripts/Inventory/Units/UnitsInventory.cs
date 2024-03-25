@@ -65,12 +65,16 @@ public class UnitsInventory : BaseInventory {
                 testunits.Add(item);
             }
 
-            if (item.baseName == "Dog") {
-                for (int j = 0; j < 4; j++) {
-                    units.Add(item);
-                    UnitsHandler.AddUnit(item);
+            if (UnitsHandler.GetUnits().Count == 0) {
+                if (item.baseName == "Dog") {
+                    for (int j = 0; j < 4; j++) {
+                        units.Add(item);
+                        UnitsHandler.AddUnit(item);
+                    }
                 }
             }
+
+
 
             unitsGO.Add(itemGO);
         }
@@ -133,8 +137,9 @@ public class UnitsInventory : BaseInventory {
     }
 
     public int UnitCount(Unit unit) {
-        List<Unit> copy = units;
-        int asd = units.Count(it => it.baseName == unit.baseName);
+        List<Unit> copy = UnitsHandler.GetUnits();
+        //List<Unit> copy = units;
+        int asd = copy.Count(it => it.baseName == unit.baseName);
         return asd; ;
     }
 

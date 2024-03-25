@@ -26,7 +26,7 @@ public class TeamsInventory : BaseInventory {
         teamSlotsGO.name = "TeamSlotsContent";
         teamSlotsGO.transform.SetParent(transform, false);
         StartCoroutine(ChangeTeamSlotLayoutGroup(teamSlotsGO));
-        int teamC = Teams.teams.Count;
+        int teamC = Teams.GetTeams().Count;
 
         for (int i = 0; i < (teamC == 0 ? 1 : teamC); i++) {
             AddTeamSlot();
@@ -72,7 +72,8 @@ public class TeamsInventory : BaseInventory {
         itemGO.transform.SetParent(teamSlotsGO.transform, false);
         itemGO.GetComponent<Toggle>().group = GetComponent<ToggleGroup>();
         itemGO.transform.localScale = new Vector3(3.0f, 3.0f, 3.0f);
-        Teams.teams.Add(itemGO.GetComponent<Team>());
+
+        //Teams.AddTeam(itemGO.GetComponent<Team>());
         foreach (Transform childTR in itemGO.transform) {
             if (childTR.tag == "TeamSelectButton") {
                 childTR.gameObject.name += teamSlotsGO.transform.childCount;
@@ -121,8 +122,20 @@ public class TeamsInventory : BaseInventory {
             if (teamSlotButton.GetComponent<Toggle>().isOn) {
                 teamSlotButton.GetComponent<Toggle>().image.sprite = teamSlotButton.GetComponent<Toggle>().spriteState.selectedSprite;
                 GetComponentInParent<InventoryUI>().AddSelectedTeamButton(teamSlotButton.GetComponentInParent<Team>());
+
+                //teamSlotButton.GetComponentInParent<Team>().SetSelected(true);
+                List<TeamObjectData> asd = Teams.GetTeams().FindAll(t => t.teamName != teamSlotButton.GetComponentInParent<Team>().gameObject.name);
+                foreach (TeamObjectData team in Teams.GetTeams()) {
+                    if (team.teamName == teamSlotButton.GetComponentInParent<Team>().gameObject.name) {
+                        team.isSelected = true;
+                    }
+                    else {
+                        team.isSelected = false;
+                    }
+                }
             }
             else {
+                teamSlotButton.GetComponentInParent<Team>().SetSelected(true);
                 teamSlotButton.GetComponent<Toggle>().image.sprite = teamSlotButton.GetComponent<Toggle>().spriteState.disabledSprite;
             }
         }

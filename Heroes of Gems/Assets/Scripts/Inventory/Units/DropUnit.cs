@@ -14,7 +14,7 @@ public class DropUnit : MonoBehaviour, IDropHandler {
 
             //Try add different unit
             if (unitItem.unit != DragUnit.copyUnit.unit) {
-                Unit[] team = GetComponentInParent<Team>().team;
+                Unit[] team = GetComponentInParent<Team>().GetTeam();
                 if (team[index] != null) {
                     UnitsInventory.AddUnit(unitItem.unit);
                 }
@@ -58,20 +58,24 @@ public class DropUnit : MonoBehaviour, IDropHandler {
             Team teamGO = GetComponentInParent<Team>();
             Team fromTeamGO = eventData.pointerDrag.GetComponentInParent<Team>();
             GetComponent<TeamSlotDisplay>().SetMemberDisplay(unitItem.unit);
-            teamGO.team[index] = unitItem.unit;
+            //teamGO.team.members[index] = unitItem.unit;
+            teamGO.SetMember(unitItem.unit, index);
 
             //Switch places
             if (tempUnit != null) {
                 eventData.pointerDrag.GetComponent<TeamSlotDisplay>().SetMemberDisplay(tempUnit);
                 eventData.pointerDrag.GetComponent<UnitItem>().unit = tempUnit;
-                fromTeamGO.team[eventData.pointerDrag.GetComponent<DropUnit>().index] = tempUnit;
-                teamGO.team[index] = unitItem.unit;
+                fromTeamGO.SetMember(tempUnit, eventData.pointerDrag.GetComponent<DropUnit>().index);
+                //fromTeamGO.team.members[eventData.pointerDrag.GetComponent<DropUnit>().index] = tempUnit;
+                //teamGO.team.members[index] = unitItem.unit;
+                teamGO.SetMember(unitItem.unit, index);
             }
             //Move to empty place
             else {
                 eventData.pointerDrag.GetComponent<TeamSlotDisplay>().ResetTeamSlotDisplay();
                 eventData.pointerDrag.GetComponent<UnitItem>().unit = null;
-                fromTeamGO.team[eventData.pointerDrag.GetComponent<DropUnit>().index] = null;
+                fromTeamGO.SetMember(null, eventData.pointerDrag.GetComponent<DropUnit>().index);
+                //fromTeamGO.team.members[eventData.pointerDrag.GetComponent<DropUnit>().index] = null;
                 eventData.pointerDrag.GetComponent<DragUnit>().OnEndDrag(eventData);
                 Destroy(eventData.pointerDrag.GetComponent<DragUnit>());
 

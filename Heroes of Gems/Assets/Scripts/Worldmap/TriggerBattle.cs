@@ -7,7 +7,7 @@ public class TriggerBattle : MonoBehaviour {
     private void OnTriggerEnter2D(Collider2D other) {
         if (other.name == "Player" && TurnBase.GetInstance() == null) {
             if (HasTeam()) {
-                EnemyTeamHandler.SetTeam(GetComponent<Team>().team);
+                EnemyTeamHandler.SetTeam(GetComponent<Team>().GetTeam());
 
                 enemyGO = gameObject;
 
