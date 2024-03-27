@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 037d7986921bd8a429e3c3301b913c79, type: 3}
+  m_Name: TreefolkSpell
+  m_EditorClassIdentifier: 
+  spellName: Roots
+  spellDescription: Gain &X life and deal &X damage to the last enemy.
+  spellImage: {fileID: 21300000, guid: c3aab7237df394c4890e647a4ae580ea, type: 3}
+  spellLogic: {fileID: 11500000, guid: 6ff3da94a7ee87f4789e8c8268791b56, type: 3}

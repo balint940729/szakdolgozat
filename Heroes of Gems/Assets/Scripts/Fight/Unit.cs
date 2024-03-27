@@ -1,11 +1,9 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public enum Race { Human, Dwarf, Beast };
-
 [CreateAssetMenu(fileName = "New Card", menuName = "Card")]
 [System.Serializable]
-public class Unit : ScriptableObject {
+public class Unit : Lootable {
     public string baseName;
 
     public int baseHealth;
@@ -23,7 +21,7 @@ public class Unit : ScriptableObject {
 
     public List<Colors> colors;
 
-    public SpellBase spell;
+    public SpellBaseSO spell;
 
     public Race race;
 }

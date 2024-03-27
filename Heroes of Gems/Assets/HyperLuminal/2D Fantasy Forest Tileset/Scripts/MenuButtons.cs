@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 
+using UnityEngine.SceneManagement;
+
 public class MenuButtons : MonoBehaviour {
 
     private void OnGUI() {
@@ -11,8 +13,12 @@ public class MenuButtons : MonoBehaviour {
         GUILayout.Space(Screen.width * 0.035f);
         GUILayout.BeginVertical();
         GUILayout.Space(Screen.height * 0.035f);
-        if (GUILayout.Button("Day Scene", GUILayout.Width(200), GUILayout.Height(40))) Application.LoadLevel(0);
-        if (GUILayout.Button("Night Scene", GUILayout.Width(200), GUILayout.Height(40))) Application.LoadLevel(1);
+        //if (GUILayout.Button("Day Scene", GUILayout.Width(200), GUILayout.Height(40))) Application.LoadLevel(0);
+        //if (GUILayout.Button("Night Scene", GUILayout.Width(200), GUILayout.Height(40))) Application.LoadLevel(1);
+
+        if (GUILayout.Button("Day Scene", GUILayout.Width(200), GUILayout.Height(40))) SceneManager.LoadScene(0);
+
+        if (GUILayout.Button("Night Scene", GUILayout.Width(200), GUILayout.Height(40))) SceneManager.LoadScene(1);
         GUILayout.EndVertical();
         GUILayout.EndHorizontal();
     }

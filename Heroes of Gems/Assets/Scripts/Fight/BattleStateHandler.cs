@@ -7,7 +7,7 @@ public static class BattleStateHandler {
         return state;
     }
 
-    public static BattleState setState(BattleState battleState) {
+    public static BattleState SetState(BattleState battleState) {
         return state = battleState;
     }
 }

@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9dd202b8275d37346a7567bada9d8aae, type: 3}
+  m_Name: DwarfWarrior
+  m_EditorClassIdentifier: 
+  dropChance: 20
+  baseName: Dwarf Warrior
+  baseHealth: 30
+  baseAttack: 12
+  baseArmor: 30
+  maxMana: 15
+  currentMana: 0
+  baseSpellDamage: 10
+  image: {fileID: 21300000, guid: af7226e30c27aab4486f406051ce398e, type: 3}
+  colors:
+  - {fileID: 11400000, guid: 8942c16a4b2a68d44a452f707073ebaa, type: 2}
+  - {fileID: 11400000, guid: dd2b2a61e73ad014a92070f6c06dbf2e, type: 2}
+  spell: {fileID: 11400000, guid: 8b82918f333e71a4484a4fc89deeadf4, type: 2}
+  race: {fileID: 11400000, guid: b0fc0009a36b7ad48a3521d8b2d97eaf, type: 2}

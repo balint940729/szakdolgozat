@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35aa30aecd03da24d8b3634c1287c97d, type: 3}
+  m_Name: MageTower
+  m_EditorClassIdentifier: 
+  buildingName: Mage Tower
+  images:
+  - {fileID: 21300000, guid: fe04af8ca101c074f946bcc1d5b2d192, type: 3}
+  - {fileID: 21300000, guid: b0291f17b6136974f9e8d05d555e34b5, type: 3}
+  - {fileID: 21300000, guid: 627e8d649b24f2e49ac9cfb4074d0207, type: 3}
+  - {fileID: 21300000, guid: a8e30aa6fd454a547bcaa29f3453d136, type: 3}
+  buildingBonus:
+    bonusDescription: 
+    affectedRaces: []
+    bonusStats: 03000000
+    bonusModifier: 10
+  buildingLevel: 0
+  upgradeCost: 50

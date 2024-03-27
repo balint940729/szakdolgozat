@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9dd202b8275d37346a7567bada9d8aae, type: 3}
   m_Name: Wizard
   m_EditorClassIdentifier: 
+  dropChance: 10
   baseName: Blue Wizard
   baseHealth: 10
   baseAttack: 10
@@ -24,4 +25,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: db845ec6003d27a4fa0d6bcd24d5de99, type: 2}
   - {fileID: 11400000, guid: a2cf1acada2635941aae16ac8858313e, type: 2}
   - {fileID: 11400000, guid: 02914e36603c40b488f99963102723bc, type: 2}
-  spell: {fileID: 11400000, guid: 579717b636d3790488260c88a8199f38, type: 2}
+  spell: {fileID: 11400000, guid: 7b4cf70d2122d424facb0786e0f7e57d, type: 2}
+  race: {fileID: 11400000, guid: 0a9f239c3cc90e341be1ee9d7cf4e4f8, type: 2}

@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35aa30aecd03da24d8b3634c1287c97d, type: 3}
+  m_Name: Weaponsmith
+  m_EditorClassIdentifier: 
+  buildingName: Weaponsmith
+  images:
+  - {fileID: 21300000, guid: fe04af8ca101c074f946bcc1d5b2d192, type: 3}
+  - {fileID: 21300000, guid: 58656015183487f458599c68bc2b5f85, type: 3}
+  - {fileID: 21300000, guid: 3e0852df77fea994497dc17fc2bd6d0c, type: 3}
+  - {fileID: 21300000, guid: af0c26ac8119ac64eb736bef79036be9, type: 3}
+  buildingBonus:
+    bonusDescription: 
+    affectedRaces: []
+    bonusStats: 00000000
+    bonusModifier: 10
+  buildingLevel: 0
+  upgradeCost: 25

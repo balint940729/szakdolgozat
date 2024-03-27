@@ -12,6 +12,8 @@ public class AudioManager : MonoBehaviour {
     private bool approach;
 
     private void Awake() {
+        instance = this;
+
         foreach (Sound s in sounds) {
             s.source = gameObject.AddComponent<AudioSource>();
             s.source.clip = s.clip;
@@ -25,7 +27,6 @@ public class AudioManager : MonoBehaviour {
     }
 
     private void Start() {
-        Play("Fight");
         Play("Theme");
     }
 
@@ -60,5 +61,10 @@ public class AudioManager : MonoBehaviour {
         if (s == null)
             return;
         s.source.Stop();
+    }
+
+    public void ChangeMusic(string stoppedMusic, string playMusic) {
+        instance.Stop(stoppedMusic);
+        instance.Play(playMusic);
     }
 }
