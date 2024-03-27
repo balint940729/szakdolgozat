@@ -3,6 +3,7 @@ using UnityEngine;
 
 [System.Serializable]
 public class UnitsHandler : MonoBehaviour, IDataPersistence {
+
     [SerializeField]
     private static List<Unit> units = new List<Unit>();
 

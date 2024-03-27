@@ -1,8 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class ItemsHandler : MonoBehaviour, IDataPersistence {
+
+    [SerializeField]
     private static List<Item> items = new List<Item>();
 
     public static void AddItem(Item item) {

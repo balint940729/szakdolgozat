@@ -43,7 +43,7 @@ public class ItemsInventory : BaseInventory {
             //    items.Add(item);
             //}
 
-            int itemCount = items.Count(it => it.itemName == item.itemName);
+            int itemCount = ItemCount(item);
 
             if (itemCount > 0) {
                 if (itemGO.transform.GetChild(0).gameObject.GetComponent<DragItem>() == null) {
@@ -76,6 +76,7 @@ public class ItemsInventory : BaseInventory {
 
     public void RemoveItem(Item item) {
         items.Remove(item);
+        ItemsHandler.RemoveItem(item);
         RefreshUI();
     }
 
@@ -106,6 +107,6 @@ public class ItemsInventory : BaseInventory {
     }
 
     public int ItemCount(Item item) {
-        return items.Count(it => it.itemName == item.itemName);
+        return ItemsHandler.GetItems().Count(it => it.itemName == item.itemName);
     }
 }

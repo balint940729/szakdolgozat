@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public static class Equipments {
+[System.Serializable]
+public class Equipments : MonoBehaviour, IDataPersistence {
     [SerializeField] private static List<Item> equipments = new List<Item>();
 
     public static List<Item> GetEquipments() {
@@ -18,5 +19,13 @@ public static class Equipments {
 
     public static void RemoveEquipment(Item item) {
         equipments.Remove(item);
+    }
+
+    public void LoadData(GameData gameData) {
+        SetEquipments(gameData.equipments);
+    }
+
+    public void SaveData(ref GameData gameData) {
+        gameData.equipments = GetEquipments();
     }
 }

@@ -74,8 +74,6 @@ public class UnitsInventory : BaseInventory {
                 }
             }
 
-
-
             unitsGO.Add(itemGO);
         }
 
@@ -107,6 +105,7 @@ public class UnitsInventory : BaseInventory {
 
     public void RemoveUnit(Unit unit) {
         units.Remove(unit);
+        UnitsHandler.RemoveUnit(unit);
         RefreshUI();
     }
 
@@ -137,18 +136,6 @@ public class UnitsInventory : BaseInventory {
     }
 
     public int UnitCount(Unit unit) {
-        List<Unit> copy = UnitsHandler.GetUnits();
-        //List<Unit> copy = units;
-        int asd = copy.Count(it => it.baseName == unit.baseName);
-        return asd; ;
+        return UnitsHandler.GetUnits().Count(it => it.baseName == unit.baseName);
     }
-
-    //public void LoadData(GameData gameData) {
-    //    units = gameData.units;
-    //}
-
-    //public void SaveData(ref GameData gameData) {
-    //    gameData.units = units;
-    //    gameData.units = testunits;
-    //}
 }

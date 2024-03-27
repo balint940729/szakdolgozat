@@ -13,6 +13,7 @@ public class GameData {
     public List<Unit> units;
 
     public List<Item> items;
+    public List<Item> equipments;
     public List<EnemyAlive> enemies;
 
     public GameData() {
