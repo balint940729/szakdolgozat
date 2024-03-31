@@ -6,14 +6,14 @@ public class EquipmentBonus : BaseBonus {
     public static void InitializeBonus(List<GameObject> team) {
         foreach (GameObject memberGO in team) {
             UnitController unit = memberGO.GetComponent<UnitController>();
-            foreach (Item item in Equipments.GetEquipments()) {
-                if (item.bonus.affectedRaces.Count == 0) {
-                    ModifyStat(unit, item.bonus);
+            foreach (EquipmentsObjectData equipment in Equipments.GetEquipments()) {
+                if (equipment.item.bonus.affectedRaces.Count == 0) {
+                    ModifyStat(unit, equipment.item.bonus);
                 }
                 else {
-                    foreach (Race race in item.bonus.affectedRaces) {
+                    foreach (Race race in equipment.item.bonus.affectedRaces) {
                         if (unit.GetRace() == race) {
-                            ModifyStat(unit, item.bonus);
+                            ModifyStat(unit, equipment.item.bonus);
                         }
                     }
                 }

@@ -10,7 +10,7 @@ public class DropInventory : MonoBehaviour, IDropHandler {
             GameObject itemCont = invCanvas.GetComponent<InventoryUI>().inventoryContainers.Find(cont => cont.name.Contains("Items"));
             //itemCont.GetComponentInChildren<ItemsInventory>().AddItem(DragItem.copyItem.item);
             ItemsInventory.AddItem(DragItem.copyItem.item);
-            Equipments.RemoveEquipment(DragItem.copyItem.item);
+            Equipments.RemoveEquipment(DragItem.copyItem.item, eventData.pointerDrag.GetComponent<DropItem>().GetEquipmentSlotType());
 
             eventData.pointerDrag.GetComponent<EquipmentDisplay>().ResetEquipmentDisplay();
             eventData.pointerDrag.GetComponent<ItemSlot>().item = null;

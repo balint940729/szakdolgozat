@@ -3,8 +3,15 @@
 public class EnemyController : MonoBehaviour {
     [SerializeField] private bool isAlive = true;
 
+    private void Start() {
+        if (!IsEnemyAlive()) {
+            EnemiesController.SetEnemy(gameObject, false);
+            gameObject.SetActive(false);
+        }
+    }
+
     private void LateUpdate() {
-        if (!isAlive) {
+        if (!IsEnemyAlive()) {
             EnemiesController.SetEnemy(gameObject, false);
             gameObject.SetActive(false);
         }

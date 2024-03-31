@@ -5,13 +5,24 @@ public class DropItem : MonoBehaviour, IDropHandler {
     [SerializeField] private ItemType equipmentType = default;
     [SerializeField] private GameObject equipmentSlotGO = default;
 
+    public ItemType GetEquipmentSlotType() {
+        return equipmentType;
+    }
+
+    public void AddDragItem() {
+        equipmentSlotGO.AddComponent<DragItem>();
+        equipmentSlotGO.GetComponent<DragItem>().originalGO = equipmentSlotGO;
+        RectTransform parent = (RectTransform)GameObject.Find("Inventory").transform;
+        equipmentSlotGO.GetComponent<DragItem>().SetParent(parent);
+    }
+
     public void OnDrop(PointerEventData eventData) {
         if (eventData.pointerDrag.name == "ItemButton") {
             ItemSlot itemSlot = GetComponent<ItemSlot>();
 
             if (itemSlot.item != DragItem.copyItem.item && DragItem.copyItem.item.itemTypes.Contains(equipmentType)) {
                 if (itemSlot.item != null) {
-                    Equipments.RemoveEquipment(itemSlot.item);
+                    Equipments.RemoveEquipment(itemSlot.item, equipmentType);
                     //eventData.pointerDrag.GetComponentInParent<ItemsInventory>().AddItem(itemSlot.item);
                     ItemsInventory.AddItem(itemSlot.item);
                 }
@@ -21,10 +32,11 @@ public class DropItem : MonoBehaviour, IDropHandler {
                 GetComponent<EquipmentDisplay>().SetEquipmentDisplay(itemSlot.item);
 
                 if (equipmentSlotGO.GetComponent<DragItem>() == null) {
-                    equipmentSlotGO.AddComponent<DragItem>();
-                    equipmentSlotGO.GetComponent<DragItem>().originalGO = equipmentSlotGO;
-                    RectTransform parent = (RectTransform)GameObject.Find("Inventory").transform;
-                    equipmentSlotGO.GetComponent<DragItem>().SetParent(parent);
+                    AddDragItem();
+                    //equipmentSlotGO.AddComponent<DragItem>();
+                    //equipmentSlotGO.GetComponent<DragItem>().originalGO = equipmentSlotGO;
+                    //RectTransform parent = (RectTransform)GameObject.Find("Inventory").transform;
+                    //equipmentSlotGO.GetComponent<DragItem>().SetParent(parent);
                 }
 
                 if (eventData.pointerDrag.GetComponentInParent<ItemsInventory>().ItemCount(itemSlot.item) == 1) {
@@ -34,7 +46,7 @@ public class DropItem : MonoBehaviour, IDropHandler {
                 else
                     eventData.pointerDrag.GetComponentInParent<ItemsInventory>().RemoveItem(itemSlot.item);
 
-                Equipments.AddEquipment(itemSlot.item);
+                Equipments.AddEquipment(itemSlot.item, equipmentType);
             }
         }
     }

@@ -1,10 +1,7 @@
 ﻿using UnityEngine;
 
-
-
 [System.Serializable]
 public class Team : MonoBehaviour {
-
     [SerializeField] private Unit[] team = default;
 
     [HideInInspector] [SerializeField] private bool isSelected = false;
@@ -25,6 +22,9 @@ public class Team : MonoBehaviour {
         this.isSelected = isSelected;
     }
 
+    public Unit GetMember(int index) {
+        return team[index];
+    }
 
     public bool IsSelected() {
         return isSelected;

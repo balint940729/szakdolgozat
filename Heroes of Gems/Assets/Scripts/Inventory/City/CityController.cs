@@ -13,4 +13,8 @@ public class CityController : MonoBehaviour {
     public static void AddActiveCity(CityController cityC) {
         activeCities.Add(cityC);
     }
+
+    public static void SetActiveCities(CityController cityC) {
+        activeCities.Add(cityC);
+    }
 }

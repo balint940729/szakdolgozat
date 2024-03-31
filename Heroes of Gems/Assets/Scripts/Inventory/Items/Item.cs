@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public enum ItemType { Weapon, Helmet, BodyArmor, Cape, Gloves, Pants, Boots, OffHand, Trinkets, Other };
 
 [CreateAssetMenu]

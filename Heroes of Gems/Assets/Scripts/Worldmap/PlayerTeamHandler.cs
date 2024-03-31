@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
 
 public class PlayerTeamHandler : MonoBehaviour, IDataPersistence {
+
     [SerializeField]
-    private static Unit[] team;
+    private static Unit[] team = new Unit[4];
 
     public static Unit[] GetTeam() {
         return team;

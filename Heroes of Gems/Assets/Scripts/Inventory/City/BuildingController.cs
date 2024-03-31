@@ -9,6 +9,7 @@ public class BuildingController : MonoBehaviour {
     private readonly string folderPath = "Assets/Sprites/Buildings";
     private string[] assetGuids;
 
+    private Building building;
     private int level;
 
     private int maxLevel;
@@ -25,11 +26,29 @@ public class BuildingController : MonoBehaviour {
         buildingUI = GetComponent<BuildingDisplay>();
     }
 
+    public void ModifyBuilding(int level) {
+        this.building = building;
+        this.level = level;
+        images = buildingUI.building.images;
+        maxLevel = images.Length - 1;
+
+        buildingUI.ChangeImage(images[level]);
+
+        if (level >= 1) {
+            activeBuildings.Add(this);
+        }
+
+        if (level == maxLevel) {
+            SetUpgradeButtonActive(false);
+        }
+    }
+
     public void SetUpBuilding(Building building) {
         assetGuids = AssetDatabase.FindAssets(building.buildingName + " t:Building", new string[] { folderPath });
         string assetPath = AssetDatabase.GUIDToAssetPath(assetGuids[0]);
         buildingUI.building = AssetDatabase.LoadAssetAtPath<Building>(assetPath);
 
+        this.building = building;
         level = buildingUI.building.buildingLevel;
         images = buildingUI.building.images;
         maxLevel = images.Length - 1;
@@ -86,5 +105,9 @@ public class BuildingController : MonoBehaviour {
 
     public BuildignBonus GetBonus() {
         return baseBonus;
+    }
+
+    public Building GetBuilding() {
+        return building;
     }
 }

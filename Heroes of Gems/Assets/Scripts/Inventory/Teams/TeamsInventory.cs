@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,7 +13,7 @@ public class TeamsInventory : BaseInventory {
 
     private void Start() {
         FillInventory();
-        SelectTeam();
+        LoadSelection();
     }
 
     private void LateUpdate() {
@@ -26,10 +27,16 @@ public class TeamsInventory : BaseInventory {
         teamSlotsGO.name = "TeamSlotsContent";
         teamSlotsGO.transform.SetParent(transform, false);
         StartCoroutine(ChangeTeamSlotLayoutGroup(teamSlotsGO));
-        int teamC = Teams.GetTeams().Count;
 
-        for (int i = 0; i < (teamC == 0 ? 1 : teamC); i++) {
-            AddTeamSlot();
+        if (MainMenuScript.isNewGame) {
+            GameObject teamSlot = AddTeamSlot();
+            Teams.AddTeam(teamSlot.GetComponent<Team>());
+        }
+        else {
+            for (int i = 0; i < Teams.GetTeams().Count; i++) {
+                GameObject teamSlot = AddTeamSlot();
+                LoadTeamUnits(teamSlot);
+            }
         }
 
         AddTeamSlotButton();
@@ -65,7 +72,7 @@ public class TeamsInventory : BaseInventory {
         verticalGroup.padding = new RectOffset(0, 0, -40, 0);
     }
 
-    private void AddTeamSlot() {
+    private GameObject AddTeamSlot() {
         GameObject itemGO = Instantiate(emptyItemPrefab);
 
         itemGO.name = "Team" + teamSlotsGO.transform.childCount;
@@ -74,20 +81,18 @@ public class TeamsInventory : BaseInventory {
         itemGO.transform.localScale = new Vector3(3.0f, 3.0f, 3.0f);
 
         //Teams.AddTeam(itemGO.GetComponent<Team>());
+
         foreach (Transform childTR in itemGO.transform) {
             if (childTR.tag == "TeamSelectButton") {
                 childTR.gameObject.name += teamSlotsGO.transform.childCount;
                 childTR.gameObject.GetComponent<Toggle>().group = teamSlotsGO.GetComponent<ToggleGroup>();
 
-                if (teamSlotsGO.transform.childCount == 0) {
-                    childTR.gameObject.GetComponent<Toggle>().isOn = true;
-                    GetComponentInParent<InventoryUI>().AddSelectedTeamButton(itemGO.GetComponent<Team>());
-                }
-
                 teamSlotsSelection.Add(childTR.gameObject);
                 break;
             }
         }
+
+        return itemGO;
     }
 
     private void AddTeamSlotButton() {
@@ -113,7 +118,53 @@ public class TeamsInventory : BaseInventory {
     private void BuyTeamSlot() {
         if (GoldController.HasEnoughGold(50)) {
             GoldController.SpendGold(50);
-            AddTeamSlot();
+            GameObject teamSlot = AddTeamSlot();
+            Teams.AddTeam(teamSlot.GetComponent<Team>());
+        }
+    }
+
+    private void LoadTeamUnits(GameObject teamSlots) {
+        //When loaded
+        TeamObjectData team = Teams.GetTeams().Find(t => t.teamName == teamSlots.name);
+
+        teamSlots.GetComponent<Team>().SetTeam(team.members);
+
+        UnitItem[] teamSlotUnits = teamSlots.GetComponentsInChildren<UnitItem>();
+        TeamSlotDisplay[] teamSlotDisplays = teamSlots.GetComponentsInChildren<TeamSlotDisplay>();
+        DropUnit[] dropUnits = teamSlots.GetComponentsInChildren<DropUnit>();
+
+        //Assume it will be the same length both
+        for (int j = 0; j < teamSlotUnits.Length; j++) {
+            teamSlotUnits[j].unit = team.members[j];
+            if (teamSlotUnits[j].unit != null) {
+                teamSlotDisplays[j].SetMemberDisplay(teamSlotUnits[j].unit);
+                dropUnits[j].AddDragUnit();
+            }
+            else {
+                teamSlotDisplays[j].ResetTeamSlotDisplay();
+            }
+        }
+    }
+
+    private void LoadSelection() {
+        //When loaded
+        if (Teams.GetTeams().Count > 0) {
+            for (int i = 0; i < Teams.GetTeams().Count; i++) {
+                GameObject teamSlotButton = teamSlotsSelection.ElementAt(i);
+                TeamObjectData team = Teams.GetTeams().ElementAt(i);
+
+                if (team.isSelected || Teams.GetTeams().Count == 1) {
+                    teamSlotButton.GetComponent<Toggle>().isOn = true;
+                    teamSlotButton.GetComponentInParent<Team>().SetSelected(true);
+                    teamSlotButton.GetComponent<Toggle>().image.sprite = teamSlotButton.GetComponent<Toggle>().spriteState.selectedSprite;
+                    GetComponentInParent<InventoryUI>().AddSelectedTeamButton(teamSlotButton.GetComponentInParent<Team>());
+                }
+                else {
+                    teamSlotButton.GetComponent<Toggle>().isOn = false;
+                    teamSlotButton.GetComponentInParent<Team>().SetSelected(false);
+                    teamSlotButton.GetComponent<Toggle>().image.sprite = teamSlotButton.GetComponent<Toggle>().spriteState.disabledSprite;
+                }
+            }
         }
     }
 
@@ -122,20 +173,24 @@ public class TeamsInventory : BaseInventory {
             if (teamSlotButton.GetComponent<Toggle>().isOn) {
                 teamSlotButton.GetComponent<Toggle>().image.sprite = teamSlotButton.GetComponent<Toggle>().spriteState.selectedSprite;
                 GetComponentInParent<InventoryUI>().AddSelectedTeamButton(teamSlotButton.GetComponentInParent<Team>());
+                teamSlotButton.GetComponentInParent<Team>().SetSelected(true);
+                Teams.GetTeams().First(t => t.teamName == teamSlotButton.GetComponentInParent<Team>().name).isSelected = true;
+
+                //foreach (TeamObjectData team in Teams.GetTeams()) {
+                //    if (team.teamName == teamSlotButton.GetComponentInParent<Team>().gameObject.name) {
+                //        team.isSelected = true;
+                //    }
+                //    else {
+                //        team.isSelected = false;
+                //    }
+                //}
 
                 //teamSlotButton.GetComponentInParent<Team>().SetSelected(true);
-                List<TeamObjectData> asd = Teams.GetTeams().FindAll(t => t.teamName != teamSlotButton.GetComponentInParent<Team>().gameObject.name);
-                foreach (TeamObjectData team in Teams.GetTeams()) {
-                    if (team.teamName == teamSlotButton.GetComponentInParent<Team>().gameObject.name) {
-                        team.isSelected = true;
-                    }
-                    else {
-                        team.isSelected = false;
-                    }
-                }
+                //List<TeamObjectData> asd = Teams.GetTeams().FindAll(t => t.teamName != teamSlotButton.GetComponentInParent<Team>().gameObject.name);
             }
             else {
-                teamSlotButton.GetComponentInParent<Team>().SetSelected(true);
+                teamSlotButton.GetComponentInParent<Team>().SetSelected(false);
+                Teams.GetTeams().First(t => t.teamName == teamSlotButton.GetComponentInParent<Team>().name).isSelected = false;
                 teamSlotButton.GetComponent<Toggle>().image.sprite = teamSlotButton.GetComponent<Toggle>().spriteState.disabledSprite;
             }
         }

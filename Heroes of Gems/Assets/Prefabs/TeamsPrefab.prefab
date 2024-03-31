@@ -298,7 +298,7 @@ GameObject:
   - component: {fileID: 6935910045005106092}
   m_Layer: 0
   m_Name: Teamslot3
-  m_TagString: Untagged
+  m_TagString: Teamslot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1165,6 +1165,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  isSelected: 0
 --- !u!1 &6954719449905232671
 GameObject:
   m_ObjectHideFlags: 0
@@ -1330,7 +1331,7 @@ GameObject:
   - component: {fileID: 2573156609823353758}
   m_Layer: 0
   m_Name: Teamslot1
-  m_TagString: Untagged
+  m_TagString: Teamslot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1463,7 +1464,7 @@ GameObject:
   - component: {fileID: 7060042028260701}
   m_Layer: 0
   m_Name: Teamslot0
-  m_TagString: Untagged
+  m_TagString: Teamslot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1596,7 +1597,7 @@ GameObject:
   - component: {fileID: 9098788524190133696}
   m_Layer: 0
   m_Name: Teamslot2
-  m_TagString: Untagged
+  m_TagString: Teamslot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -63,6 +63,18 @@ public class ShowCity : MonoBehaviour {
         }
     }
 
+    public List<BuildingController> LoadCityCont(City city, List<BuildingController> buildingsCtrl) {
+        GameObject cityCont = Instantiate(cityContainer);
+        cityCont.name = city.name + "CityContainer";
+        cityCont.transform.SetParent(cityUI.transform, false);
+        cityCont.GetComponent<CityContainer>().InitializeCityCont(city, buildingsCtrl);
+        cityContainers.Add(cityCont);
+        cityCont.SetActive(false);
+
+        return buildingsCtrl;
+        //CityController.AddActiveCity(GetComponent<CityController>());
+    }
+
     private void Resume() {
         cityUI.SetActive(false);
         closeButton.SetActive(false);

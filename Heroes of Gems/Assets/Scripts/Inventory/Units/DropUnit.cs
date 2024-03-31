@@ -7,6 +7,13 @@ public class DropUnit : MonoBehaviour, IDropHandler {
     [SerializeField] private GameObject teamSlotGO = default;
     private RectTransform parent;
 
+    public void AddDragUnit() {
+        teamSlotGO.AddComponent<DragUnit>();
+        teamSlotGO.GetComponent<DragUnit>().originalGO = teamSlotGO;
+        parent = (RectTransform)GameObject.Find("Inventory").transform;
+        teamSlotGO.GetComponent<DragUnit>().SetParent(parent);
+    }
+
     public void OnDrop(PointerEventData eventData) {
         //From inventory to teamslot
         if (eventData.pointerDrag.name == "ItemButton") {
@@ -23,13 +30,15 @@ public class DropUnit : MonoBehaviour, IDropHandler {
 
                 GetComponent<TeamSlotDisplay>().SetMemberDisplay(unitItem.unit);
                 team[index] = unitItem.unit;
-
                 if (teamSlotGO.GetComponent<DragUnit>() == null) {
-                    teamSlotGO.AddComponent<DragUnit>();
-                    teamSlotGO.GetComponent<DragUnit>().originalGO = teamSlotGO;
-                    parent = (RectTransform)GameObject.Find("Inventory").transform;
-                    teamSlotGO.GetComponent<DragUnit>().SetParent(parent);
+                    AddDragUnit();
                 }
+                //if (teamSlotGO.GetComponent<DragUnit>() == null) {
+                //    teamSlotGO.AddComponent<DragUnit>();
+                //    teamSlotGO.GetComponent<DragUnit>().originalGO = teamSlotGO;
+                //    parent = (RectTransform)GameObject.Find("Inventory").transform;
+                //    teamSlotGO.GetComponent<DragUnit>().SetParent(parent);
+                //}
 
                 if (eventData.pointerDrag.GetComponentInParent<UnitsInventory>().UnitCount(unitItem.unit) == 1) {
                     eventData.pointerDrag.GetComponent<DragUnit>().OnEndDrag(eventData);
@@ -79,10 +88,11 @@ public class DropUnit : MonoBehaviour, IDropHandler {
                 eventData.pointerDrag.GetComponent<DragUnit>().OnEndDrag(eventData);
                 Destroy(eventData.pointerDrag.GetComponent<DragUnit>());
 
-                teamSlotGO.AddComponent<DragUnit>();
-                teamSlotGO.GetComponent<DragUnit>().originalGO = teamSlotGO;
-                parent = (RectTransform)GameObject.Find("Inventory").transform;
-                teamSlotGO.GetComponent<DragUnit>().SetParent(parent);
+                AddDragUnit();
+                //teamSlotGO.AddComponent<DragUnit>();
+                //teamSlotGO.GetComponent<DragUnit>().originalGO = teamSlotGO;
+                //parent = (RectTransform)GameObject.Find("Inventory").transform;
+                //teamSlotGO.GetComponent<DragUnit>().SetParent(parent);
             }
         }
     }

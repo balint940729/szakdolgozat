@@ -1,14 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using TMPro;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class UnitsInventory : BaseInventory {
     [SerializeField] private static List<Unit> units = new List<Unit>();
     [SerializeField] private List<GameObject> unitsGO = new List<GameObject>();
-    private List<Unit> testunits = new List<Unit>();
+
+    //private List<Unit> testunits = new List<Unit>();
     private static bool invChanged = false;
 
     private void Start() {
@@ -61,41 +60,41 @@ public class UnitsInventory : BaseInventory {
                 }
             }
 
-            if (item.baseName == "Harpy" || item.baseName == "Gryphon") {
-                testunits.Add(item);
-            }
+            //if (item.baseName == "Harpy" || item.baseName == "Gryphon") {
+            //    testunits.Add(item);
+            //}
 
-            if (UnitsHandler.GetUnits().Count == 0) {
-                if (item.baseName == "Dog") {
-                    for (int j = 0; j < 4; j++) {
-                        units.Add(item);
-                        UnitsHandler.AddUnit(item);
-                    }
+            if (MainMenuScript.isNewGame) {
+                if (item.baseName == "Dog" || item.baseName == "Dwarf Miner" || item.baseName == "Thief") {
+                    //for (int j = 0; j < 4; j++) {
+                    units.Add(item);
+                    UnitsHandler.AddUnit(item);
+                    //}
                 }
             }
 
             unitsGO.Add(itemGO);
         }
 
-        GameObject buttonGO = Instantiate(otherPrefabs.Find(other => other.name == "ButtonPrefab"));
-        buttonGO.name = "BuyUnitButton";
-        buttonGO.GetComponent<Button>().onClick.AddListener(AddUnit2);
-        buttonGO.GetComponentInChildren<TMP_Text>().text = "Buy Harpies";
-        buttonGO.transform.SetParent(transform, false);
+        //GameObject buttonGO = Instantiate(otherPrefabs.Find(other => other.name == "ButtonPrefab"));
+        //buttonGO.name = "BuyUnitButton";
+        //buttonGO.GetComponent<Button>().onClick.AddListener(AddUnit2);
+        //buttonGO.GetComponentInChildren<TMP_Text>().text = "Buy Harpies";
+        //buttonGO.transform.SetParent(transform, false);
 
         RefreshUI();
     }
 
-    public void AddUnit2() {
-        foreach (Unit unit in testunits) {
-            for (int i = 0; i < 1; i++) {
-                units.Add(unit);
-                UnitsHandler.AddUnit(unit);
-            }
-        }
+    //public void AddUnit2() {
+    //    foreach (Unit unit in testunits) {
+    //        for (int i = 0; i < 1; i++) {
+    //            units.Add(unit);
+    //            UnitsHandler.AddUnit(unit);
+    //        }
+    //    }
 
-        RefreshUI();
-    }
+    //    RefreshUI();
+    //}
 
     public static void AddUnit(Unit unit) {
         units.Add(unit);

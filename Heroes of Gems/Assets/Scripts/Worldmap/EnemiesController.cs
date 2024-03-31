@@ -39,6 +39,7 @@ public class EnemiesController : MonoBehaviour, IDataPersistence {
     }
 
     public void LoadData(GameData gameData) {
+        enemies = gameData.enemies;
         foreach (EnemyAlive enemyGOD in gameData.enemies) {
             if (!enemyGOD.isAlive) {
                 GameObject.Find(enemyGOD.enemy.name.ToString()).GetComponent<EnemyController>().SetEnemyAlive(false);

@@ -84,7 +84,8 @@ public class ItemsInventory : BaseInventory {
         foreach (GameObject itemGO in itemsGO) {
             ItemDisplay itemUI = itemGO.GetComponent<ItemDisplay>();
 
-            int itemCount = items.Count(it => it.itemName == itemGO.GetComponent<ItemSlot>().item.itemName);
+            //int itemCount = items.Count(it => it.itemName == itemGO.GetComponent<ItemSlot>().item.itemName);
+            int itemCount = ItemCount(itemGO.GetComponent<ItemSlot>().item);
 
             itemUI.ChangeGrayScale(itemCount > 0 ? false : true);
 

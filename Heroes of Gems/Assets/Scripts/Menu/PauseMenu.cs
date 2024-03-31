@@ -34,12 +34,12 @@ public class PauseMenu : MonoBehaviour {
         PauseStateHandler.SetGamePause(false);
     }
 
-    public void LoadGame() {
-        Time.timeScale = 1f;
-        DataPersistenceManager.instance.LoadGame();
-        pauseMenuUI.SetActive(false);
-        PauseStateHandler.SetGamePause(false);
-    }
+    //public void LoadGame() {
+    //    Time.timeScale = 1f;
+    //    DataPersistenceManager.instance.LoadGame();
+    //    pauseMenuUI.SetActive(false);
+    //    PauseStateHandler.SetGamePause(false);
+    //}
 
     public void SaveGame() {
         DataPersistenceManager.instance.SaveGame();

@@ -358,7 +358,6 @@ public class TurnBase : MonoBehaviour {
             PauseStateHandler.SetGamePause(false);
             TriggerBattle.enemyGO.GetComponent<Rewards>().GainLoot();
             TriggerBattle.enemyGO.GetComponent<EnemyController>().SetEnemyAlive(false);
-            //TriggerBattle.enemyGO.SetActive(false);
             AudioManager.instance.ChangeMusic("Fight", "Theme");
         }
         else if (Input.GetKeyDown(KeyCode.L)) {
@@ -372,11 +371,17 @@ public class TurnBase : MonoBehaviour {
     private void CheckGameResult() {
         if (enemyTeam.Count == 0) {
             BattleStateHandler.SetState(BattleState.Won);
-            SceneManager.LoadScene(0, LoadSceneMode.Additive);
+            SceneManager.UnloadSceneAsync(1);
+            PauseStateHandler.SetGamePause(false);
+            TriggerBattle.enemyGO.GetComponent<Rewards>().GainLoot();
+            TriggerBattle.enemyGO.GetComponent<EnemyController>().SetEnemyAlive(false);
+            AudioManager.instance.ChangeMusic("Fight", "Theme");
         }
         else if (playerTeam.Count == 0) {
             BattleStateHandler.SetState(BattleState.Lost);
-            SceneManager.LoadScene(0, LoadSceneMode.Additive);
+            SceneManager.UnloadSceneAsync(1);
+            PauseStateHandler.SetGamePause(false);
+            AudioManager.instance.ChangeMusic("Fight", "Theme");
         }
     }
 
