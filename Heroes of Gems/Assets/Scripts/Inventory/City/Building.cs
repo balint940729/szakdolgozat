@@ -5,7 +5,7 @@
 public class Building : ScriptableObject {
     public string buildingName;
     public Sprite[] images = new Sprite[0];
-    public BuildignBonus buildingBonus;
+    public BuildingBonus buildingBonus;
 
     [HideInInspector]
     public int buildingLevel = 0;

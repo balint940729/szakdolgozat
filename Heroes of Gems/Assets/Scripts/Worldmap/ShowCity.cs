@@ -45,12 +45,11 @@ public class ShowCity : MonoBehaviour {
                 inact.SetActive(false);
             }
 
-            List<BuildingController> buildingsCtrl = GetComponent<CityController>().cityBuildings;
-            if (buildingsCtrl.Count == 0) {
+            if (GetComponent<CityController>().cityBuildings.Count == 0) {
                 GameObject cityCont = Instantiate(cityContainer);
                 cityCont.name = city.name + "CityContainer";
                 cityCont.transform.SetParent(cityUI.transform, false);
-                cityCont.GetComponent<CityContainer>().InitializeCityCont(city, buildingsCtrl);
+                GetComponent<CityController>().cityBuildings = cityCont.GetComponent<CityContainer>().InitializeCityCont(city);
                 cityContainers.Add(cityCont);
                 CityController.AddActiveCity(GetComponent<CityController>());
             }
@@ -63,16 +62,17 @@ public class ShowCity : MonoBehaviour {
         }
     }
 
-    public List<BuildingController> LoadCityCont(City city, List<BuildingController> buildingsCtrl) {
-        GameObject cityCont = Instantiate(cityContainer);
-        cityCont.name = city.name + "CityContainer";
-        cityCont.transform.SetParent(cityUI.transform, false);
-        cityCont.GetComponent<CityContainer>().InitializeCityCont(city, buildingsCtrl);
-        cityContainers.Add(cityCont);
-        cityCont.SetActive(false);
-
-        return buildingsCtrl;
-        //CityController.AddActiveCity(GetComponent<CityController>());
+    public void LoadCityCont() {
+        CityObjectData cityObject = CityHandler.GetCities().FirstOrDefault(c => c.cityName == city.cityName);
+        if (cityObject != null) {
+            GameObject cityCont = Instantiate(cityContainer);
+            cityCont.name = city.name + "CityContainer";
+            cityCont.transform.SetParent(cityUI.transform, false);
+            GetComponent<CityController>().cityBuildings = cityCont.GetComponent<CityContainer>().InitializeCityCont(cityObject.buildings);
+            cityContainers.Add(cityCont);
+            CityController.AddActiveCity(GetComponent<CityController>());
+            cityCont.SetActive(false);
+        }
     }
 
     private void Resume() {

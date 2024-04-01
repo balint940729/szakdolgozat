@@ -10,7 +10,6 @@ public class BuildingDisplay : MonoBehaviour {
 
     public void Start() {
         buildingText.text = building.buildingName;
-        image.sprite = building.images[0];
         upgradeText.text = $"Upgrade ({building.upgradeCost}g)";
     }
 

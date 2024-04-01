@@ -16,7 +16,7 @@ public class BuildingController : MonoBehaviour {
     private Sprite[] images;
     private List<ModifStats> bonusStats;
     private List<Race> affectedRaces;
-    private BuildignBonus baseBonus;
+    private BuildingBonus baseBonus;
     private int bonusModifier;
     private int upgradeCost;
 
@@ -24,23 +24,6 @@ public class BuildingController : MonoBehaviour {
 
     private void Awake() {
         buildingUI = GetComponent<BuildingDisplay>();
-    }
-
-    public void ModifyBuilding(int level) {
-        this.building = building;
-        this.level = level;
-        images = buildingUI.building.images;
-        maxLevel = images.Length - 1;
-
-        buildingUI.ChangeImage(images[level]);
-
-        if (level >= 1) {
-            activeBuildings.Add(this);
-        }
-
-        if (level == maxLevel) {
-            SetUpgradeButtonActive(false);
-        }
     }
 
     public void SetUpBuilding(Building building) {
@@ -53,12 +36,44 @@ public class BuildingController : MonoBehaviour {
         images = buildingUI.building.images;
         maxLevel = images.Length - 1;
 
+        buildingUI.ChangeImage(images[level]);
+
         baseBonus = buildingUI.building.buildingBonus;
         bonusStats = buildingUI.building.buildingBonus.bonusStats;
         bonusModifier = buildingUI.building.buildingBonus.bonusModifier;
         affectedRaces = buildingUI.building.buildingBonus.affectedRaces;
 
         upgradeCost = buildingUI.building.upgradeCost;
+
+        upgradeButton.GetComponent<Button>().onClick.AddListener(UpgradeBuilding);
+    }
+
+    public void SetUpBuilding(Building building, int level) {
+        assetGuids = AssetDatabase.FindAssets(building.buildingName + " t:Building", new string[] { folderPath });
+        string assetPath = AssetDatabase.GUIDToAssetPath(assetGuids[0]);
+        buildingUI.building = AssetDatabase.LoadAssetAtPath<Building>(assetPath);
+
+        this.building = building;
+        this.level = level;
+        images = buildingUI.building.images;
+        maxLevel = images.Length - 1;
+
+        baseBonus = buildingUI.building.buildingBonus;
+        bonusStats = buildingUI.building.buildingBonus.bonusStats;
+        bonusModifier = buildingUI.building.buildingBonus.bonusModifier;
+        affectedRaces = buildingUI.building.buildingBonus.affectedRaces;
+
+        upgradeCost = buildingUI.building.upgradeCost;
+
+        buildingUI.ChangeImage(images[level]);
+
+        if (level >= 1) {
+            activeBuildings.Add(this);
+        }
+
+        if (level == maxLevel) {
+            SetUpgradeButtonActive(false);
+        }
 
         upgradeButton.GetComponent<Button>().onClick.AddListener(UpgradeBuilding);
     }
@@ -103,7 +118,7 @@ public class BuildingController : MonoBehaviour {
         return activeBuildings;
     }
 
-    public BuildignBonus GetBonus() {
+    public BuildingBonus GetBonus() {
         return baseBonus;
     }
 

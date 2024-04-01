@@ -63,7 +63,7 @@ public class TurnBase : MonoBehaviour {
 
         if (isPlayer) {
             EquipmentBonus.InitializeBonus(team);
-            BuildignBonus.InitializeBonus(team);
+            BuildingBonus.InitializeBonus(team);
         }
     }
 

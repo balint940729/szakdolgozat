@@ -2,7 +2,7 @@
 using UnityEngine;
 
 [System.Serializable]
-public class BuildignBonus : BaseBonus {
+public class BuildingBonus : BaseBonus {
 
     public static void InitializeBonus(List<GameObject> team) {
         List<BuildingController> activeBuildings = BuildingController.GetActiveBuildings();

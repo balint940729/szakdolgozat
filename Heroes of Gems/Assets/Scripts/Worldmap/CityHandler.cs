@@ -4,25 +4,29 @@ using UnityEngine;
 
 public class CityHandler : MonoBehaviour, IDataPersistence {
     private static List<GameObject> citiesGO = new List<GameObject>();
+    private static List<CityObjectData> citiesObjGO = new List<CityObjectData>();
 
     private void Awake() {
         citiesGO = GameObject.FindGameObjectsWithTag("City").ToList();
     }
 
-    public List<GameObject> GetCities() {
-        return citiesGO;
+    public void Start() {
+        foreach (GameObject cityGO in citiesGO) {
+            cityGO.GetComponent<ShowCity>().LoadCityCont();
+        }
+    }
+
+    public static List<CityObjectData> GetCities() {
+        return citiesObjGO;
+    }
+
+    public static void SetCities(List<CityObjectData> cityObjects) {
+        citiesObjGO = cityObjects;
     }
 
     public void LoadData(GameData gameData) {
-        foreach (CityObjectData cityObject in gameData.cities) {
-            GameObject cityGO = citiesGO.First(c => c.GetComponent<CityController>().city.cityName == cityObject.cityName);
-            CityController cityController = cityGO.GetComponent<CityController>();
-            CityController.AddActiveCity(cityController);
-
-            foreach (BuildingObjectData buildingObject in cityObject.buildings) {
-                //cityController
-            }
-        }
+        citiesObjGO.Clear();
+        citiesObjGO = gameData.cities;
     }
 
     public void SaveData(ref GameData gameData) {
