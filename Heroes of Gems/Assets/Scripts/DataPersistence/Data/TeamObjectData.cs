@@ -2,10 +2,7 @@
 
 [System.Serializable]
 public class TeamObjectData {
-
-    //public int instanceID;
     [SerializeField] public string teamName;
-
     [SerializeField] public Unit[] members;
     [SerializeField] public bool isSelected;
 

@@ -9625,6 +9625,15 @@ Tilemap:
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
       m_AllTileFlags: 1073741825
+  - first: {x: 53, y: -5, z: 0}
+    second:
+      serializedVersion: 2
+      m_TileIndex: 7
+      m_TileSpriteIndex: 7
+      m_TileMatrixIndex: 0
+      m_TileColorIndex: 0
+      m_TileObjectToInstantiateIndex: 65535
+      m_AllTileFlags: 1073741825
   - first: {x: 58, y: -5, z: 0}
     second:
       serializedVersion: 2
@@ -10584,6 +10593,15 @@ Tilemap:
       serializedVersion: 2
       m_TileIndex: 12
       m_TileSpriteIndex: 12
+      m_TileMatrixIndex: 0
+      m_TileColorIndex: 0
+      m_TileObjectToInstantiateIndex: 65535
+      m_AllTileFlags: 1073741825
+  - first: {x: 53, y: -2, z: 0}
+    second:
+      serializedVersion: 2
+      m_TileIndex: 7
+      m_TileSpriteIndex: 7
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
@@ -18884,8 +18902,8 @@ Tilemap:
     m_Data: {fileID: 0}
   - m_RefCount: 0
     m_Data: {fileID: 0}
-  - m_RefCount: 0
-    m_Data: {fileID: 0}
+  - m_RefCount: 2
+    m_Data: {fileID: 11400000, guid: 8a076705c1e560741830b5fa308b4b66, type: 2}
   - m_RefCount: 25
     m_Data: {fileID: 11400000, guid: 2819913b60d82ef4d9c48d209e6d76bb, type: 2}
   - m_RefCount: 14
@@ -18917,8 +18935,8 @@ Tilemap:
     m_Data: {fileID: 0}
   - m_RefCount: 0
     m_Data: {fileID: 0}
-  - m_RefCount: 0
-    m_Data: {fileID: 0}
+  - m_RefCount: 2
+    m_Data: {fileID: 21300000, guid: be868ef9e5720b541a4d3d364dfd2f55, type: 3}
   - m_RefCount: 25
     m_Data: {fileID: 21300000, guid: 20d9e02a91c4f29449d73f6720d056eb, type: 3}
   - m_RefCount: 14
@@ -18936,7 +18954,7 @@ Tilemap:
   - m_RefCount: 4
     m_Data: {fileID: 21300000, guid: 72be355bf7952a6479c022abc3e5be8d, type: 3}
   m_TileMatrixArray:
-  - m_RefCount: 1959
+  - m_RefCount: 1961
     m_Data:
       e00: 1
       e01: 0
@@ -18955,7 +18973,7 @@ Tilemap:
       e32: 0
       e33: 1
   m_TileColorArray:
-  - m_RefCount: 1959
+  - m_RefCount: 1961
     m_Data: {r: 1, g: 1, b: 1, a: 1}
   m_TileObjectToInstantiateArray: []
   m_AnimationFrameRate: 1
@@ -24575,7 +24593,6 @@ MonoBehaviour:
   titlePrefab: {fileID: 8643343072656300065, guid: ee895b2d90526fc4c84e642aa0fef551,
     type: 3}
   closeButton: {fileID: 2086635532}
-  playerChar: {fileID: 1874081122}
   gold: {fileID: 1280492701}
   inventoryContainers: []
 --- !u!1 &1874081122
@@ -24613,7 +24630,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 5
-  controls: 1
 --- !u!70 &1874081124
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -25535,8 +25551,12 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 7365321795943664126, guid: b8ab4338cbbb18e45bb85061a8d4b9d4,
+      objectReference: {fileID: 0}
+    - target: {fileID: 8825202720447869486, guid: c4a4c3dc43f5a964e9182e91c2a1f532,
         type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8921058159453773323, guid: c4a4c3dc43f5a964e9182e91c2a1f532,
         type: 3}
       propertyPath: teleportTarget
@@ -62118,15 +62138,6 @@ Tilemap:
       m_TileColorIndex: 1
       m_TileObjectToInstantiateIndex: 65535
       m_AllTileFlags: 1073741825
-  - first: {x: 53, y: -5, z: 0}
-    second:
-      serializedVersion: 2
-      m_TileIndex: 85
-      m_TileSpriteIndex: 85
-      m_TileMatrixIndex: 0
-      m_TileColorIndex: 1
-      m_TileObjectToInstantiateIndex: 65535
-      m_AllTileFlags: 1073741825
   - first: {x: 54, y: -5, z: 0}
     second:
       serializedVersion: 2
@@ -66974,15 +66985,6 @@ Tilemap:
       serializedVersion: 2
       m_TileIndex: 101
       m_TileSpriteIndex: 101
-      m_TileMatrixIndex: 0
-      m_TileColorIndex: 1
-      m_TileObjectToInstantiateIndex: 65535
-      m_AllTileFlags: 1073741825
-  - first: {x: 53, y: -2, z: 0}
-    second:
-      serializedVersion: 2
-      m_TileIndex: 85
-      m_TileSpriteIndex: 85
       m_TileMatrixIndex: 0
       m_TileColorIndex: 1
       m_TileObjectToInstantiateIndex: 65535
@@ -110080,8 +110082,8 @@ Tilemap:
     m_Data: {fileID: 11400000, guid: 929d825eadfb7534790f31531fd88953, type: 2}
   - m_RefCount: 1
     m_Data: {fileID: 11400000, guid: e41de45af8d1c8b47a8e5376830afa3f, type: 2}
-  - m_RefCount: 2
-    m_Data: {fileID: 11400000, guid: 8a076705c1e560741830b5fa308b4b66, type: 2}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
   - m_RefCount: 37
     m_Data: {fileID: 11400000, guid: 155504329e1afc3418a120452bf2f86c, type: 2}
   - m_RefCount: 11
@@ -110319,8 +110321,8 @@ Tilemap:
     m_Data: {fileID: 21300000, guid: e431b53ceb051f649ac81d12c1af1c42, type: 3}
   - m_RefCount: 1
     m_Data: {fileID: 21300000, guid: 05d4b19096271e44faeae593b074a66e, type: 3}
-  - m_RefCount: 2
-    m_Data: {fileID: 21300000, guid: be868ef9e5720b541a4d3d364dfd2f55, type: 3}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
   - m_RefCount: 37
     m_Data: {fileID: 21300000, guid: 5595f0cc9d41fc14db037d69250ec566, type: 3}
   - m_RefCount: 11
@@ -110388,7 +110390,7 @@ Tilemap:
   - m_RefCount: 42
     m_Data: {fileID: 21300000, guid: 7f77045755092ed46ab7078f0103c3c9, type: 3}
   m_TileMatrixArray:
-  - m_RefCount: 9342
+  - m_RefCount: 9340
     m_Data:
       e00: 1
       e01: 0
@@ -110409,7 +110411,7 @@ Tilemap:
   m_TileColorArray:
   - m_RefCount: 0
     m_Data: {r: 4.500061, g: 4.500061, b: 4.500061, a: 4.500061}
-  - m_RefCount: 9342
+  - m_RefCount: 9340
     m_Data: {r: 1, g: 1, b: 1, a: 1}
   m_TileObjectToInstantiateArray: []
   m_AnimationFrameRate: 1
@@ -110953,8 +110955,12 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 7365321795943664126, guid: b8ab4338cbbb18e45bb85061a8d4b9d4,
+      objectReference: {fileID: 0}
+    - target: {fileID: 8825202720447869486, guid: c4a4c3dc43f5a964e9182e91c2a1f532,
         type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8921058159453773323, guid: c4a4c3dc43f5a964e9182e91c2a1f532,
         type: 3}
       propertyPath: thePlayer

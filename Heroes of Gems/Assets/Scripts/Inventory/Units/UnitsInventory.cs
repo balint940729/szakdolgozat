@@ -7,7 +7,6 @@ public class UnitsInventory : BaseInventory {
     [SerializeField] private static List<Unit> units = new List<Unit>();
     [SerializeField] private List<GameObject> unitsGO = new List<GameObject>();
 
-    //private List<Unit> testunits = new List<Unit>();
     private static bool invChanged = false;
 
     private void Start() {
@@ -76,6 +75,7 @@ public class UnitsInventory : BaseInventory {
             unitsGO.Add(itemGO);
         }
 
+        //Testbutton for adding Units
         //GameObject buttonGO = Instantiate(otherPrefabs.Find(other => other.name == "ButtonPrefab"));
         //buttonGO.name = "BuyUnitButton";
         //buttonGO.GetComponent<Button>().onClick.AddListener(AddUnit2);
@@ -85,6 +85,7 @@ public class UnitsInventory : BaseInventory {
         RefreshUI();
     }
 
+    //Add Unit to the inventory
     //public void AddUnit2() {
     //    foreach (Unit unit in testunits) {
     //        for (int i = 0; i < 1; i++) {

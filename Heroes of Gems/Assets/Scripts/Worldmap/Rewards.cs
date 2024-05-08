@@ -6,18 +6,6 @@ public class Rewards : MonoBehaviour {
     [SerializeField] private List<Lootable> guaranteedRewards = new List<Lootable>();
     [SerializeField] private List<Lootable> randomRewards = new List<Lootable>();
 
-    //private void OnTriggerEnter2D(Collider2D other) {
-    //    if (other.name == "Player") {
-    //        List<Lootable> rewards = GenerateRewards();
-
-    //        foreach (Lootable drop in rewards) {
-    //            if (drop.GetType() == typeof(Unit)) {
-    //                UnitsInventory.AddUnit(drop as Unit);
-    //            }
-    //        }
-    //    }
-    //}
-
     public void GainLoot() {
         List<Lootable> rewards = GenerateRewards();
 

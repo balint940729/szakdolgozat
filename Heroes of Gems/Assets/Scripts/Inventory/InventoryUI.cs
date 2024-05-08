@@ -8,12 +8,10 @@ public class InventoryUI : MonoBehaviour {
     [SerializeField] private GameObject inventoryMenuUI = default;
     [SerializeField] private GameObject titlePrefab = default;
     [SerializeField] private GameObject closeButton = default;
-    [SerializeField] private GameObject playerChar = default;
     [SerializeField] private GameObject gold = default;
     public List<GameObject> inventoryContainers;
 
     private List<GameObject> titlesGO = new List<GameObject>();
-    private Team selectedTeam;
 
     private void Start() {
         closeButton.GetComponentInChildren<Button>().onClick.AddListener(ShowInventory);
@@ -38,7 +36,6 @@ public class InventoryUI : MonoBehaviour {
 
     private void ShowInventory() {
         if (PauseStateHandler.IsGamePaused()) {
-            //PlayerTeamHandler.SetTeam(selectedTeam.GetTeam());
             Resume();
         }
         else {
@@ -112,12 +109,7 @@ public class InventoryUI : MonoBehaviour {
 
     public void AddSelectedTeamButton(Team team) {
         PlayerTeamHandler.SetTeam(team.GetTeam());
-        //selectedTeam = team;
     }
-
-    //public Team GetSelectedTeam() {
-    //    return selectedTeam;
-    //}
 
     private void Resume() {
         inventoryMenuUI.SetActive(false);

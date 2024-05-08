@@ -3,7 +3,6 @@
 public class PlayerController : MonoBehaviour, IDataPersistence {
     public float moveSpeed;
     private Animator anim;
-    public bool controls = true;
 
     private void Start() {
         anim = GetComponent<Animator>();

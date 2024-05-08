@@ -8,6 +8,7 @@ public class CityContainer : MonoBehaviour {
         List<BuildingController> buildingControllers = new List<BuildingController>();
         foreach (Building building in city.buildings) {
             GameObject buildingGO = Instantiate(buildingPrefab);
+            buildingGO.name = city.cityName + building.buildingName;
             buildingGO.transform.SetParent(transform, false);
 
             buildingGO.GetComponent<BuildingController>().SetUpBuilding(building);
@@ -22,6 +23,7 @@ public class CityContainer : MonoBehaviour {
         List<BuildingController> buildingControllers = new List<BuildingController>();
         foreach (BuildingObjectData buildingObj in buildingsObjs) {
             GameObject buildingGO = Instantiate(buildingPrefab);
+            //buildingGO.name = city.cityName + building.buildingName;
             buildingGO.transform.SetParent(transform, false);
 
             buildingGO.GetComponent<BuildingController>().SetUpBuilding(buildingObj.building, buildingObj.level);

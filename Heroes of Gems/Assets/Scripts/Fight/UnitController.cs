@@ -73,13 +73,6 @@ public class UnitController : MonoBehaviour, IPointerClickHandler {
 
     public bool CastSpell() {
         if (mana == maxMana) {
-            if (BattleStateHandler.GetState() == BattleState.WaitingForPlayer) {
-                BattleStateHandler.SetState(BattleState.PlayerTurn);
-            }
-            else if (BattleStateHandler.GetState() == BattleState.WaitingForEnemy) {
-                BattleStateHandler.SetState(BattleState.EnemyTurn);
-            }
-
             SpellBaseClass spellLogic = CreateSpell(spell);
 
             spellLogic.SetCaster(this);
@@ -89,6 +82,13 @@ public class UnitController : MonoBehaviour, IPointerClickHandler {
             SpellController.CloseSpell();
 
             spellLogic.InitializeSpell();
+
+            if (BattleStateHandler.GetState() == BattleState.WaitingForPlayer) {
+                BattleStateHandler.SetState(BattleState.PlayerTurn);
+            }
+            else if (BattleStateHandler.GetState() == BattleState.WaitingForEnemy) {
+                BattleStateHandler.SetState(BattleState.EnemyTurn);
+            }
 
             return true;
         }

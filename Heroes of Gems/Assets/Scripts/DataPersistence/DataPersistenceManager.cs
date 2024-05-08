@@ -22,7 +22,7 @@ public class DataPersistenceManager : MonoBehaviour {
     }
 
     private void Start() {
-        this.dataHandler = new FileDataHandler(Application.persistentDataPath, fileName);
+        dataHandler = new FileDataHandler(Application.persistentDataPath, fileName);
         dataPersistenceObjects = FindAllDataPersistenceObjects();
 
         if (MainMenuScript.isNewGame) {
@@ -42,27 +42,18 @@ public class DataPersistenceManager : MonoBehaviour {
             dataPersistence.SaveData(ref gameData);
         }
 
-        //Debug.Log("Exited gold: " + gameData.gold);
-
         dataHandler.Save(gameData);
     }
 
     public void LoadGame() {
         gameData = dataHandler.Load();
         if (gameData == null) {
-            //Create a newgame
             NewGame();
         }
 
         foreach (IDataPersistence dataPersistence in dataPersistenceObjects) {
             dataPersistence.LoadData(gameData);
         }
-
-        //Debug.Log("Initial gold: " + gameData.gold);
-    }
-
-    private void OnApplicationQuit() {
-        //SaveGame();
     }
 
     private List<IDataPersistence> FindAllDataPersistenceObjects() {

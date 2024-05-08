@@ -175,18 +175,6 @@ public class TeamsInventory : BaseInventory {
                 GetComponentInParent<InventoryUI>().AddSelectedTeamButton(teamSlotButton.GetComponentInParent<Team>());
                 teamSlotButton.GetComponentInParent<Team>().SetSelected(true);
                 Teams.GetTeams().First(t => t.teamName == teamSlotButton.GetComponentInParent<Team>().name).isSelected = true;
-
-                //foreach (TeamObjectData team in Teams.GetTeams()) {
-                //    if (team.teamName == teamSlotButton.GetComponentInParent<Team>().gameObject.name) {
-                //        team.isSelected = true;
-                //    }
-                //    else {
-                //        team.isSelected = false;
-                //    }
-                //}
-
-                //teamSlotButton.GetComponentInParent<Team>().SetSelected(true);
-                //List<TeamObjectData> asd = Teams.GetTeams().FindAll(t => t.teamName != teamSlotButton.GetComponentInParent<Team>().gameObject.name);
             }
             else {
                 teamSlotButton.GetComponentInParent<Team>().SetSelected(false);

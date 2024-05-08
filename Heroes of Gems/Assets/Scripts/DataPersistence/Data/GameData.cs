@@ -15,13 +15,11 @@ public class GameData {
     public List<Item> items;
     public List<EquipmentsObjectData> equipments;
     public List<CityObjectData> cities;
-    public List<BuildingObjectData> buildings;
     public List<EnemyAlive> enemies;
 
     public GameData() {
         if (MainMenuScript.isNewGame) {
             gold = 200;
-            //playerTeam = new Unit[4];
             units = new List<Unit>();
             items = new List<Item>();
         }
