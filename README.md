@@ -22,17 +22,13 @@ Szakdolgozat - Köles Bálint
 
 	* [x] -  Felülről új Gemek hozzáadása
 
-	* [ ] -  Egyedi Gameboardok elmentése (lyukakkal)
-
 	* [x] -  Felváltva történő mozgatás
 
-	* [ ] -  Lehetséges lépés animációja
+	* [x] -  Lehetséges lépés animációja
 
-	* [ ] -  Új board létrehozása, ha nem lehet mozogni
+	* [x] -  Új board létrehozása, ha nem lehet mozogni
 
-	* [ ] -  Animáció hozzáadása Matcheknél
-
-	* [ ] -  Match-es Gemek Extra turn jelzése
+	* [x] -  Animáció hozzáadása Matcheknél
 
 
 +  Világtérkép létrehozása
@@ -62,13 +58,9 @@ Szakdolgozat - Köles Bálint
 
       * [x] -  Gemek párosításával a mana gyűjtése
 
-      * [x] -  Megfelelő színű a megfelő kártyának menjen (Sárga gem-sárga mana)
-
-      * [ ] -  Animáció a mana begyűjtésénél
+      * [x] -  Megfelelő színű a megfelő kártyának menjen (Sárga gem-sárga mana)ú
 
       * [x] -  Harc matchelésnél támadás a másik oldalon lévő egységet
-
-      * [ ] -  Harc animáció
 
       * [x] -  Bónuszok létrehozása (Több ugyanolyan fajhoz tartozóknak)
     
@@ -77,7 +69,7 @@ Szakdolgozat - Köles Bálint
     
 	* [x] -  Karakter inventory menüjének a létrehozása
 
-	* [ ] -  Tárgyak létrehozása
+	* [x] -  Tárgyak létrehozása
 
 	* [x] -  Tárgyak megjelenítése a menüben
 
@@ -85,50 +77,31 @@ Szakdolgozat - Köles Bálint
 
 	* [x] -  Egység kártyákhoz tartozó album létrehozása
 
-	* [ ] -  Kártyák megjelenítése az albumban
+	* [x] -  Kártyák megjelenítése az inventoryban
 
-	* [ ] -  Csapatokhoz tartozó felület létrehozása
+	* [x] -  Csapatokhoz tartozó felület létrehozása
 
-	* [ ] -  Egységek felvétele a csapatokba
+	* [x] -  Egységek felvétele a csapatokba
 
-	* [ ] -  Csapatok mentése
+	* [x] -  Csapatok mentése
 
-	* [ ] -  Alap csapat kiválasztása (Harcnál ez a csapat lesz kiválasztva)
+	* [x] -  Alap csapat kiválasztása (Harcnál ez a csapat lesz kiválasztva)
 
 
 +  Világtérkép - harc
     
 	* [x] -  Karakter inventory menüjének a létrehozása
 
-	* [ ] -  Tárgyak létrehozása
+	* [x] -  Tárgyak létrehozása
 
- 	* [ ] -  Ellenfél egységeinek a megjelenítése
-
-
-+  Dungeonok kialakítása
-
-  	* [x] -  Teleportálás a dungeonhoz
-
-	* [ ] -  Csapat kiválasztása
-
-	* [ ] -  Kiválasztott csapat megtartása a dungeon végéig
+ 	* [x] -  Ellenfél egységeinek a megjelenítése
 		
 
 +  Városok létrehozása
 
-  	* [ ] -  Városok ikonjának elhelyezése a világtérképen
+  	* [x] -  Városok ikonjának elhelyezése a világtérképen
 
-	* [ ] -  Városhoz tartozó menük létrehozása
+	* [x] -  Városhoz tartozó menük létrehozása
 
-	* [ ] -  Város épületeinek a kilistázása
-
-	* [ ] -  Épületekhez tartozó tárgyak/egységek kilistázása
-
-	* [ ] -  Városhoz tartozó Scene létrehozása
-
-	* [ ] -  Épület kiválasztása és hozzá tartozó tárgyak megjelenítése
-
-	* [ ] -  Küldetések létrehozása
-
-	* [ ] -  Küldetések összekapcsolása a megfelelő épülettel/NPC-vel
+	* [x] -  Város épületeinek a kilistázása
 
