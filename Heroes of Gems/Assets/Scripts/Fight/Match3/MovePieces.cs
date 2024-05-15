@@ -75,6 +75,7 @@ public class MovePieces : MonoBehaviour {
     public void MovePiece(NodePiece piece) {
         if (moving != null) return;
         moving = piece;
+
         if (BattleStateHandler.GetState() == BattleState.EnemyTurn) {
             mouseStart = piece.transform.position;
         }
@@ -90,6 +91,7 @@ public class MovePieces : MonoBehaviour {
         }
         else
             game.ResetPiece(moving);
+
         moving = null;
     }
 }

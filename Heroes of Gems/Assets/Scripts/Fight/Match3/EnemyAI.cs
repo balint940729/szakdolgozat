@@ -9,23 +9,17 @@ public class EnemyAI : MonoBehaviour {
         public Point to;
         public bool isExtraTurn;
         public int color;
-        //public int point;
 
         public MoveValue(Point from, Point to, bool isExtraTurn, int color) {
             this.from = from;
             this.to = to;
             this.isExtraTurn = isExtraTurn;
             this.color = color;
-            //this.point = point;
         }
     }
 
     private MoveValue bestMove;
-
-    //private int[,] boardValues;
-    //private int[,] tempBoardValues;
     private List<GameObject> playerTeam = new List<GameObject>();
-
     private List<GameObject> enemyTeam = new List<GameObject>();
 
     // Update is called once per frame
@@ -45,11 +39,8 @@ public class EnemyAI : MonoBehaviour {
                 NodePiece fromNode = fromGO.GetComponent<NodePiece>();
                 NodePiece toNode = toGO.GetComponent<NodePiece>();
                 MovePieces.instance.EnemyMove(fromNode, toNode);
-                //MovePieces.instance.MovePiece(fromGO.GetComponent<NodePiece>());
                 bestMove = default;
             }
-
-            //BattleStateHandler.setState(BattleState.WaitingForPlayer);
         }
     }
 
@@ -57,28 +48,22 @@ public class EnemyAI : MonoBehaviour {
         if (BattleStateHandler.GetState() == BattleState.EnemyTurn) {
             Node[,] board = FindObjectOfType<Match3>().GetBoard();
             int[,] boardValues = new int[board.GetLength(0), board.GetLength(1)];
-            //tempBoardValues = new int[board.GetLength(0), board.GetLength(1)];
             List<MoveValue> possibleMoves = new List<MoveValue>();
 
             for (int i = 0; i < board.GetLength(0); i++) {
                 for (int j = 0; j < board.GetLength(1); j++) {
-                    //Node node = (Node)board.GetValue(i, j);
                     Point point = new Point(i, j);
                     boardValues[i, j] = FindObjectOfType<Match3>().GetValueAtPoint(point);
                 }
             }
             possibleMoves = GetPossibleMoves(boardValues);
 
-            //bestMove = CalculateBestMove(boardValues, possibleMoves, true, 1, int.MinValue, int.MaxValue);
-            bestMove = OriginalBestMoveCalc(possibleMoves);
+            bestMove = CalculateBestMove(possibleMoves);
 
-            //if (bestMove.Equals(default(MoveValue))) {
             if (bestMove.Equals(default(MoveValue))) {
                 // No possible match
                 Debug.Log("No match");
             }
-
-            //Debug.Log("Best move: from [" + bestMove.from.x.ToString() + "," + bestMove.from.y.ToString() + "] to [" + bestMove.to.x.ToString() + "," + bestMove.to.y.ToString() + "]");
         }
     }
 
@@ -86,7 +71,7 @@ public class EnemyAI : MonoBehaviour {
         return bestMove;
     }
 
-    private MoveValue OriginalBestMoveCalc(List<MoveValue> moveValues) {
+    private MoveValue CalculateBestMove(List<MoveValue> moveValues) {
         MoveValue bestMove;
 
         bestMove = moveValues.Find(em => em.isExtraTurn && em.color == 1); // Extra turn + skull
@@ -94,20 +79,14 @@ public class EnemyAI : MonoBehaviour {
             List<int> teamUsedColors = new List<int>();
             List<MoveValue> extraTurnMoves = moveValues.FindAll(pv => pv.isExtraTurn);
 
-            //foreach (GameObject unitGO in team) {
-            //    UnitController unit = unitGO.GetComponent<UnitController>();
-
-            //    if (!unit.IsOnFullMana()) {
-            //        teamUsedColors.AddRange(unit.GetColors().Select(color => color.colorCode));
-            //    }
-            //}
-
             foreach (GameObject unitGO in enemyTeam) {
                 UnitController unit = unitGO.GetComponent<UnitController>();
+
                 if (!unit.IsOnFullMana()) {
                     teamUsedColors.AddRange(unit.GetColors().Select(color => color.colorCode));
                 }
             }
+
             if (extraTurnMoves.Count > 0) {
                 // Extra turn + gain mana
                 bestMove = extraTurnMoves.FirstOrDefault(move => teamUsedColors.Contains(move.color));
@@ -137,284 +116,6 @@ public class EnemyAI : MonoBehaviour {
         }
 
         return bestMove;
-    }
-
-    private MoveValue CalculateBestMove(int[,] boardValues, List<MoveValue> moveValues, bool isEnemyTurn, int depth, int alpha, int beta) {
-        MoveValue bestMove = default(MoveValue);
-        List<UnitController> allyTeam = new List<UnitController>();
-        List<UnitController> oppentTeam = new List<UnitController>();
-        List<int> teamUsedColors = new List<int>();
-        List<MoveValue> possibleMoves = new List<MoveValue>();
-        int tempPoint = 0;
-
-        if (depth == 0) {
-            return bestMove;
-        }
-
-        if (isEnemyTurn) {
-            // Maximize for enemies' turn
-            int maxScore = int.MinValue;
-
-            foreach (MoveValue moveValue in moveValues) {
-                int[,] newBoard = ApplyMove(boardValues, moveValue);
-
-                possibleMoves = GetPossibleMoves(newBoard);
-
-                MoveValue opponentMove = CalculateBestMove(newBoard, possibleMoves, false, depth - 1, alpha, beta);
-
-                int score = 10;
-
-                alpha = Mathf.Max(alpha, score);
-
-                if (score > maxScore) {
-                    maxScore = score;
-                    bestMove = moveValue;
-                }
-
-                // Check if we can prune
-                if (beta <= alpha)
-                    break;
-            }
-
-            //allyTeam = enemyTeam;
-            //oppentTeam = playerTeam;
-        }
-        else {
-            // Minimize for player's turn
-            int minScore = int.MaxValue;
-
-            foreach (MoveValue moveValue in moveValues) {
-                int[,] newBoard = ApplyMove(boardValues, moveValue);
-                possibleMoves = GetPossibleMoves(newBoard);
-
-                MoveValue playerMove = CalculateBestMove(newBoard, possibleMoves, true, depth - 1, alpha, beta);
-
-                int score = 10;
-
-                beta = Mathf.Min(beta, score);
-
-                if (score < minScore) {
-                    minScore = score;
-                    bestMove = moveValue;
-                }
-
-                // Check if we can prune
-                if (beta <= alpha)
-                    break;
-            }
-
-            //allyTeam = playerTeam;
-            //oppentTeam = enemyTeam;
-        }
-
-        //foreach (UnitController ally in allyTeam) {
-        //    if (ally.IsOnFullMana()) {
-        //        tempPoint += 10;
-        //    }
-        //    else {
-        //        teamUsedColors.AddRange(ally.GetColors().Select(color => color.colorCode));
-        //    }
-        //}
-
-        //if (depth == 0 || bestMove.Equals(default(MoveValue))) {
-        //    return bestMove;
-        //}
-
-        //// Extra turn
-        //if (moveValues.Exists(em => em.isExtraTurn)) {
-        //    if (moveValues.Exists(em => em.isExtraTurn && em.color == 1)) {
-        //        tempPoint += 50;
-        //        bestMove = moveValues.Find(em => em.isExtraTurn && em.color == 1); // Extra turn + skull
-        //    }
-        //    else {
-        //        tempPoint += 30;
-        //    }
-        //}
-
-        return bestMove;
-    }
-
-    private int[,] ApplyMove(int[,] boardValues, MoveValue move) {
-        List<Point> connected = new List<Point>();
-        int[,] tempBoardValues = boardValues.Clone() as int[,];
-
-        //Switch values
-        int tempValue = tempBoardValues[move.from.x, move.from.y];
-        int tempValue2 = tempBoardValues[move.to.x, move.to.y];
-
-        tempBoardValues[move.from.x, move.from.y] = tempValue2;
-        tempBoardValues[move.to.x, move.to.y] = tempValue;
-
-        int val = tempValue;
-
-        connected = FindMatches(tempBoardValues);
-
-        return tempBoardValues;
-    }
-
-    private List<Point> FindMatches(int[,] tempBoardValues) {
-        List<Point> connected = new List<Point>();
-
-        for (int x = 0; x < tempBoardValues.GetLength(0); x++) {
-            for (int y = 0; y < tempBoardValues.GetLength(1); y++) {
-                Point point = new Point(x, y);
-                int val = tempBoardValues[x, y];
-
-                Point[] directions = {
-                    Point.Up,
-                    Point.Right,
-                    Point.Down,
-                    Point.Left
-                };
-                foreach (Point dir in directions) { //Checking if there is 2 same in the directions -> X X Y OR Y X X
-                    List<Point> line = new List<Point>();
-
-                    int same = 0;
-                    for (int i = 1; i < 3; i++) {
-                        Point check = Point.Add(point, Point.Mul(dir, i));
-                        if (GetValueAtPoint(tempBoardValues, check) == val) {
-                            line.Add(check);
-                            same++;
-                        }
-                    }
-
-                    if (same > 1) {
-                        AddPoints(ref connected, line);
-                    }
-                }
-
-                for (int i = 0; i < 2; i++) //Checking if we are in the middle  X Y X
-                {
-                    List<Point> line = new List<Point>();
-
-                    int same = 0;
-                    Point[] check = {
-                        Point.Add(point, directions[i]),
-                        Point.Add(point, directions[i+2])
-                    };
-
-                    foreach (Point next in check) // Check both sides of the piece
-                    {
-                        if (GetValueAtPoint(tempBoardValues, next) == val) {
-                            line.Add(next);
-                            same++;
-                        }
-                    }
-
-                    if (same > 1) {
-                        AddPoints(ref connected, line);
-                    }
-
-                    if (same == 2) { // When we are middle, check if can be an extra turn
-                        Point[] check2 = {
-                            Point.Add(point, Point.Mul(directions[i], 2)),
-                            Point.Add(point, Point.Mul(directions[i+2], 2))
-                        };
-                        foreach (Point next in check2) { // Check both sides of the piece
-                            if (GetValueAtPoint(tempBoardValues, next) == val) {
-                                same++;
-                            }
-                        }
-                    }
-
-                    if (same > 2) {
-                        //Debug.Log("extra turn");
-                        //ExtraTurnHandler.SetExtraTurn();
-                    }
-                }
-
-                for (int i = 0; i < 3; i += 2) //Checking if we are in the edge
-                {
-                    int same = 0;
-                    int same2 = 0;
-                    Point[] checkEdge = {
-                            Point.Add(point, directions[i]),
-                            Point.Add(point, Point.Mul(directions[i], 2)),
-                            Point.Add(point, directions[1]),
-                            Point.Add(point, Point.Mul(directions[1], 2))
-                    };
-
-                    Point[] checkEdge2 = {
-                            Point.Add(point, directions[i]),
-                            Point.Add(point, Point.Mul(directions[i], 2)),
-                            Point.Add(point, directions[3]),
-                            Point.Add(point, Point.Mul(directions[3], 2))
-                    };
-
-                    foreach (Point next in checkEdge) {
-                        if (GetValueAtPoint(tempBoardValues, next) == val)
-                            same++;
-                    }
-
-                    foreach (Point next in checkEdge2) {
-                        if (GetValueAtPoint(tempBoardValues, next) == val)
-                            same2++;
-                    }
-
-                    if (same == 4 || same2 == 4) {
-                        //ExtraTurnHandler.SetExtraTurn();
-                    }
-                }
-
-                for (int i = 0; i < 2; i++) { //Checking if we are in T shape
-                    int same = 0;
-                    int same2 = 0;
-
-                    //Only 4 directions are in the array
-                    int tempDir = 3;
-                    if (i + 3 > 3) {
-                        tempDir = 0;
-                    }
-
-                    Point[] checkTShape = {
-                            Point.Add(point, directions[i]),
-                            Point.Add(point, Point.Mul(directions[i], 2)),
-                            Point.Add(point, directions[i+1]),
-                            Point.Add(point, directions[tempDir]),
-                        };
-
-                    Point[] checkTShape2 = {
-                            Point.Add(point, directions[i+2]),
-                            Point.Add(point, Point.Mul(directions[i+2], 2)),
-                            Point.Add(point, directions[i+1]),
-                            Point.Add(point, directions[tempDir]),
-                        };
-
-                    foreach (Point next in checkTShape) {
-                        if (GetValueAtPoint(tempBoardValues, next) == val)
-                            same++;
-                    }
-
-                    foreach (Point next in checkTShape2) {
-                        if (GetValueAtPoint(tempBoardValues, next) == val)
-                            same2++;
-                    }
-
-                    if (same == 4 || same2 == 4) {
-                        //ExtraTurnHandler.SetExtraTurn();
-                    }
-                }
-            }
-
-            //for (int i = 0; i < connected.Count; i++) {
-            //    MoveValue tempMoveValue = new MoveValue(connected[i]);
-            //    AddPoints(ref connected, ApplyMove(tempBoardValues, connected[i], false));
-            //}
-        }
-        return connected;
-    }
-
-    public void AddPoints(ref List<Point> points, List<Point> add) {
-        foreach (Point p in add) {
-            bool doAdd = true;
-            for (int i = 0; i < points.Count; i++) {
-                if (points[i].Equals(p)) {
-                    doAdd = false;
-                    break;
-                }
-            }
-            if (doAdd) points.Add(p);
-        }
     }
 
     private void CheckSpellCast() {
@@ -488,7 +189,6 @@ public class EnemyAI : MonoBehaviour {
                     if (newPoint.x < 0 || newPoint.x >= width || newPoint.y < 0 || newPoint.y >= height) continue;
 
                     tempBoardValues = boardValues.Clone() as int[,];
-                    //tempBoardValues = boardValues;
 
                     //Switch values
                     int tempValue = boardValues[point.x, point.y];
@@ -632,4 +332,282 @@ public class EnemyAI : MonoBehaviour {
         if (point.x < 0 || point.x >= width || point.y < 0 || point.y >= height) return -1;
         return boardValues[point.x, point.y];
     }
+
+    //private MoveValue NewCalculateBestMove(int[,] boardValues, List<MoveValue> moveValues, bool isEnemyTurn, int depth, int alpha, int beta) {
+    //    MoveValue bestMove = default(MoveValue);
+    //    List<UnitController> allyTeam = new List<UnitController>();
+    //    List<UnitController> oppentTeam = new List<UnitController>();
+    //    List<int> teamUsedColors = new List<int>();
+    //    List<MoveValue> possibleMoves = new List<MoveValue>();
+    //    int tempPoint = 0;
+
+    //    if (depth == 0) {
+    //        return bestMove;
+    //    }
+
+    //    if (isEnemyTurn) {
+    //        // Maximize for enemies' turn
+    //        int maxScore = int.MinValue;
+
+    //        foreach (MoveValue moveValue in moveValues) {
+    //            int[,] newBoard = ApplyMove(boardValues, moveValue);
+
+    //            possibleMoves = GetPossibleMoves(newBoard);
+
+    //            MoveValue opponentMove = NewCalculateBestMove(newBoard, possibleMoves, false, depth - 1, alpha, beta);
+
+    //            int score = 10;
+
+    //            alpha = Mathf.Max(alpha, score);
+
+    //            if (score > maxScore) {
+    //                maxScore = score;
+    //                bestMove = moveValue;
+    //            }
+
+    //            // Check if we can prune
+    //            if (beta <= alpha)
+    //                break;
+    //        }
+
+    //        //allyTeam = enemyTeam;
+    //        //oppentTeam = playerTeam;
+    //    }
+    //    else {
+    //        // Minimize for player's turn
+    //        int minScore = int.MaxValue;
+
+    //        foreach (MoveValue moveValue in moveValues) {
+    //            int[,] newBoard = ApplyMove(boardValues, moveValue);
+    //            possibleMoves = GetPossibleMoves(newBoard);
+
+    //            MoveValue playerMove = NewCalculateBestMove(newBoard, possibleMoves, true, depth - 1, alpha, beta);
+
+    //            int score = 10;
+
+    //            beta = Mathf.Min(beta, score);
+
+    //            if (score < minScore) {
+    //                minScore = score;
+    //                bestMove = moveValue;
+    //            }
+
+    //            // Check if we can prune
+    //            if (beta <= alpha)
+    //                break;
+    //        }
+
+    //        //allyTeam = playerTeam;
+    //        //oppentTeam = enemyTeam;
+    //    }
+
+    //    //foreach (UnitController ally in allyTeam) {
+    //    //    if (ally.IsOnFullMana()) {
+    //    //        tempPoint += 10;
+    //    //    }
+    //    //    else {
+    //    //        teamUsedColors.AddRange(ally.GetColors().Select(color => color.colorCode));
+    //    //    }
+    //    //}
+
+    //    //if (depth == 0 || bestMove.Equals(default(MoveValue))) {
+    //    //    return bestMove;
+    //    //}
+
+    //    //// Extra turn
+    //    //if (moveValues.Exists(em => em.isExtraTurn)) {
+    //    //    if (moveValues.Exists(em => em.isExtraTurn && em.color == 1)) {
+    //    //        tempPoint += 50;
+    //    //        bestMove = moveValues.Find(em => em.isExtraTurn && em.color == 1); // Extra turn + skull
+    //    //    }
+    //    //    else {
+    //    //        tempPoint += 30;
+    //    //    }
+    //    //}
+
+    //    return bestMove;
+    //}
+
+    //private int[,] ApplyMove(int[,] boardValues, MoveValue move) {
+    //    List<Point> connected = new List<Point>();
+    //    int[,] tempBoardValues = boardValues.Clone() as int[,];
+
+    //    //Switch values
+    //    int tempValue = tempBoardValues[move.from.x, move.from.y];
+    //    int tempValue2 = tempBoardValues[move.to.x, move.to.y];
+
+    //    tempBoardValues[move.from.x, move.from.y] = tempValue2;
+    //    tempBoardValues[move.to.x, move.to.y] = tempValue;
+
+    //    int val = tempValue;
+
+    //    connected = FindMatches(tempBoardValues);
+
+    //    return tempBoardValues;
+    //}
+
+    //private List<Point> FindMatches(int[,] tempBoardValues) {
+    //    List<Point> connected = new List<Point>();
+
+    //    for (int x = 0; x < tempBoardValues.GetLength(0); x++) {
+    //        for (int y = 0; y < tempBoardValues.GetLength(1); y++) {
+    //            Point point = new Point(x, y);
+    //            int val = tempBoardValues[x, y];
+
+    //            Point[] directions = {
+    //                Point.Up,
+    //                Point.Right,
+    //                Point.Down,
+    //                Point.Left
+    //            };
+    //            foreach (Point dir in directions) { //Checking if there is 2 same in the directions -> X X Y OR Y X X
+    //                List<Point> line = new List<Point>();
+
+    //                int same = 0;
+    //                for (int i = 1; i < 3; i++) {
+    //                    Point check = Point.Add(point, Point.Mul(dir, i));
+    //                    if (GetValueAtPoint(tempBoardValues, check) == val) {
+    //                        line.Add(check);
+    //                        same++;
+    //                    }
+    //                }
+
+    //                if (same > 1) {
+    //                    AddPoints(ref connected, line);
+    //                }
+    //            }
+
+    //            for (int i = 0; i < 2; i++) //Checking if we are in the middle  X Y X
+    //            {
+    //                List<Point> line = new List<Point>();
+
+    //                int same = 0;
+    //                Point[] check = {
+    //                    Point.Add(point, directions[i]),
+    //                    Point.Add(point, directions[i+2])
+    //                };
+
+    //                foreach (Point next in check) // Check both sides of the piece
+    //                {
+    //                    if (GetValueAtPoint(tempBoardValues, next) == val) {
+    //                        line.Add(next);
+    //                        same++;
+    //                    }
+    //                }
+
+    //                if (same > 1) {
+    //                    AddPoints(ref connected, line);
+    //                }
+
+    //                if (same == 2) { // When we are middle, check if can be an extra turn
+    //                    Point[] check2 = {
+    //                        Point.Add(point, Point.Mul(directions[i], 2)),
+    //                        Point.Add(point, Point.Mul(directions[i+2], 2))
+    //                    };
+    //                    foreach (Point next in check2) { // Check both sides of the piece
+    //                        if (GetValueAtPoint(tempBoardValues, next) == val) {
+    //                            same++;
+    //                        }
+    //                    }
+    //                }
+
+    //                if (same > 2) {
+    //                    //Debug.Log("extra turn");
+    //                    //ExtraTurnHandler.SetExtraTurn();
+    //                }
+    //            }
+
+    //            for (int i = 0; i < 3; i += 2) //Checking if we are in the edge
+    //            {
+    //                int same = 0;
+    //                int same2 = 0;
+    //                Point[] checkEdge = {
+    //                        Point.Add(point, directions[i]),
+    //                        Point.Add(point, Point.Mul(directions[i], 2)),
+    //                        Point.Add(point, directions[1]),
+    //                        Point.Add(point, Point.Mul(directions[1], 2))
+    //                };
+
+    //                Point[] checkEdge2 = {
+    //                        Point.Add(point, directions[i]),
+    //                        Point.Add(point, Point.Mul(directions[i], 2)),
+    //                        Point.Add(point, directions[3]),
+    //                        Point.Add(point, Point.Mul(directions[3], 2))
+    //                };
+
+    //                foreach (Point next in checkEdge) {
+    //                    if (GetValueAtPoint(tempBoardValues, next) == val)
+    //                        same++;
+    //                }
+
+    //                foreach (Point next in checkEdge2) {
+    //                    if (GetValueAtPoint(tempBoardValues, next) == val)
+    //                        same2++;
+    //                }
+
+    //                if (same == 4 || same2 == 4) {
+    //                    //ExtraTurnHandler.SetExtraTurn();
+    //                }
+    //            }
+
+    //            for (int i = 0; i < 2; i++) { //Checking if we are in T shape
+    //                int same = 0;
+    //                int same2 = 0;
+
+    //                //Only 4 directions are in the array
+    //                int tempDir = 3;
+    //                if (i + 3 > 3) {
+    //                    tempDir = 0;
+    //                }
+
+    //                Point[] checkTShape = {
+    //                        Point.Add(point, directions[i]),
+    //                        Point.Add(point, Point.Mul(directions[i], 2)),
+    //                        Point.Add(point, directions[i+1]),
+    //                        Point.Add(point, directions[tempDir]),
+    //                    };
+
+    //                Point[] checkTShape2 = {
+    //                        Point.Add(point, directions[i+2]),
+    //                        Point.Add(point, Point.Mul(directions[i+2], 2)),
+    //                        Point.Add(point, directions[i+1]),
+    //                        Point.Add(point, directions[tempDir]),
+    //                    };
+
+    //                foreach (Point next in checkTShape) {
+    //                    if (GetValueAtPoint(tempBoardValues, next) == val)
+    //                        same++;
+    //                }
+
+    //                foreach (Point next in checkTShape2) {
+    //                    if (GetValueAtPoint(tempBoardValues, next) == val)
+    //                        same2++;
+    //                }
+
+    //                if (same == 4 || same2 == 4) {
+    //                    //ExtraTurnHandler.SetExtraTurn();
+    //                }
+    //            }
+    //        }
+
+    //        //for (int i = 0; i < connected.Count; i++) {
+    //        //    MoveValue tempMoveValue = new MoveValue(connected[i]);
+    //        //    AddPoints(ref connected, ApplyMove(tempBoardValues, connected[i], false));
+    //        //}
+    //    }
+    //    return connected;
+    //}
+
+    //public void AddPoints(ref List<Point> points, List<Point> add) {
+    //    foreach (Point p in add) {
+    //        bool doAdd = true;
+    //        for (int i = 0; i < points.Count; i++) {
+    //            if (points[i].Equals(p)) {
+    //                doAdd = false;
+    //                break;
+    //            }
+    //        }
+    //        if (doAdd) points.Add(p);
+    //    }
+    //}
 }

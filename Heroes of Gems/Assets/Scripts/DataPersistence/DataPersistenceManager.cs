@@ -8,7 +8,7 @@ public class DataPersistenceManager : MonoBehaviour {
     public static DataPersistenceManager instance { get; private set; }
 
     [Header("File Storage Container")]
-    [SerializeField] private string fileName;
+    [SerializeField] private string fileName = default;
 
     private static List<IDataPersistence> dataPersistenceObjects = new List<IDataPersistence>();
     private static GameData gameData;

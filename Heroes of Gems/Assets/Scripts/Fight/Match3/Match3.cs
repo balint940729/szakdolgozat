@@ -196,6 +196,7 @@ public class Match3 : MonoBehaviour {
         List<int> available = new List<int>();
         for (int i = 0; i < pieces.Length; i++)
             available.Add(i + 1);
+
         foreach (int i in remove)
             available.Remove(i);
 
@@ -221,8 +222,8 @@ public class Match3 : MonoBehaviour {
         foreach (Point dir in directions) //Checking if there is 2 same in the directions -> X X Y OR Y X X
         {
             List<Point> line = new List<Point>();
-
             int same = 0;
+
             for (int i = 1; i < 3; i++) {
                 Point check = Point.Add(point, Point.Mul(dir, i));
                 if (GetValueAtPoint(check) == val) {
@@ -245,6 +246,7 @@ public class Match3 : MonoBehaviour {
                     Point.Add(point, directions[i]),
                     Point.Add(point, directions[i+2])
                 };
+
             foreach (Point next in check) // Check both sides of the piece
             {
                 if (GetValueAtPoint(next) == val) {
